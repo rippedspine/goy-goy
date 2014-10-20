@@ -1,0 +1,20 @@
+{
+  "name": "Gaia",
+  "main": "index.html",
+  "version": "0.0.0",
+  "authors": [
+    "rippedspine <gabriella.karin@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "p2js": "~0.6.0",
+    "lodash": "~2.4.1"
+  }
+}

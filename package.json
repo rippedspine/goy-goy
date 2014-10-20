@@ -1,0 +1,19 @@
+{
+  "name": "Gaian Debug",
+  "version": "0.0.1",
+  "description": "Canvas Experiment",
+  "main": "server.js",
+  "contributors": [
+    "Lars H Simonsen",
+    "Gabriella Jonsson"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": "0.10.31"
+  },
+  "dependencies": {
+    "express": "3.3.5",
+    "lodash": "~2.4.1",
+    "socket.io": "^1.1.0"
+  }
+}
