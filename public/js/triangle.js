@@ -41,7 +41,7 @@ var Triangle = Triangle || (function() {
 // ==================================
 // TRIANGLE COLLECTION
 // ==================================
-var TriangleCollection = TriangleCollection || (function(utils) {
+var TriangleCollection = TriangleCollection || (function(utils, _) {
   'use strict';
 
   var TriangleCollection = function() {
@@ -87,6 +87,10 @@ var TriangleCollection = TriangleCollection || (function(utils) {
     }
   };
 
+  TriangleCollection.prototype.count = function() {
+    return _.size(this.triangles);
+  };
+
   return TriangleCollection;
 
-})(Utils);
+})(Utils, _);

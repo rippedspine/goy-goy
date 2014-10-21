@@ -38,7 +38,7 @@ var Player = Player || (function(utils) {
   Player.prototype.sendData = function() {
     return {
       id: this.id,
-      position: this.springPoint,
+      position: this.position,
       vertices: this.vertices,
     };
   };
