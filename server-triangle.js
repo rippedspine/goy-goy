@@ -5,11 +5,17 @@ var _ = require('lodash')
   , area = constants.area
   , amount = constants.amount.triangles;
 
-var Triangle = function(position) {
+var Triangle = function(id, position) {
+  this.id = id;
   this.position = position;
+  this.rotation = 0;
   this.color = utils.getRandomColor();
   this.radius = utils.getRandomInt(radiusRange);
   this.vertices = utils.getVertices(3, this.radius);
+};
+
+Triangle.prototype.set = function(data) {
+  this.rotation = data.rotation;
 };
 
 var Collection = function() {
@@ -17,21 +23,30 @@ var Collection = function() {
 
   this.spawn = function() {
     for (var id = 0; id < amount; id++) {
-      this.triangles[id] = new Triangle(utils.getRandomPosition(area));
+      this.triangles[id] = new Triangle(id, utils.getRandomPosition(area));
     }
   };
 
-  this.getAll = function() {
-    return this.triangles;  
+  this.get = function(id) {
+    if (typeof id === 'undefined') {
+      return this.triangles;  
+    }
+    return this.triangles[id];
   };
 
-  this.removeDead = function(id) {
-    delete this.triangles[id];
-    this.resurrect(id);
+  this.removeDead = function(deadID) {
+    delete this.triangles[deadID];
+    this.resurrect(deadID);
   };
 
   this.resurrect = function(id) {
-    this.triangles[id] = new Triangle(utils.getRandomPosition(area));
+    this.triangles[id] = new Triangle(id, utils.getRandomPosition(area));
+  };
+
+  this.set = function(data) {
+    for (var id in data) {
+      this.triangles[id].set(data[id]);
+    }
   };
 };
 

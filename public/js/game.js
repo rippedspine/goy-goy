@@ -1,106 +1,110 @@
-var Game = (function (helpers) {
+var Game = Game || (function() {
   'use strict';
 
-  var MSG_CONNECT = 1
-    , MSG_DISCONNECT = 2
-    , MSG_NEW_PLAYER = 3
-    , MSG_GET_PLAYERS = 4
-    , MSG_UPDATE_PLAYER = 5
-    , MSG_DEAD_OBSTACLE = 6
-    , MSG_UPDATE_OBSTACLES = 7
+  var Game = function(helpers, makers, socket, stage, playerCollection, triangleCollection) {
+    this.helpers = helpers;
+    this.makers = makers;
+    this.socket = socket;
+    this.stage = stage;
+    this.playerCollection = playerCollection;
+    this.triangleCollection = triangleCollection;
 
-    , socket = io()
-    , stage = new Stage()
-    , clientPlayer = null
-    , playerCollection = new PlayerCollection()
-    , triangleCollection = new TriangleCollection()
+    this.collidesWithTriangle = this.makers.CollisionDetector(this.triangleCollection);
 
-    , collidesWithTriangle = helpers.makeCollisionDetector(triangleCollection);
+    this.player = null;
+  };
 
-  handleDOMEvents();
-  handleSocketEvents();
+  Game.MSG_CONNECT = 1;
+  Game.MSG_DISCONNECT = 2;
+  Game.MSG_NEW_PLAYER = 3;
+  Game.MSG_GET_PLAYERS = 4;
+  Game.MSG_UPDATE_PLAYER = 5;
+  Game.MSG_DEAD_OBSTACLE = 6;
+  Game.MSG_UPDATE_OBSTACLES = 7;
 
-  // =============================
-  // GAME LOOP
-  // =============================
-  (function loop() {
-    requestAnimationFrame(loop);
-    if (clientPlayer !== null) {
-      stage.render();
-      update();
+  Game.prototype.start = function() {
+    this.handleDOMEvents();
+    this.handleSocketEvents();
+    this.loop();
+  };
+
+  Game.prototype.loop = function() {
+    requestAnimationFrame(this.loop.bind(this));
+    if (this.player !== null) {
+      this.stage.render();
+      this.update();
     }
-  }());
+  };
 
-  function update() {
-    playerCollection.update();
-    triangleCollection.update();
-    collidesWithTriangle(playerCollection.getAll());
-  }
+  Game.prototype.update = function() {
+    this.playerCollection.update();
+    this.triangleCollection.update();
+    this.collidesWithTriangle(this.playerCollection.get());
+  };
 
-  // =============================
-  // DOM EVENTS
-  // =============================
-  function handleDOMEvents() {
-    stage.canvas.addEventListener('mousemove', handleMouseMove);
-  }
+  Game.prototype.handleDOMEvents = function() {
+    this.stage.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+  };
 
-  function handleMouseMove(event) {
-    if (clientPlayer !== null) {
-      clientPlayer.move(helpers.getPosition(stage.canvas, event));
-      socket.emit(MSG_UPDATE_PLAYER, clientPlayer.sendData());  
+  Game.prototype.handleMouseMove = function(event) {
+    if (this.player !== null) {
+      this.player.move(this.helpers.getPosition(this.stage.canvas, event));
+      this.socket.emit(Game.MSG_UPDATE_PLAYER, this.player.sendData());  
     }
     
-    if (triangleCollection.getDead()) {
-      socket.emit(MSG_DEAD_OBSTACLE, triangleCollection.getDead());
+    if (this.triangleCollection.getDead()) {
+      this.socket.emit(Game.MSG_DEAD_OBSTACLE, {
+        deadID: this.triangleCollection.getDead(),
+        triangles: this.triangleCollection.sendData()
+      });
     }
-  }
+  };
 
-  // =============================
-  // SOCKET EVENTS
-  // =============================
-  function handleSocketEvents() {
-    socket.on(MSG_CONNECT, onConnect);
-    socket.on(MSG_DISCONNECT, onDisonnect);
-    socket.on(MSG_NEW_PLAYER, getNewPlayer);
-    socket.on(MSG_GET_PLAYERS, onGetPlayers);
-    socket.on(MSG_UPDATE_PLAYER, onUpdatePlayer);
-    socket.on(MSG_UPDATE_OBSTACLES, onUpdateTriangles);
-  }
+  Game.prototype.handleSocketEvents = function() {
+    this.socket.on(Game.MSG_CONNECT, this.onConnect.bind(this));
+    this.socket.on(Game.MSG_DISCONNECT, this.onDisonnect.bind(this));
+    this.socket.on(Game.MSG_NEW_PLAYER, this.getNewPlayer.bind(this));
+    this.socket.on(Game.MSG_GET_PLAYERS, this.onGetPlayers.bind(this));
+    this.socket.on(Game.MSG_UPDATE_PLAYER, this.onUpdatePlayer.bind(this));
+    this.socket.on(Game.MSG_UPDATE_OBSTACLES, this.onUpdateTriangles.bind(this));
+  };
 
-  function onConnect(data) {
-    clientPlayer = playerCollection.addOne(data.player);
-    triangleCollection.set(data.triangles);
+  Game.prototype.onConnect = function(data) {
+    this.player = this.playerCollection.addOne(data.player);
+    this.triangleCollection.set(data.triangles);
 
-    stage.setSize(data.area);
-    stage.setCollection('players', playerCollection);
-    stage.setCollection('triangles', triangleCollection);
+    this.stage.setSize(data.area);
+    this.stage.setCollection('players', this.playerCollection);
+    this.stage.setCollection('triangles', this.triangleCollection);
 
-    socket.emit(MSG_NEW_PLAYER, clientPlayer.sendData());
-  }
+    this.socket.emit(Game.MSG_NEW_PLAYER, this.player.sendData());
+  };
 
-  function onDisonnect(id) {
-    playerCollection.removeOne(id);
-    stage.setCollection('players', playerCollection);
-  }
+  Game.prototype.onDisonnect = function(id) {
+    this.playerCollection.removeOne(id);
+    this.stage.setCollection('players', this.playerCollection);
+  };
 
-  function getNewPlayer(data) {
-    playerCollection.addOne(data);
-    stage.setCollection('players', playerCollection);
-  }
+  Game.prototype.getNewPlayer = function(player) {
+    this.playerCollection.addOne(player);
+    this.stage.setCollection('players', this.playerCollection);
+  };
 
-  function onGetPlayers(data) {
-    for (var id in data) {
-      getNewPlayer(data[id]);
+  Game.prototype.onGetPlayers = function(players) {
+    for (var id in players) {
+      this.getNewPlayer(players[id]);
     }
-  }
+  };
 
-  function onUpdatePlayer(data) {
-    playerCollection.updatePlayer(data);
-  }
+  Game.prototype.onUpdatePlayer = function(player) {
+    this.playerCollection.updatePlayer(player);
+  };
 
-  function onUpdateTriangles(data) {
-    triangleCollection.set(data);
-    stage.setCollection('triangles', triangleCollection);
-  }
+  Game.prototype.onUpdateTriangles = function(triangles) {
+    this.triangleCollection.set(triangles);
+    this.stage.setCollection('triangles', this.triangleCollection);
+  };
 
-}(Helpers));
+  return Game; 
+
+})();

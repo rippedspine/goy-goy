@@ -1,96 +1,55 @@
-// ==================================
-// TRIANGLE
-// ==================================
 var Triangle = Triangle || (function() {
   'use strict';
 
-  var Triangle = function(data) {
+  var Triangle = function(serverData) {
     this.isActive = false;
     this.isDead = false;
+    this.fillTimer = 1;
+    this.frequency = 0.02;
+    
+    Geometry.call(this, {
+      radius: serverData.radius,
+      color: serverData.color,
+      position: serverData.position,
+      rotation: serverData.rotation
+    });
 
-    var options = {
-      radius: data.radius,
-      color: data.color,
-      position: data.position
-    };
-
-    Polygon.call(this, options);
-
-    this.vertices = data.vertices;
+    this.vertices = serverData.vertices;
   };
 
-  Triangle.prototype = Object.create(Polygon.prototype);
+  Triangle.prototype = Object.create(Geometry.prototype);
 
   Triangle.prototype.update = function() {
+    this.rotate();
+    this.onCollision();
+  };
+
+  Triangle.prototype.rotate = function() {
+    this.rotation += this.frequency;
+    if (this.rotation > 360) {
+      this.rotation = 0;
+    }
+  };
+
+  Triangle.prototype.onCollision = function() {
     if (this.isActive) {
       this.isFilled = true;
-      this.alpha -= 0.02;
-      this.scale += 0.02;
+      this.fillTimer -= 0.05;
+
+      if (this.fillTimer < 0) {
+        this.isFilled = false;
+      }
+
+      this.scale += this.frequency;
+      this.alpha -= this.frequency;
 
       if (this.alpha < 0) {
         this.alpha = 0;
         this.isDead = true;
       }
-    }
+    }    
   };
 
   return Triangle;
 
 })();
-
-// ==================================
-// TRIANGLE COLLECTION
-// ==================================
-var TriangleCollection = TriangleCollection || (function(utils, _) {
-  'use strict';
-
-  var TriangleCollection = function() {
-    this.triangles = {};
-  };
-
-  TriangleCollection.prototype.set = function(triangles) {
-    for (var id in triangles) {
-      this.triangles[id] = new Triangle(triangles[id]);
-    }
-  };
-
-  TriangleCollection.prototype.detectCollision = function(player) {
-    for (var i in this.triangles) {
-      if (utils.circleCollision(player, this.triangles[i])) {
-        this.triangles[i].isActive = true;
-      }
-    }
-  };
-
-  TriangleCollection.prototype.draw = function(context) {
-    for (var i in this.triangles) { 
-      this.triangles[i].draw(context); 
-    }
-  };
-
-  TriangleCollection.prototype.removeDead = function(id) {
-    if (!this.triangles[id].isAlive) {
-      delete this.triangles[id];
-      this.spawnOne(id);
-    }
-  };
-
-  TriangleCollection.prototype.update = function() {
-    for (var id in this.triangles) { 
-      this.triangles[id].update(); 
-    }
-  };
-
-  TriangleCollection.prototype.getDead = function() {
-    for (var id in this.triangles) {
-      if (this.triangles[id].isDead) { return id; }
-    }
-  };
-
-  TriangleCollection.prototype.count = function() {
-    return _.size(this.triangles);
-  };
-
-  return TriangleCollection;
-
-})(Utils, _);
