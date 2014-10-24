@@ -5,8 +5,11 @@ Gaia.TriangleCollection = Gaia.TriangleCollection || (function(utils, _) {
     this.triangles = {};
   };
 
-  TriangleCollection.prototype.get = function() {
-    return this.triangles;
+  TriangleCollection.prototype.get = function(id) {
+    if (typeof id === 'undefined') {
+      return this.triangles;  
+    }
+    return this.triangles[id];
   };
 
   TriangleCollection.prototype.set = function(triangles) {

@@ -90,7 +90,8 @@ Gaia.Game = Gaia.Game || (function() {
     this.playerCollection.setCollision(data.player, data.color);
     if (data.obstacle.charAt(0) === 't') {
       this.triangleCollection.setCollision(data.obstacle);
-      this.playerCollection.audioplayer.play();
+      var obstacle = this.triangleCollection.get(data.obstacle);
+      this.playerCollection.audioplayer.play(obstacle.soundID);
     }
   };
 
