@@ -13,7 +13,7 @@ var Player = function(id) {
   this.vertices = utils.getVertices(5, this.radius);  
 };
 
-Player.prototype.recieveData = function(data) {
+Player.prototype.set = function(data) {
   this.id = data.id;
   this.position = data.position;
   this.vertices = data.vertices; 
@@ -22,31 +22,29 @@ Player.prototype.recieveData = function(data) {
 var Collection = function() {
   this.players = {};
 
-  this.addOne = function(data) {
+  this.add = function(data) {
     var player = new Player(data.id);
-    player.recieveData(data);
+    player.set(data);
     this.players[player.id] = player;
-    return player;
   };
 
   this.hasPlayers = function() {
     return _.size(this.players) > 0;  
   };
 
-  this.getAll = function() {
-    return this.players;  
-  };
-
-  this.getOne = function(id) {
+  this.get = function(id) {
+    if (typeof id === 'undefined') {
+      return this.players;  
+    }
     return this.players[id];
   };
 
-  this.removeOne = function(id) {
+  this.remove = function(id) {
     delete this.players[id];
   };
 
-  this.updatePlayer = function(data) {
-    this.players[data.id].recieveData(data);  
+  this.set = function(data) {
+    this.players[data.id].set(data);  
   };
 };
 

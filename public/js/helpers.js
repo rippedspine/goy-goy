@@ -8,14 +8,6 @@ var Helpers = Helpers || (function() {
         , y = event.clientY - rect.top;
 
       return [x, y];
-    },
-
-    makeCollisionDetector: function(type) {
-      return function(players) {
-        for (var id in players) {
-          type.detectCollision(players[id]);
-        }
-      };
     }
   };
 

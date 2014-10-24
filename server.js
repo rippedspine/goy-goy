@@ -21,47 +21,49 @@ var constants = require('./server-constants.js')
   , MSG_NEW_PLAYER = 3
   , MSG_SEND_PLAYERS = 4
   , MSG_UPDATE_PLAYER = 5
-  , MSG_DEAD_TRIANGLE = 6
-  , MSG_UPDATE_TRIANGLES = 7
+  , MSG_DEAD_OBSTACLE = 6
+  , MSG_UPDATE_OBSTACLES = 7
 
-  , players = new player.Collection()
-  , triangles = new triangle.Collection()
-  , clientPlayer = null;
+  , myPlayer = null
+  , playerCollection = new player.Collection()
+  , triangleCollection = new triangle.Collection();
 
-triangles.spawn();
+triangleCollection.spawn();
 
-io.on('connection', function(client) {
-  console.log('Connected:', client.id);
+io.on('connection', function(socket) {
+  console.log('Connected:', socket.id);
 
-  if (players.hasPlayers()) {
-    client.emit(MSG_SEND_PLAYERS, players.getAll()); 
+  if (playerCollection.hasPlayers()) {
+    socket.emit(MSG_SEND_PLAYERS, playerCollection.get()); 
   }
 
-  clientPlayer = new player.Player(client.id);
+  myPlayer = new player.Player(socket.id);
 
-  client.emit(MSG_CONNECT, {
-    triangles: triangles.getAll(),
-    player: clientPlayer,
+  socket.emit(MSG_CONNECT, {
+    triangles: triangleCollection.get(),
+    player: myPlayer,
     area: constants.area
   });
 
-  client.on(MSG_NEW_PLAYER, function(data) {
-    client.broadcast.emit(MSG_NEW_PLAYER, players.addOne(data));
+  socket.on(MSG_NEW_PLAYER, function(data) {
+    playerCollection.add(data);
+    socket.broadcast.emit(MSG_NEW_PLAYER, playerCollection.get(data.id));
   });
 
-  client.on(MSG_UPDATE_PLAYER, function(data) {
-    players.updatePlayer(data);
-    client.broadcast.emit(MSG_UPDATE_PLAYER, players.getOne(data.id));
+  socket.on(MSG_UPDATE_PLAYER, function(data) {
+    playerCollection.set(data);
+    socket.broadcast.emit(MSG_UPDATE_PLAYER, playerCollection.get(data.id));
   });
 
-  client.on(MSG_DEAD_TRIANGLE, function(id) {
-    triangles.removeDead(id);
-    client.emit(MSG_UPDATE_TRIANGLES, triangles.getAll());
+  socket.on(MSG_DEAD_OBSTACLE, function(data) {
+    triangleCollection.removeDead(data.deadID);
+    triangleCollection.set(data.triangles);
+    socket.emit(MSG_UPDATE_OBSTACLES, triangleCollection.get());
   });
 
-  client.on('disconnect', function() {
-    console.log('Disconnected:', client.id);
-    client.broadcast.emit(MSG_DISCONNECT, client.id);
-    players.removeOne(client.id);
+  socket.on('disconnect', function() {
+    console.log('Disconnected:', socket.id);
+    socket.broadcast.emit(MSG_DISCONNECT, socket.id);
+    playerCollection.remove(socket.id);
   });
 });
