@@ -61,6 +61,7 @@ io.on('connection', function(socket) {
 
     if (collision) {
       socket.emit(MSG_COLLIDED, collision);
+      socket.broadcast.emit(MSG_COLLIDED, collision);
       triangleCollection.set(data.triangles);
       triangleCollection.remove(collision.obstacle);
       socket.emit(MSG_UPDATE_OBSTACLES, triangleCollection.get());
