@@ -49,6 +49,11 @@ Gaia.Synth = Gaia.Synth || (function() {
     this.waveform.connect(this.gain);
 
     this.connect(this.audiolet.output);
+
+    var that = this;
+    setTimeout(function() {
+      that.disconnect(that.audiolet.output);
+    }, 1000);
   };
 
   return Synth;
