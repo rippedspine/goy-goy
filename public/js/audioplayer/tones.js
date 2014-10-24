@@ -1,15 +1,12 @@
-var Tones = Tones || (function() {
+Gaia.Tones = Gaia.Tones || (function() {
 	'use strict'
 
 	function Tones() {
-		this.tuning = new PythagoreanTuning();
-		this.scale = new PentatonicScale(this.tuning);
+		this.tuning = new Gaia.PythagoreanTuning();
+		this.scale = new Gaia.PentatonicScale(this.tuning);
+
 		this.baseFrequency = 440;
 		this.octave = 1;
-
-		this.frequencies = this.getFrequencies();
-
-		console.log(this.frequencies);
 	}
 
 	Tones.prototype.getFrequencies = function() {

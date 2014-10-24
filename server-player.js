@@ -46,6 +46,20 @@ var Collection = function() {
   this.set = function(data) {
     this.players[data.id].set(data);  
   };
+
+  this.makeCollisionDetector = function(obstacles) {
+    return function(id) {
+      for (var objID in obstacles) {
+        if (utils.circleCollision(this.players[id], obstacles[objID])) {
+          return {
+            player: id,
+            color: obstacles[objID].color,
+            obstacle: objID
+          };
+        }
+      }
+    }.bind(this);
+  };
 };
 
 module.exports = {

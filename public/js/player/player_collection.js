@@ -1,8 +1,10 @@
-var PlayerCollection = PlayerCollection || (function() {
+Gaia.PlayerCollection = Gaia.PlayerCollection || (function(utils) {
   'use strict';
 
   var PlayerCollection = function() {
     this.players = {};
+    this.collisions = [];
+    this.audioplayer = new Gaia.AudioPlayer(new Audiolet(), new Gaia.Tones());
   };
 
   PlayerCollection.prototype.draw = function(context) {
@@ -17,11 +19,16 @@ var PlayerCollection = PlayerCollection || (function() {
     }
   };
 
-  PlayerCollection.prototype.addOne = function(data) {
-    return this.players[data.id] = new Player(data);
+  PlayerCollection.prototype.setCollision = function(id, color) {
+    this.players[id].didCollide = true;
+    this.players[id].color = color;
   };
 
-  PlayerCollection.prototype.removeOne = function(id) {
+  PlayerCollection.prototype.add = function(data) {
+    return this.players[data.id] = new Gaia.Player(data);
+  };
+
+  PlayerCollection.prototype.remove = function(id) {
     delete this.players[id];
   };
 
@@ -36,6 +43,12 @@ var PlayerCollection = PlayerCollection || (function() {
     return this.players[id];
   };
 
+  PlayerCollection.prototype.set = function(players) {
+    for (var id in players) {
+      this.players[id] = new Gaia.Player(players[id]);
+    }
+  };
+
   return PlayerCollection;
 
-})();
+})(Gaia.Utils);

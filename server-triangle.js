@@ -23,7 +23,7 @@ var Collection = function() {
 
   this.spawn = function() {
     for (var id = 0; id < amount; id++) {
-      this.triangles[id] = new Triangle(id, utils.getRandomPosition(area));
+      this.triangles['t' + id] = new Triangle(id, utils.getRandomPosition(area));
     }
   };
 
@@ -34,7 +34,7 @@ var Collection = function() {
     return this.triangles[id];
   };
 
-  this.removeDead = function(deadID) {
+  this.remove = function(deadID) {
     delete this.triangles[deadID];
     this.resurrect(deadID);
   };

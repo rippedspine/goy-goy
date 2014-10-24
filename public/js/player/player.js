@@ -1,12 +1,12 @@
-var Player = Player || (function(utils) {
+Gaia.Player = Gaia.Player || (function(utils) {
   'use strict';
 
   var Player = function(data) {
     this.id = data.id;
-    this.collided = false;
+    this.didCollide = false;
     this.colorTimer = 1;
 
-    Geometry.call(this, {
+    Gaia.Geometry.call(this, {
       position: data.position,
       color: '#fff',
       radius: data.radius
@@ -19,14 +19,18 @@ var Player = Player || (function(utils) {
     this.frequency = 0.05;
   };
 
-  Player.prototype = Object.create(Geometry.prototype);
+  Player.prototype = Object.create(Gaia.Geometry.prototype);
 
   Player.prototype.update = function() {
     this.pulse();
-    if (this.collided) {
+    this.onCollision();
+  };
+
+  Player.prototype.onCollision = function() {
+    if (this.didCollide) {
       this.colorTimer -= 0.05;
       if (this.colorTimer < 0) {
-        this.collided = false;
+        this.didCollide = false;
         this.colorTimer = 1;
         this.color = '#fff';
       }
@@ -42,7 +46,7 @@ var Player = Player || (function(utils) {
     this.position = position;
   };
 
-  Player.prototype.sendData = function() {
+  Player.prototype.send = function() {
     return {
       id: this.id,
       position: this.position,
@@ -52,4 +56,4 @@ var Player = Player || (function(utils) {
 
   return Player;
 
-})(Utils);
+})(Gaia.Utils);

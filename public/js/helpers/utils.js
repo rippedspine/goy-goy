@@ -1,4 +1,4 @@
-var Utils = Utils || (function() {
+Gaia.Utils = Gaia.Utils || (function() {
   'use strict';
 
   return {

@@ -1,4 +1,4 @@
-var Helpers = Helpers || (function() {
+Gaia.Helpers = Gaia.Helpers || (function() {
   'use strict';
 
   return {

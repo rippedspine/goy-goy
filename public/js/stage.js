@@ -1,4 +1,4 @@
-var Stage = Stage || (function() {
+Gaia.Stage = Gaia.Stage || (function() {
   'use strict';
 
   var Stage = function() {

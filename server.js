@@ -23,10 +23,12 @@ var constants = require('./server-constants.js')
   , MSG_UPDATE_PLAYER = 5
   , MSG_DEAD_OBSTACLE = 6
   , MSG_UPDATE_OBSTACLES = 7
+  , MSG_COLLIDED = 8
 
   , myPlayer = null
   , playerCollection = new player.Collection()
-  , triangleCollection = new triangle.Collection();
+  , triangleCollection = new triangle.Collection()
+  , collidedWithTriangle = null;
 
 triangleCollection.spawn();
 
@@ -38,6 +40,7 @@ io.on('connection', function(socket) {
   }
 
   myPlayer = new player.Player(socket.id);
+  collidedWithTriangle = playerCollection.makeCollisionDetector(triangleCollection.get());
 
   socket.emit(MSG_CONNECT, {
     triangles: triangleCollection.get(),
@@ -51,8 +54,17 @@ io.on('connection', function(socket) {
   });
 
   socket.on(MSG_UPDATE_PLAYER, function(data) {
-    playerCollection.set(data);
-    socket.broadcast.emit(MSG_UPDATE_PLAYER, playerCollection.get(data.id));
+    playerCollection.set(data.player);
+    socket.broadcast.emit(MSG_UPDATE_PLAYER, playerCollection.get(data.player.id));
+
+    var collision = collidedWithTriangle(data.player.id);
+
+    if (collision) {
+      socket.emit(MSG_COLLIDED, collision);
+      triangleCollection.set(data.triangles);
+      triangleCollection.remove(collision.obstacle);
+      socket.emit(MSG_UPDATE_OBSTACLES, triangleCollection.get());
+    }
   });
 
   socket.on(MSG_DEAD_OBSTACLE, function(data) {

@@ -1,4 +1,4 @@
-var Geometry = Geometry || (function(utils) {
+Gaia.Geometry = Gaia.Geometry || (function(utils) {
   'use strict';
 
   var Geometry = function(options) {
@@ -57,4 +57,4 @@ var Geometry = Geometry || (function(utils) {
 
   return Geometry;
 
-})(Utils);
+})(Gaia.Utils);

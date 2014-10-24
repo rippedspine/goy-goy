@@ -1,10 +1,9 @@
-var game = new Game(
-  Helpers, 
-  Makers,
-  io(), 
-  new Stage(), 
-  new PlayerCollection(), 
-  new TriangleCollection()
+var game = new Gaia.Game(
+  Gaia.Helpers, 
+  io(),
+  new Gaia.Stage(), 
+  new Gaia.PlayerCollection(), 
+  new Gaia.TriangleCollection()
 );
 
 game.start();

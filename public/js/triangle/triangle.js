@@ -1,13 +1,12 @@
-var Triangle = Triangle || (function() {
+Gaia.Triangle = Gaia.Triangle || (function() {
   'use strict';
 
   var Triangle = function(serverData) {
-    this.isActive = false;
-    this.isDead = false;
+    this.didCollide = false;
     this.fillTimer = 1;
     this.frequency = 0.02;
     
-    Geometry.call(this, {
+    Gaia.Geometry.call(this, {
       radius: serverData.radius,
       color: serverData.color,
       position: serverData.position,
@@ -17,7 +16,7 @@ var Triangle = Triangle || (function() {
     this.vertices = serverData.vertices;
   };
 
-  Triangle.prototype = Object.create(Geometry.prototype);
+  Triangle.prototype = Object.create(Gaia.Geometry.prototype);
 
   Triangle.prototype.update = function() {
     this.rotate();
@@ -32,7 +31,7 @@ var Triangle = Triangle || (function() {
   };
 
   Triangle.prototype.onCollision = function() {
-    if (this.isActive) {
+    if (this.didCollide) {
       this.isFilled = true;
       this.fillTimer -= 0.05;
 
@@ -45,7 +44,6 @@ var Triangle = Triangle || (function() {
 
       if (this.alpha < 0) {
         this.alpha = 0;
-        this.isDead = true;
       }
     }    
   };
