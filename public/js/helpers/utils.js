@@ -5,6 +5,9 @@ Gaia.Utils = Gaia.Utils || (function() {
     rand: function() {
       return Math.random() - 0.5;
     },
+    getRandomInt: function(range) {
+      return Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]);
+    },
     distance: function(v1, v2) {
       var dx = v2[0] - v1[0]
         , dy = v2[1] - v1[1];

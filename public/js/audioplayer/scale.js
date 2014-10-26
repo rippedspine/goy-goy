@@ -2,7 +2,7 @@ Gaia.PentatonicScale = Gaia.PentatonicScale || (function() {
 	'use strict'
 
 	function PentatonicScale(tuning) {
-		this.degrees = [0, 1, 2, 3, 4, 5, 6];
+		this.degrees = [1, 3, 5, 6, 8];
     Scale.call(this, this.degrees, tuning);
 	}
 
