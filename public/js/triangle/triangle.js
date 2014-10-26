@@ -6,6 +6,8 @@ Gaia.Triangle = Gaia.Triangle || (function() {
     this.fillTimer = 1;
     this.frequency = 0.02;
     
+    this.soundID = serverData.soundID;
+
     Gaia.Geometry.call(this, {
       radius: serverData.radius,
       color: serverData.color,

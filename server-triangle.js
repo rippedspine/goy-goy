@@ -9,6 +9,7 @@ var Triangle = function(id, position) {
   this.id = id;
   this.position = position;
   this.rotation = 0;
+  this.soundID = utils.getRandomInt([0, 6]);
   this.color = utils.getRandomColor();
   this.radius = utils.getRandomInt(radiusRange);
   this.vertices = utils.getVertices(3, this.radius);
