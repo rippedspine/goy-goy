@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  var Model = require('./triangle/triangle-model.js')
-    , Collection = require('./triangle/triangle-collection.js');
+  var Model = require('./triangle-model.js')
+    , Collection = require('./triangle-collection.js');
 
   var Triangle = {};
   Triangle.Model = Model;

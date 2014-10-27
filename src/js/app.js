@@ -1,8 +1,8 @@
 (function() {
   var io = require('socket.io-client')
     , Stage = require('./stage.js')
-    , Player = require('./client-player.js')
-    , Triangle = require('./client-triangle.js')
+    , Player = require('./player/player.js')
+    , Triangle = require('./triangle/triangle.js')
     , Game = require('./client-game.js')
     , AudioPlayer = require('./audioplayer/audioplayer.js')
     , Tones = require('./audioPlayer/tones.js');
