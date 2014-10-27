@@ -1,5 +1,7 @@
-Gaia.AudioPlayer = Gaia.AudioPlayer || (function(u) {
-  'use strict'
+(function() {
+  'use strict';
+
+  var Synth = require('./synth.js');
 
   var AudioPlayer = function(audiolet, tones) {
     this.audiolet = audiolet;
@@ -8,11 +10,10 @@ Gaia.AudioPlayer = Gaia.AudioPlayer || (function(u) {
   };
 
   AudioPlayer.prototype.play = function(id) {
-    console.log(id);
-    this.synth = new Gaia.Synth(this.audiolet);
+    this.synth = new Synth(this.audiolet);
     this.synth.play('sine', 0.05, this.frequencies[id]);
   };
 
-  return AudioPlayer;
+  module.exports = AudioPlayer;
 
-})(Gaia.Utils);
+})(this);

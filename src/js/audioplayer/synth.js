@@ -1,5 +1,5 @@
-Gaia.Synth = Gaia.Synth || (function() {
-  'use strict'
+(function() {
+  'use strict';
 
   function Synth(audiolet, frequencies) {
     this.audiolet = audiolet;
@@ -56,5 +56,6 @@ Gaia.Synth = Gaia.Synth || (function() {
     }, 1000);
   };
 
-  return Synth;
-})();
+  module.exports = Synth;
+
+})(this);

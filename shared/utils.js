@@ -26,6 +26,13 @@
         color.luma
       ].join(',') + ')';
     },
+    getPosition: function(canvas, event) {
+      var rect = canvas.getBoundingClientRect()
+        , x = event.clientX - rect.left
+        , y = event.clientY - rect.top;
+
+      return [x, y];
+    },
     getVertices: function(points, radius) {
       var vertices = [];
       for (var i = 0; i < points; i++) {

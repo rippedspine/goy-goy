@@ -4,9 +4,11 @@ var express = require('express')
   , io = require('socket.io')(http)
   , port = process.env.PORT || 3000;
 
-app.use(express.static(__dirname + '/src'));
+var dev = true;
+var dir = dev ? '/.tmp' : '/public';
+
+app.use(express.static(__dirname + dir));
 app.use('/bower',  express.static(__dirname + '/bower'));
-app.use('/common',  express.static(__dirname + '/common'));
 
 http.listen(port, function() {
   console.log('\n\n:::::::::: listening on localhost:' + port + ' ::::::::::\n');

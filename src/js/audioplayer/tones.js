@@ -1,9 +1,12 @@
-Gaia.Tones = Gaia.Tones || (function() {
+(function() {
 	'use strict'
 
+	var PythagoreanTuning = require('./pythagorean-tuning.js')
+		, PentatonicScale = require('./pentagonic-scale.js')
+
 	function Tones() {
-		this.tuning = new Gaia.PythagoreanTuning();
-		this.scale = new Gaia.PentatonicScale(this.tuning);
+		this.tuning = new PythagoreanTuning();
+		this.scale = new PentatonicScale(this.tuning);
 
 		this.baseFrequency = 440;
 		this.octave = 0;
@@ -17,10 +20,9 @@ Gaia.Tones = Gaia.Tones || (function() {
 			frequencies.push(this.scale.getFrequency(degrees[i], this.baseFrequency, this.octave)); 
 		};
 
-		console.log(frequencies);
-
 		return frequencies;
 	}
 
-	return Tones;
-})();
+	module.exports = Tones;
+
+})(this);
