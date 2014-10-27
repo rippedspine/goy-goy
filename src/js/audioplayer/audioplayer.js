@@ -9,9 +9,9 @@
     this.synth = null;
   };
 
-  AudioPlayer.prototype.play = function(id, decay) {
+  AudioPlayer.prototype.play = function(id, decay, waveform) {
     this.synth = new Synth(this.audiolet);
-    this.synth.play('sine', decay, this.frequencies[id]);
+    this.synth.play(waveform, decay, this.frequencies[id]);
 
     console.log('id', id);
   };

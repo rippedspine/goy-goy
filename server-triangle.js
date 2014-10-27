@@ -21,6 +21,7 @@
     this.radius = utils.getRandomInt(radiusRange);
     this.vertices = utils.getVertices(3, this.radius);
     this.decay = 0.02 + (0.07 * decayRange.indexOf(this.radius));
+    this.waveform = 'saw';
   };
 
   Triangle.prototype.set = function(data) {

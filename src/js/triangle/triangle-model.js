@@ -10,6 +10,7 @@
     
     this.soundID = serverData.soundID;
     this.decay = serverData.decay;
+    this.waveform = serverData.waveform;
 
     Geometry.call(this, {
       radius: serverData.radius,
