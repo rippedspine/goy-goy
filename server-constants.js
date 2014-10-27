@@ -1,11 +1,11 @@
 module.exports = {
-  area: [800, 400],
+  area: [1000, 600],
   radius: {
     player: 30,
     triangle: [7, 15]
   },
   amount: {
-    triangles: 10
+    triangles: 20
   },
   color: {
     range: [0, 360],

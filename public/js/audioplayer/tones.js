@@ -6,7 +6,7 @@ Gaia.Tones = Gaia.Tones || (function() {
 		this.scale = new Gaia.PentatonicScale(this.tuning);
 
 		this.baseFrequency = 440;
-		this.octave = 1;
+		this.octave = 0;
 	}
 
 	Tones.prototype.getFrequencies = function() {
@@ -16,6 +16,8 @@ Gaia.Tones = Gaia.Tones || (function() {
 		for (var i = degrees.length - 1; i >= 0; i--) {
 			frequencies.push(this.scale.getFrequency(degrees[i], this.baseFrequency, this.octave)); 
 		};
+
+		console.log(frequencies);
 
 		return frequencies;
 	}

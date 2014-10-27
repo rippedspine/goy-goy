@@ -14,9 +14,12 @@ module.exports = {
       this.getRandomInt([0, area[1]])
     ];
   },
-  getRandomColor: function() {
+  getRandomRangeInt: function() {
+    return this.getRandomInt(color.range);
+  },
+  getRandomColor: function(rangeint) {
     return 'hsl(' + [
-      this.getRandomInt(color.range), 
+      rangeint, 
       color.saturation, 
       color.luma
     ].join(',') + ')';
