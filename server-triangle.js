@@ -1,9 +1,9 @@
 var _ = require('lodash')
-  , utils = require('./server-utils.js')
-  , constants = require('./server-constants.js')
-  , radiusRange = constants.radius.triangle
-  , area = constants.area
-  , amount = constants.amount.triangles;
+  , utils = require('./shared/utils.js')
+  , config = require('./shared/config.js')
+  , radiusRange = config.radius.triangle
+  , area = config.area
+  , amount = config.amount.triangles;
 
 var Triangle = function(id, position) {
   var rangeint = utils.getRandomRangeInt();

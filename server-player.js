@@ -1,14 +1,14 @@
 var _ = require('lodash')
-  , utils = require('./server-utils.js')
-  , constants = require('./server-constants.js')
-  , radius = constants.radius;
+  , utils = require('./shared/utils.js')
+  , config = require('./shared/config.js')
+  , radius = config.radius;
 
 var Player = function(id) {
   this.id = id;
   this.radius = radius.player;
   this.position = [
-    (constants.area[0] * 0.5) - (this.radius * 0.5),
-    (constants.area[1] * 0.5) - (this.radius * 0.5)
+    (config.area[0] * 0.5) - (this.radius * 0.5),
+    (config.area[1] * 0.5) - (this.radius * 0.5)
   ];
   this.vertices = utils.getVertices(5, this.radius);  
 };
