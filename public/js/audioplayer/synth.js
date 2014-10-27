@@ -14,9 +14,9 @@ Gaia.Synth = Gaia.Synth || (function() {
 
   extend(Synth, AudioletGroup);
 
-  Synth.prototype.getEnvelope = function() {
+  Synth.prototype.getEnvelope = function(decay) {
     return new ADSREnvelope(this.audiolet, 1, 
-      0.01, this.decay, 0, 0,
+      0.01, decay, 0, 0,
       function() {
         this.audiolet.scheduler.addRelative(0, this.remove.bind(this));
       }.bind(this)
@@ -41,10 +41,10 @@ Gaia.Synth = Gaia.Synth || (function() {
 
   Synth.prototype.play = function(waveform, decay, frequency) {
     this.frequency = frequency;
-    this.decay = decay || 0.1;
+    this.decay = decay;// || 0.1;
     this.waveform = this.getWaveform(waveform);
 
-    this.envelope = this.getEnvelope();
+    this.envelope = this.getEnvelope(this.decay);
     this.envelope.connect(this.gain, 0, 1);
     this.waveform.connect(this.gain);
 
@@ -54,6 +54,8 @@ Gaia.Synth = Gaia.Synth || (function() {
     setTimeout(function() {
       that.disconnect(that.audiolet.output);
     }, 1000);
+
+    console.log('decay: ', this.decay);
   };
 
   return Synth;

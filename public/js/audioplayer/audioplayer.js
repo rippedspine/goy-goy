@@ -7,10 +7,10 @@ Gaia.AudioPlayer = Gaia.AudioPlayer || (function(u) {
     this.synth = null;
   };
 
-  AudioPlayer.prototype.play = function(id) {
+  AudioPlayer.prototype.play = function(id, decay) {
     console.log(id);
     this.synth = new Gaia.Synth(this.audiolet);
-    this.synth.play('sine', 0.05, this.frequencies[id]);
+    this.synth.play('sine', decay, this.frequencies[id]);
   };
 
   return AudioPlayer;

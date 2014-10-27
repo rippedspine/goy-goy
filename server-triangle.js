@@ -11,10 +11,11 @@ var Triangle = function(id, position) {
   this.id = id;
   this.position = position;
   this.rotation = 0;
-  this.soundID = utils.getRandomInt([0, 4]);
+  this.soundID = utils.getRandomInt([0, 9]);
   this.color = utils.getRandomColor(rangeint);
   this.radius = utils.getRandomInt(radiusRange);
   this.vertices = utils.getVertices(3, this.radius);
+  this.decay = 0.05;//utils.clamp(this.radius, 0, 0.05);
 };
 
 Triangle.prototype.set = function(data) {
