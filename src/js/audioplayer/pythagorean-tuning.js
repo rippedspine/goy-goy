@@ -1,4 +1,4 @@
-Gaia.PythagoreanTuning = Gaia.PythagoreanTuning || (function() {
+(function() {
 	'use strict'
 
 	function PythagoreanTuning() {
@@ -12,6 +12,6 @@ Gaia.PythagoreanTuning = Gaia.PythagoreanTuning || (function() {
 
 	extend(PythagoreanTuning, Tuning);
 
-	return PythagoreanTuning;
+	module.exports = PythagoreanTuning;
 
-})();
+})(this);

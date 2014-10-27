@@ -1,5 +1,7 @@
-Gaia.Geometry = Gaia.Geometry || (function(utils) {
+(function() {
   'use strict';
+
+  var utils = require('../../shared/utils.js');
 
   var Geometry = function(options) {
     this.radius = options.radius || 0;
@@ -55,6 +57,6 @@ Gaia.Geometry = Gaia.Geometry || (function(utils) {
     this.context.arc(0, 0, this.radius, 0, 2 * Math.PI, false);
   };
 
-  return Geometry;
+  module.exports = Geometry;
 
-})(Gaia.Utils);
+})(this);

@@ -1,4 +1,4 @@
-Gaia.Stage = Gaia.Stage || (function() {
+(function() {
   'use strict';
 
   var Stage = function() {
@@ -33,6 +33,6 @@ Gaia.Stage = Gaia.Stage || (function() {
     this.height = this.canvas.height = area[1];  
   };
 
-  return Stage;
-  
-})();
+  module.exports = Stage;
+
+})(this)

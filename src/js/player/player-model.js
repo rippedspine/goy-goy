@@ -1,12 +1,15 @@
-Gaia.Player = Gaia.Player || (function(utils) {
+(function() {
   'use strict';
 
-  var Player = function(data) {
+  var utils = require('../../../shared/utils.js')
+    , Geometry = require('../geometry.js');
+
+  var Model = function(data) {
     this.id = data.id;
     this.didCollide = false;
     this.colorTimer = 1;
 
-    Gaia.Geometry.call(this, {
+    Geometry.call(this, {
       position: data.position,
       color: '#fff',
       radius: data.radius
@@ -19,14 +22,14 @@ Gaia.Player = Gaia.Player || (function(utils) {
     this.frequency = 0.05;
   };
 
-  Player.prototype = Object.create(Gaia.Geometry.prototype);
+  Model.prototype = Object.create(Geometry.prototype);
 
-  Player.prototype.update = function() {
+  Model.prototype.update = function() {
     this.pulse();
     this.onCollision();
   };
 
-  Player.prototype.onCollision = function() {
+  Model.prototype.onCollision = function() {
     if (this.didCollide) {
       this.colorTimer -= 0.05;
       if (this.colorTimer < 0) {
@@ -37,16 +40,16 @@ Gaia.Player = Gaia.Player || (function(utils) {
     }
   };
 
-  Player.prototype.pulse = function() {
+  Model.prototype.pulse = function() {
     this.strokeWidth = 3 + Math.sin(this.angle) * 2;
     this.angle += this.frequency;
   };
 
-  Player.prototype.move = function(position) {
+  Model.prototype.move = function(position) {
     this.position = position;
   };
 
-  Player.prototype.send = function() {
+  Model.prototype.send = function() {
     return {
       id: this.id,
       position: this.position,
@@ -54,6 +57,5 @@ Gaia.Player = Gaia.Player || (function(utils) {
     };
   };
 
-  return Player;
-
-})(Gaia.Utils);
+  module.exports = Model;
+})(this);

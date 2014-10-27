@@ -1,14 +1,17 @@
-Gaia.Triangle = Gaia.Triangle || (function() {
+(function() {
   'use strict';
 
-  var Triangle = function(serverData) {
+  var Geometry = require('../geometry.js');
+
+  var Model = function(serverData) {
     this.didCollide = false;
     this.fillTimer = 1;
     this.frequency = 0.02;
     
     this.soundID = serverData.soundID;
+    this.decay = serverData.decay;
 
-    Gaia.Geometry.call(this, {
+    Geometry.call(this, {
       radius: serverData.radius,
       color: serverData.color,
       position: serverData.position,
@@ -18,21 +21,21 @@ Gaia.Triangle = Gaia.Triangle || (function() {
     this.vertices = serverData.vertices;
   };
 
-  Triangle.prototype = Object.create(Gaia.Geometry.prototype);
+  Model.prototype = Object.create(Geometry.prototype);
 
-  Triangle.prototype.update = function() {
+  Model.prototype.update = function() {
     this.rotate();
     this.onCollision();
   };
 
-  Triangle.prototype.rotate = function() {
+  Model.prototype.rotate = function() {
     this.rotation += this.frequency;
     if (this.rotation > 360) {
       this.rotation = 0;
     }
   };
 
-  Triangle.prototype.onCollision = function() {
+  Model.prototype.onCollision = function() {
     if (this.didCollide) {
       this.isFilled = true;
       this.fillTimer -= 0.05;
@@ -50,6 +53,6 @@ Gaia.Triangle = Gaia.Triangle || (function() {
     }    
   };
 
-  return Triangle;
+  module.exports = Model;
 
-})();
+})(this);
