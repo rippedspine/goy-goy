@@ -12,6 +12,8 @@
   AudioPlayer.prototype.play = function(id, decay) {
     this.synth = new Synth(this.audiolet);
     this.synth.play('sine', decay, this.frequencies[id]);
+
+    console.log('id', id);
   };
 
   module.exports = AudioPlayer;

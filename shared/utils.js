@@ -43,9 +43,6 @@
       }
       return vertices;
     },
-    clamp: function(value, min, max) {
-      return Math.max(min, Math.min(max, value));
-    },
     distance: function(v1, v2) {
       var dx = v2[0] - v1[0]
         , dy = v2[1] - v1[1];

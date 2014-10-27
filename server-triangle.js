@@ -9,16 +9,18 @@
     , amount = config.amount.triangles;
 
   var Triangle = function(id, position) {
-    var rangeint = utils.getRandomRangeInt();
+    var rangeInt = utils.getRandomRangeInt();
+    rangeInt = 0 ? 1 : rangeInt;
+    var decayRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
     this.id = id;
     this.position = position;
     this.rotation = 0;
-    this.soundID = utils.getRandomInt([0, 4]);
-    this.color = utils.getRandomColor(rangeint);
+    this.soundID = Math.floor(rangeInt/36);//utils.getRandomInt([0, 4]);
+    this.color = utils.getRandomColor(rangeInt);
     this.radius = utils.getRandomInt(radiusRange);
     this.vertices = utils.getVertices(3, this.radius);
-    this.decay = utils.clamp(this.radius, 0.05, 0.9);
+    this.decay = 0.02 + (0.07 * decayRange.indexOf(this.radius));
   };
 
   Triangle.prototype.set = function(data) {
