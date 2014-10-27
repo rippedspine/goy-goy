@@ -6,10 +6,10 @@
   var Model = function(serverData) {
     this.didCollide = false;
     this.fillTimer = 1;
-    this.frequency = 0.02;
+    this.pulseFrequency = 0.02;
     
     this.soundID = serverData.soundID;
-    this.decay = serverData.decay;
+    this.soundDecay = serverData.soundDecay;
     this.waveform = serverData.waveform;
 
     Geometry.call(this, {
@@ -30,7 +30,7 @@
   };
 
   Model.prototype.rotate = function() {
-    this.rotation += this.frequency;
+    this.rotation += this.pulseFrequency;
     if (this.rotation > 360) {
       this.rotation = 0;
     }
@@ -45,8 +45,8 @@
         this.isFilled = false;
       }
 
-      this.scale += this.frequency;
-      this.alpha -= this.frequency;
+      this.scale += this.pulseFrequency;
+      this.alpha -= this.pulseFrequency;
 
       if (this.alpha < 0) {
         this.alpha = 0;

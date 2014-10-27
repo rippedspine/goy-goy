@@ -17,9 +17,8 @@
     
     this.vertices = data.vertices;
 
-    // pulse
-    this.angle = 0;
-    this.frequency = 0.05;
+    this.pulseAngle = 0;
+    this.pulseFrequency = 0.05;
   };
 
   Model.prototype = Object.create(Geometry.prototype);
@@ -41,8 +40,8 @@
   };
 
   Model.prototype.pulse = function() {
-    this.strokeWidth = 3 + Math.sin(this.angle) * 2;
-    this.angle += this.frequency;
+    this.strokeWidth = 3 + Math.sin(this.pulseAngle) * 2;
+    this.pulseAngle += this.pulseFrequency;
   };
 
   Model.prototype.move = function(position) {

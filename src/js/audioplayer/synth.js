@@ -15,9 +15,9 @@
 
   extend(Synth, AudioletGroup);
 
-  Synth.prototype.getEnvelope = function(decay) {
+  Synth.prototype.getEnvelope = function(soundDecay) {
     return new ADSREnvelope(this.audiolet, 1, 
-      0.01, decay, 0, 0,
+      0.01, soundDecay, 0, 0,
       function() {
         this.audiolet.scheduler.addRelative(0, this.remove.bind(this));
       }.bind(this)
@@ -40,12 +40,12 @@
     }
   };
 
-  Synth.prototype.play = function(waveform, decay, frequency) {
+  Synth.prototype.play = function(waveform, soundDecay, frequency) {
     this.frequency = frequency;
-    this.decay = decay;// || 0.1;
+    this.soundDecay = soundDecay || 0.1;
     this.waveform = this.getWaveform(waveform);
 
-    this.envelope = this.getEnvelope(this.decay);
+    this.envelope = this.getEnvelope(this.soundDecay);
     this.envelope.connect(this.gain, 0, 1);
 
     this.waveform.connect(this.filter);
@@ -57,8 +57,6 @@
     setTimeout(function() {
       that.disconnect(that.audiolet.output);
     }, 1000);
-
-    console.log('decay: ', this.decay);
   };
 
   module.exports = Synth;

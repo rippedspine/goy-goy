@@ -9,18 +9,18 @@
     , amount = config.amount.triangles;
 
   var Triangle = function(id, position) {
-    var rangeInt = utils.getRandomRangeInt();
-    rangeInt = 0 ? 1 : rangeInt;
-    var decayRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    var colorRangeInt = utils.getRandomRangeInt();
+    colorRangeInt = 0 ? 1 : colorRangeInt;
+    var soundDecayRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
     this.id = id;
     this.position = position;
     this.rotation = 0;
-    this.soundID = Math.floor(rangeInt/36);//utils.getRandomInt([0, 4]);
-    this.color = utils.getRandomColor(rangeInt);
+    this.soundID = Math.floor(colorRangeInt/36);//utils.getRandomInt([0, 4]);
+    this.color = utils.getRandomColor(colorRangeInt);
     this.radius = utils.getRandomInt(radiusRange);
     this.vertices = utils.getVertices(3, this.radius);
-    this.decay = 0.02 + (0.07 * decayRange.indexOf(this.radius));
+    this.soundDecay = 0.02 + (0.07 * soundDecayRange.indexOf(this.radius));
     this.waveform = 'saw';
   };
 

@@ -77,7 +77,7 @@
     if (data.obstacle.charAt(0) === 't') {
       this.triangles.setCollision(data.obstacle);
       var obstacle = this.triangles.get(data.obstacle);
-      this.players.audioplayer.play(obstacle.soundID, obstacle.decay, obstacle.waveform);
+      this.players.audioplayer.play(obstacle.soundID, obstacle.soundDecay, obstacle.waveform);
     }
   };
 
