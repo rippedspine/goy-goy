@@ -4,15 +4,14 @@
     , Player = require('./player/player.js')
     , Triangle = require('./triangle/triangle.js')
     , Game = require('./client-game.js')
-    , AudioPlayer = require('./audioplayer/audioplayer.js')
-    , Tones = require('./audioPlayer/tones.js');
+    , AudioPlayer = require('./audioplayer/audioplayer.js');
 
   var game = new Game(
     io(),
     new Stage(), 
     new Player.Collection({
       model: Player.Model,
-      audioplayer: new AudioPlayer(new Audiolet(), new Tones())
+      audioplayer: new AudioPlayer(new Audiolet())
     }), 
     new Triangle.Collection({model: Triangle.Model})
   );
