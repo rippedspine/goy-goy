@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  var Model = require('./player/player-model.js')
-    , Collection = require('./player/player-collection.js');
+  var Model = require('./player-model.js')
+    , Collection = require('./player-collection.js');
 
   var Player = {};
   Player.Model = Model;
