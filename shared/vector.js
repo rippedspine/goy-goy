@@ -32,9 +32,9 @@
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	};
 
-	Vector.prototype.adda = function(v2) {
+	Vector.prototype.add = function(v2) {
 		return new Vector(this.x + v2.getX(), this.y + v2.getY());
-	}
+	};
 
 	Vector.prototype.subtract = function(v2) {
 		return new Vector(this.x - v2.getX(), this.y - v2.getY());
@@ -66,6 +66,27 @@
 		this.x /= val;
 		this.y /= val;
 	};
+
+	Vector.prototype.magnitude = function() {
+		return Math.sqrt(this.x * this.x + this.y * this.y);
+	};
+
+	Vector.prototype.normalize = function() {
+		var m = this.magnitude();
+		if(m !== 0) {
+			this.DivideBy(m);
+		}
+	};
+
+	Vector.prototype.limit = function(max) {
+		var m = this.magnitude();
+
+		if(m > max) {
+			this.normalize();
+			this.multiplyBy(max);
+		}
+	}
+
 
 	module.exports = Vector;
 })(this);

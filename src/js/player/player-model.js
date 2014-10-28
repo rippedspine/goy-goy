@@ -30,12 +30,29 @@
     });
     this.shape.vertices = this.vertices;
 
-    this.topSpeed = 4;
+    this.mousePos = new Vector(0, 0);
+    this.velocity = new Vector(0, 0);
+    this.location = new Vector(0, 0);
   };
 
   ClientPlayerModel.prototype.update = function() {
     this.pulse();
     this.onCollision();
+
+    this.direction = this.mousePos.subtract(this.location);
+    this.direction.normalize();
+    this.direction.multiplyBy(0.5);
+
+    this.acceleration = this.direction;
+    this.velocity.addTo(this.acceleration);
+    this.velocity.limit(10);
+    this.location.addTo(this.velocity);
+
+    this.position[0] = this.location.x;
+    this.position[1] = this.location.y;
+    this.shape.position = this.position;
+
+    
   };
 
   ClientPlayerModel.prototype.draw = function(context) {
@@ -59,8 +76,11 @@
   };
 
   ClientPlayerModel.prototype.move = function(position) {
-    this.position = position;
-    this.shape.position = this.position;
+    this.mousePos.x = position[0];
+    this.mousePos.y = position[1];
+
+    // this.position = position;
+    // this.shape.position = this.position;
   };
 
   module.exports = ClientPlayerModel;
