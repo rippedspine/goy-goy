@@ -4,7 +4,8 @@
   var utils = require('../../../shared/utils.js')
     , inherits = require('../../../shared/helpers.js').inherits
     , SharedPlayerModel = require('../../../shared/player/shared-player-model.js')
-    , Geometry = require('../geometry.js');
+    , Geometry = require('../geometry.js')
+    , Vector = require('../../../shared/vector.js');
 
   var ClientPlayerModel = function() {
     SharedPlayerModel.call(this);
