@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var config = require('../../shared/config.js');
+
   var Stage = function() {
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
@@ -12,6 +14,7 @@
     };
     
     this.canvas.style.background = '#222';
+    this.setSize(config.area);
     document.body.appendChild(this.canvas);
   };
 

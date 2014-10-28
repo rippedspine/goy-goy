@@ -17,25 +17,10 @@ http.listen(port, function() {
 var config = require('./shared/config.js')
   , utils = require('./shared/utils.js')
   , Player = require('./server/server-player.js')
-  , Triangle = require('./server/server-triangle.js')
   , msgs = require('./shared/messages.js')
 
   , myPlayer = null
-  , players = new Player.Collection({model: Player.Model})
-  , triangles = new Triangle.Collection({model: Triangle.Model});
-
-var detectCollision = function(player, obstacles) {
-  for (var id in obstacles) {
-    if (utils.circleCollision(player, obstacles[id])) {
-      return {
-        playerID: player.id,
-        obstacle: obstacles[id].send()
-      };
-    }
-  }
-};
-
-triangles.spawn();
+  , players = new Player.Collection({model: Player.Model});
 
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
@@ -47,11 +32,7 @@ io.on('connection', function(socket) {
   myPlayer = new Player.Model();
   myPlayer.setup(socket.id);
 
-  socket.emit(msgs.socket.connect, {
-    triangles: triangles.get(),
-    player: myPlayer,
-    area: config.area
-  });
+  socket.emit(msgs.socket.connect, {player: myPlayer});
 
   socket.on(msgs.socket.newPlayer, function(data) {
     players.add(data);
@@ -61,20 +42,6 @@ io.on('connection', function(socket) {
   socket.on(msgs.socket.updatePlayer, function(data) {
     players.set(data.player);
     socket.broadcast.emit(msgs.socket.updatePlayer, players.send(data.player.id));
-
-    var collisionData = detectCollision(players.get(data.player.id), triangles.get());
-
-    if (collisionData) {
-      socket.emit(msgs.socket.collision, collisionData);
-      socket.broadcast.emit(msgs.socket.collision, collisionData);
-    }
-  });
-
-  socket.on(msgs.socket.deadObstacle, function(data) {
-    triangles.set(data.triangles);
-    triangles.remove(data.deadID);
-    socket.emit(msgs.socket.updateObstacles, triangles.get());
-    socket.broadcast.emit(msgs.socket.updateObstacles, triangles.get());
   });
 
   socket.on('disconnect', function() {

@@ -8,10 +8,7 @@
       newPlayer: 3,
       sendPlayers: 4,
       getPlayers: 4,
-      updatePlayer: 5,
-      deadObstacle: 6,
-      updateObstacles: 7,
-      collision: 8
+      updatePlayer: 5
     },
 
     logger: {
