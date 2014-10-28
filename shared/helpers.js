@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  var utils = require('./utils.js');
+  var utils = require('./utils.js')
+    , config = require('./config.js');
 
   module.exports = {
     
@@ -24,9 +25,24 @@
       return vertices;
     },
 
+    getDecay: function(min, max, radius) {
+      return min + (max * config.sound.decayRange.indexOf(radius));
+    },
+
     inherits: function(child, parent) {
       child.prototype = Object.create(parent.prototype);
-    } 
+    },
+
+    detectCollision: function(player, obstacles) {
+      for (var id in obstacles) {
+        if (utils.circleCollision(player, obstacles[id])) {
+          return {
+            playerID: player.id,
+            obstacle: obstacles[id].send()
+          };
+        }
+      }
+    }
   };
 
 })(this);

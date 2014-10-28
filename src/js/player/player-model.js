@@ -13,7 +13,6 @@
     this.didCollide = false;
     this.colorTimer = 1;
 
-    // pulse
     this.pulseAngle = 0;
     this.pulseFrequency = 0.05;
   };

@@ -11,7 +11,6 @@
   var TriangleModel = function(id, position) {
     var colorRangeInt = utils.getRandomRangeInt();
     colorRangeInt = 0 ? 1 : colorRangeInt;
-    var soundDecayRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
     this.id = id;
 
@@ -21,10 +20,11 @@
     this.radius = utils.getRandomInt(triangleRadiusRange);
     this.vertices = helpers.getVertices(3, this.radius);
 
-    // sound
-    this.soundID = Math.floor(colorRangeInt/36);
-    this.soundDecay = 0.02 + (0.07 * soundDecayRange.indexOf(this.radius));
-    this.waveform = 'noise';
+    this.sound = {
+      id: Math.floor(colorRangeInt/36),
+      decay: helpers.getDecay(0.02, 0.07, this.radius),
+      waveform: 'noise'
+    };
   };
 
   TriangleModel.prototype.set = function(data) {
@@ -37,11 +37,7 @@
       type: 'triangle',
       rotation: this.rotation,
       color: this.color,
-      sound: {
-        id: this.soundID,
-        waveform: this.waveform,
-        decay: this.soundDecay
-      }
+      sound: this.sound
     };
   };
 

@@ -19,19 +19,26 @@
 
   Game.prototype.loop = function() {
     requestAnimationFrame(this.loop.bind(this));
-    if (this.player !== null) {
-      this.stage.render();
-      this.update();
-    }
+    this.stage.render();
+    this.update();
   };
 
   Game.prototype.update = function() {
     this.players.update();
     this.triangles.update();
+    this.triangles.getDead();
   };
 
   Game.prototype.handleDOMEvents = function() {
     this.stage.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+    document.addEventListener('deadObstacle', this.onDeadObstacle.bind(this));
+  };
+
+  Game.prototype.onDeadObstacle = function(event) {
+    this.socket.emit(msgs.socket.deadObstacle, {
+      triangles: this.triangles.sendRotations(),
+      deadID: event.detail.id
+    });
   };
 
   Game.prototype.handleMouseMove = function(event) {
