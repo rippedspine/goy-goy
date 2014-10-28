@@ -4,11 +4,12 @@
   var msgs = require('../../shared/messages.js')
     , helpers = require('../../shared/helpers.js');
 
-  var Game = function(socket, stage, players, triangles) {
+  var Game = function(socket, stage, players, triangles, audioplayer) {
     this.socket = socket;
     this.stage = stage;
     this.players = players;
     this.triangles = triangles;
+    this.audioplayer = audioplayer;
 
     this.player = null;
   };
@@ -82,9 +83,10 @@
 
   Game.prototype.onCollision = function(data) {
     this.players.setCollision(data.playerID, data.obstacle.color);
+
     if (data.obstacle.type === 'triangle') {
       this.triangles.setCollision(data.obstacle.id);
-      this.players.audioplayer.play(data.obstacle.sound);
+      this.audioplayer.play(data.obstacle.sound);
     }
   };
 

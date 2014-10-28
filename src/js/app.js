@@ -10,16 +10,12 @@
     , Game = require('./client-game.js')
     , AudioPlayer = require('./audioplayer/audioplayer.js');
 
-  var players = new PlayerCollection({
-    model: PlayerModel,
-    audioplayer: new AudioPlayer(new Audiolet())
-  });
-
   var game = new Game(
     io(),
     new Stage(), 
-    players, 
-    new TriangleCollection({model: TriangleModel})
+    new PlayerCollection({model: PlayerModel}), 
+    new TriangleCollection({model: TriangleModel}),
+    new AudioPlayer(new Audiolet())
   );
 
   game.start();

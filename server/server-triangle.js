@@ -4,26 +4,25 @@
   var utils = require('../shared/utils.js')
     , helpers = require('../shared/helpers.js')
     , config = require('../shared/config.js')
-    , triangleRadiusRange = config.radius.triangle
+    
     , area = config.area
-    , amount = config.amount.triangles;
+    , triangle = config.obstacles.triangle;
 
   var TriangleModel = function(id, position) {
-    var colorRangeInt = utils.getRandomRangeInt();
-    colorRangeInt = 0 ? 1 : colorRangeInt;
+    var colorInt = utils.getRandomIntFromColorRange();
 
     this.id = id;
 
     this.position = position;
     this.rotation = 0;
-    this.color = utils.getRandomColor(colorRangeInt);
-    this.radius = utils.getRandomInt(triangleRadiusRange);
+    this.color = utils.getColor(colorInt);
+    this.radius = utils.getRandomInt(triangle.radiusRange);
     this.vertices = helpers.getVertices(3, this.radius);
 
     this.sound = {
-      id: Math.floor(colorRangeInt/36),
+      id: Math.floor(colorInt/36),
       decay: helpers.getDecay(0.02, 0.07, this.radius),
-      waveform: 'noise'
+      waveform: triangle.waveform
     };
   };
 
@@ -47,7 +46,7 @@
   };
 
   TriangleCollection.prototype.spawn = function() {
-    for (var id = 0; id < amount; id++) {
+    for (var id = 0; id < triangle.amount; id++) {
       this.collection[id] = new this.model(id, utils.getRandomPosition(area));
     }
   };

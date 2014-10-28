@@ -5,10 +5,19 @@
     area: [1000, 600],
     radius: {
       player: 30,
-      triangle: [7, 16]
     },
-    amount: {
-      triangles: 20
+    obstacles: {
+      line: {
+        waveform: 'noise'
+      },
+      circle: {
+        waveform: 'sine'
+      },
+      triangle: {
+        amount: 20,
+        waveform: 'saw',
+        radiusRange: [7, 16]
+      }
     },
     color: {
       range: [0, 360],
