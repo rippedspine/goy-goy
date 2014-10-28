@@ -51,8 +51,6 @@
     this.position[0] = this.location.x;
     this.position[1] = this.location.y;
     this.shape.position = this.position;
-
-    
   };
 
   ClientPlayerModel.prototype.draw = function(context) {
