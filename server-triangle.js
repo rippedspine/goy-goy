@@ -4,7 +4,7 @@
   var _ = require('lodash')
     , utils = require('./shared/utils.js')
     , config = require('./shared/config.js')
-    , radiusRange = config.radius.triangle
+    , triangleRadiusRange = config.radius.triangle
     , area = config.area
     , amount = config.amount.triangles;
 
@@ -16,12 +16,12 @@
     this.id = id;
     this.position = position;
     this.rotation = 0;
-    this.soundID = Math.floor(colorRangeInt/36);//utils.getRandomInt([0, 4]);
+    this.soundID = Math.floor(colorRangeInt/36);
     this.color = utils.getRandomColor(colorRangeInt);
-    this.radius = utils.getRandomInt(radiusRange);
+    this.radius = utils.getRandomInt(triangleRadiusRange);
     this.vertices = utils.getVertices(3, this.radius);
     this.soundDecay = 0.02 + (0.07 * soundDecayRange.indexOf(this.radius));
-    this.waveform = 'saw';
+    this.waveform = 'noise';
   };
 
   Triangle.prototype.set = function(data) {
@@ -44,9 +44,9 @@
       return this.triangles[id];
     };
 
-    this.remove = function(deadID) {
-      delete this.triangles[deadID];
-      this.resurrect(deadID);
+    this.remove = function(deadTriangleID) {
+      delete this.triangles[deadTriangleID];
+      this.resurrect(deadTriangleID);
     };
 
     this.resurrect = function(id) {
