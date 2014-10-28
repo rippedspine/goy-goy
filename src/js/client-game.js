@@ -2,7 +2,7 @@
   'use strict';
 
   var msgs = require('../../shared/messages.js')
-    , utils = require('../../shared/utils.js');
+    , helpers = require('../../shared/helpers.js');
 
   var Game = function(socket, stage, players, triangles) {
     this.socket = socket;
@@ -14,9 +14,7 @@
   };
 
   Game.prototype.start = function() {
-    this.handleDOMEvents();
     this.handleSocketEvents();
-    this.loop();
   };
 
   Game.prototype.loop = function() {
@@ -37,13 +35,11 @@
   };
 
   Game.prototype.handleMouseMove = function(event) {
-    if (this.player !== null) {
-      this.player.move(utils.getPosition(this.stage.canvas, event));
-      this.socket.emit(msgs.socket.updatePlayer, {
-        player: this.player.send(),
-        triangles: this.triangles.sendRotations()
-      });  
-    }
+    this.player.move(helpers.getPosition(this.stage.canvas, event));
+    this.socket.emit(msgs.socket.updatePlayer, {
+      player: this.player.send(),
+      triangles: this.triangles.sendRotations()
+    });
   };
 
   Game.prototype.handleSocketEvents = function() {
@@ -57,7 +53,9 @@
   };
 
   Game.prototype.onConnect = function(data) {
-    this.player = this.players.add(data.player);
+    this.players.add(data.player);
+    this.player = this.players.get(data.player.id);
+
     this.triangles.set(data.triangles);
 
     this.stage.setSize(data.area);
@@ -65,6 +63,9 @@
     this.stage.setCollection('triangles', this.triangles);
 
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
+
+    this.handleDOMEvents();
+    this.loop();
   };
 
   Game.prototype.onDisonnect = function(id) {
@@ -73,11 +74,10 @@
   };
 
   Game.prototype.onCollision = function(data) {
-    this.players.setCollision(data.player, data.color);
-    if (data.obstacle.charAt(0) === 't') {
-      this.triangles.setCollision(data.obstacle);
-      var obstacle = this.triangles.get(data.obstacle);
-      this.players.audioplayer.play(obstacle.soundID);
+    this.players.setCollision(data.playerID, data.obstacle.color);
+    if (data.obstacle.type === 'triangle') {
+      this.triangles.setCollision(data.obstacle.id);
+      this.players.audioplayer.play(data.obstacle.soundID);
     }
   };
 

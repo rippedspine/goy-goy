@@ -1,57 +1,51 @@
 (function() {
   'use strict';
 
-  var utils = require('../../../shared/utils.js');
+  var utils = require('../../../shared/utils.js')
+    , inherits = require('../../../shared/helpers.js').inherits
+    , BaseCollection = require('../../../shared/base-classes/base-collection.js');
 
-  var Collection = function(options) {
-    this.collection = options.collection || {};
+  var ClientPlayerCollection = function(options) {
+    BaseCollection.call(this, options);
     this.collisions = [];
-    this.model = options.model;
     this.audioplayer = options.audioplayer;
   };
 
-  Collection.prototype.draw = function(context) {
+  inherits(ClientPlayerCollection, BaseCollection);
+
+  ClientPlayerCollection.prototype.draw = function(context) {
     for (var id in this.collection) {
       this.collection[id].draw(context);
     }
   };
 
-  Collection.prototype.update = function() {
+  ClientPlayerCollection.prototype.update = function() {
     for (var id in this.collection) {
       this.collection[id].update();
     }
   };
 
-  Collection.prototype.setCollision = function(id, color) {
+  ClientPlayerCollection.prototype.setCollision = function(id, color) {
     this.collection[id].didCollide = true;
-    this.collection[id].color = color;
+    this.collection[id].shape.color = color;
   };
 
-  Collection.prototype.add = function(data) {
-    return this.collection[data.id] = new this.model(data);
+  ClientPlayerCollection.prototype.add = function(data) {
+    var player = new this.model();
+    player.setup(data);
+    this.collection[data.id] = player;
   };
 
-  Collection.prototype.remove = function(id) {
-    delete this.collection[id];
-  };
-
-  Collection.prototype.updatePlayer = function(data) {
+  ClientPlayerCollection.prototype.updatePlayer = function(data) {
     this.collection[data.id].move(data.position);
   };
 
-  Collection.prototype.get = function(id) {
-    if (typeof id === 'undefined') {
-      return this.collection;
-    }
-    return this.collection[id];
-  };
-
-  Collection.prototype.set = function(players) {
+  ClientPlayerCollection.prototype.set = function(players) {
     for (var id in players) {
-      this.collection[id] = this.model(players[id]);
+      this.add(players[id]);
     }
   };
 
-  module.exports = Collection;
+  module.exports = ClientPlayerCollection;
 
 })(this);

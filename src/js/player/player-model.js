@@ -2,60 +2,63 @@
   'use strict';
 
   var utils = require('../../../shared/utils.js')
+    , inherits = require('../../../shared/helpers.js').inherits
+    , SharedPlayerModel = require('../../../shared/player/shared-player-model.js')
     , Geometry = require('../geometry.js');
 
-  var Model = function(data) {
-    this.id = data.id;
+  var ClientPlayerModel = function() {
+    SharedPlayerModel.call(this);
+    
     this.didCollide = false;
     this.colorTimer = 1;
-
-    Geometry.call(this, {
-      position: data.position,
-      color: '#fff',
-      radius: data.radius
-    });
-    
-    this.vertices = data.vertices;
 
     // pulse
     this.angle = 0;
     this.frequency = 0.05;
   };
 
-  Model.prototype = Object.create(Geometry.prototype);
+  inherits(ClientPlayerModel, SharedPlayerModel);
 
-  Model.prototype.update = function() {
+  ClientPlayerModel.prototype.setup = function(data) {
+    this.set(data);
+    this.shape = new Geometry({
+      position: this.radius,
+      color: '#fff',
+      radius: this.radius
+    });
+    this.shape.vertices = this.vertices;
+  };
+
+  ClientPlayerModel.prototype.update = function() {
     this.pulse();
     this.onCollision();
   };
 
-  Model.prototype.onCollision = function() {
+  ClientPlayerModel.prototype.draw = function(context) {
+    this.shape.draw(context);
+  };
+
+  ClientPlayerModel.prototype.onCollision = function() {
     if (this.didCollide) {
       this.colorTimer -= 0.05;
       if (this.colorTimer < 0) {
         this.didCollide = false;
         this.colorTimer = 1;
-        this.color = '#fff';
+        this.shape.color = '#fff';
       }
     }
   };
 
-  Model.prototype.pulse = function() {
-    this.strokeWidth = 3 + Math.sin(this.angle) * 2;
+  ClientPlayerModel.prototype.pulse = function() {
+    this.shape.strokeWidth = 3 + Math.sin(this.angle) * 2;
     this.angle += this.frequency;
   };
 
-  Model.prototype.move = function(position) {
+  ClientPlayerModel.prototype.move = function(position) {
     this.position = position;
+    this.shape.position = this.position;
   };
 
-  Model.prototype.send = function() {
-    return {
-      id: this.id,
-      position: this.position,
-      vertices: this.vertices,
-    };
-  };
-
-  module.exports = Model;
+  module.exports = ClientPlayerModel;
+  
 })(this);
