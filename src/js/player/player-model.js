@@ -3,9 +3,11 @@
 
   var utils = require('../../../shared/utils.js')
     , inherits = require('../../../shared/helpers.js').inherits
+    , helpers = require('../../../shared/helpers.js')
     , SharedPlayerModel = require('../../../shared/player/shared-player-model.js')
     , Geometry = require('../geometry.js')
-    , Vector = require('../../../shared/vector.js');
+    , Vector = require('../../../shared/vector.js')
+    , Mover = require('../../../shared/mover.js');
 
   var ClientPlayerModel = function() {
     SharedPlayerModel.call(this);
@@ -27,6 +29,8 @@
       radius: this.radius
     });
     this.shape.vertices = this.vertices;
+
+    this.topSpeed = 4;
   };
 
   ClientPlayerModel.prototype.update = function() {

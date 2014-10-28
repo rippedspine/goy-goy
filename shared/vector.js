@@ -1,40 +1,4 @@
-(function() {
-	// 'use strict'
-
-	// var Vector = function(x, y) {
-	// 	this.x = x;
-	// 	this.y = y;
-	// }
-
-	// Vector.prototype.add = function(vector) {
-	// 	this.x += vector.x;
-	// 	this.y += vector.y;
-	// };
-
-	// Vector.prototype.sub = function(vector) {
-	// 	this.x -= vector.x;
-	// 	this.y -= vector.y;
-	// };
-
-	// Vector.prototype.mult = function(n) {
-	// 	this.x *= n;
-	// 	this.y *= n;
-	// };
-
-	// Vector.prototype.div = function(n) {
-	// 	this.x /= n;
-	// 	this.y /= n;
-	// };
-
-	// Vector.prototype.mag = function() {
-	// 	return Math.sqrt(x * x + y * y);
-	// };
-
-	// Vector.prototype.normalize = function() {
-	// 	var m = mag();
-	// 	if(m != 0) div(m);
-	// };	
-
+(function() {	
 	'use strict'
 	
 	function Vector(x, y) {
@@ -68,7 +32,7 @@
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	};
 
-	Vector.prototype.add = function(v2) {
+	Vector.prototype.adda = function(v2) {
 		return new Vector(this.x + v2.getX(), this.y + v2.getY());
 	}
 
