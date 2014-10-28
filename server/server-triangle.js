@@ -28,6 +28,8 @@
 
   TriangleModel.prototype.set = function(data) {
     this.rotation = data.rotation;
+    this.alpha = data.alpha;
+    this.scale = data.scale;
   };
 
   TriangleModel.prototype.send = function() {
@@ -35,6 +37,8 @@
       id: this.id,
       type: 'triangle',
       rotation: this.rotation,
+      alpha: this.alpha,
+      scale: this.scale,
       color: this.color,
       sound: this.sound
     };
@@ -56,6 +60,14 @@
       return this.collection;  
     }
     return this.collection[id];
+  };
+
+  TriangleCollection.prototype.send = function() {
+    var triangles = {};
+    for (var id in this.collection) {
+      triangles[id] = this.collection[id].send();
+    }
+    return triangles;
   };
 
   TriangleCollection.prototype.remove = function(id) {

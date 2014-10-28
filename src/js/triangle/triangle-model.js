@@ -3,9 +3,10 @@
 
   var Geometry = require('../geometry.js');
 
-  var Model = function(serverData) {
+  var TriangleModel = function(serverData) {
+    this.id = serverData.id;
+
     this.didCollide = false;
-    this.isDead = false;
     this.fillTimer = 1;
     this.pulseFrequency = 0.02;
     
@@ -21,23 +22,42 @@
     });
 
     this.vertices = serverData.vertices;
+
+    this.sendDeadEvent = new CustomEvent('deadObstacle', {
+      'detail': {'id': null}
+    });
   };
 
-  Model.prototype = Object.create(Geometry.prototype);
+  TriangleModel.prototype = Object.create(Geometry.prototype);
 
-  Model.prototype.update = function() {
+  TriangleModel.prototype.update = function() {
     this.rotate();
     this.onCollision();
   };
 
-  Model.prototype.rotate = function() {
+  TriangleModel.prototype.rotate = function() {
     this.rotation += this.pulseFrequency;
     if (this.rotation > 360) {
       this.rotation = 0;
     }
   };
 
-  Model.prototype.onCollision = function() {
+  TriangleModel.prototype.send = function() {
+    return {
+      id: this.id,
+      rotation: this.rotation,
+      alpha: this.alpha,
+      scale: this.scale
+    };
+  };
+
+  TriangleModel.prototype.set = function(data) {
+    this.rotation = data.rotation;
+    this.alpha = data.alpha;
+    this.scale = data.scale;
+  };
+
+  TriangleModel.prototype.onCollision = function() {
     if (this.didCollide) {
       this.isFilled = true;
       this.fillTimer -= 0.05;
@@ -51,11 +71,16 @@
 
       if (this.alpha < 0) {
         this.alpha = 0;
-        this.isDead = true;
+        this.imDead();
       }
-    }    
+    }
   };
 
-  module.exports = Model;
+  TriangleModel.prototype.imDead = function() {
+    this.sendDeadEvent.detail.id = this.id;
+    document.dispatchEvent(this.sendDeadEvent);
+  };
+
+  module.exports = TriangleModel;
 
 })(this);
