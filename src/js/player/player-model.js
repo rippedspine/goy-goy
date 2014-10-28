@@ -13,8 +13,8 @@
     this.colorTimer = 1;
 
     // pulse
-    this.angle = 0;
-    this.frequency = 0.05;
+    this.pulseAngle = 0;
+    this.pulseFrequency = 0.05;
   };
 
   inherits(ClientPlayerModel, SharedPlayerModel);
@@ -50,8 +50,8 @@
   };
 
   ClientPlayerModel.prototype.pulse = function() {
-    this.shape.strokeWidth = 3 + Math.sin(this.angle) * 2;
-    this.angle += this.frequency;
+    this.shape.strokeWidth = 3 + Math.sin(this.pulseAngle) * 2;
+    this.pulseAngle += this.pulseFrequency;
   };
 
   ClientPlayerModel.prototype.move = function(position) {

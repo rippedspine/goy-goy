@@ -8,12 +8,11 @@
     , TriangleCollection = require('./triangle/triangle-collection.js')
     , TriangleModel = require('./triangle/triangle-model.js')
     , Game = require('./client-game.js')
-    , AudioPlayer = require('./audioplayer/audioplayer.js')
-    , Tones = require('./audioPlayer/tones.js');
+    , AudioPlayer = require('./audioplayer/audioplayer.js');
 
   var players = new PlayerCollection({
     model: PlayerModel,
-    audioplayer: new AudioPlayer(new Audiolet(), new Tones())
+    audioplayer: new AudioPlayer(new Audiolet())
   });
 
   var game = new Game(

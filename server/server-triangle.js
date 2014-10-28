@@ -4,20 +4,27 @@
   var utils = require('../shared/utils.js')
     , helpers = require('../shared/helpers.js')
     , config = require('../shared/config.js')
-    , radiusRange = config.radius.triangle
+    , triangleRadiusRange = config.radius.triangle
     , area = config.area
     , amount = config.amount.triangles;
 
   var TriangleModel = function(id, position) {
-    var rangeint = utils.getRandomRangeInt();
+    var colorRangeInt = utils.getRandomRangeInt();
+    colorRangeInt = 0 ? 1 : colorRangeInt;
+    var soundDecayRange = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
     this.id = id;
+
     this.position = position;
     this.rotation = 0;
-    this.soundID = utils.getRandomInt([0, 4]);
-    this.color = utils.getRandomColor(rangeint);
-    this.radius = utils.getRandomInt(radiusRange);
+    this.color = utils.getRandomColor(colorRangeInt);
+    this.radius = utils.getRandomInt(triangleRadiusRange);
     this.vertices = helpers.getVertices(3, this.radius);
+
+    // sound
+    this.soundID = Math.floor(colorRangeInt/36);
+    this.soundDecay = 0.02 + (0.07 * soundDecayRange.indexOf(this.radius));
+    this.waveform = 'noise';
   };
 
   TriangleModel.prototype.set = function(data) {
@@ -29,8 +36,12 @@
       id: this.id,
       type: 'triangle',
       rotation: this.rotation,
-      soundID: this.soundID,
-      color: this.color
+      color: this.color,
+      sound: {
+        id: this.soundID,
+        waveform: this.waveform,
+        decay: this.soundDecay
+      }
     };
   };
 

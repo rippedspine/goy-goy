@@ -5,7 +5,7 @@
     area: [1000, 600],
     radius: {
       player: 30,
-      triangle: [7, 15]
+      triangle: [7, 16]
     },
     amount: {
       triangles: 20

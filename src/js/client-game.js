@@ -77,7 +77,7 @@
     this.players.setCollision(data.playerID, data.obstacle.color);
     if (data.obstacle.type === 'triangle') {
       this.triangles.setCollision(data.obstacle.id);
-      this.players.audioplayer.play(data.obstacle.soundID);
+      this.players.audioplayer.play(data.obstacle.sound);
     }
   };
 
