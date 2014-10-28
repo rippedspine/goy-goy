@@ -5,6 +5,7 @@
 
   var Model = function(serverData) {
     this.didCollide = false;
+    this.isDead = false;
     this.fillTimer = 1;
     this.pulseFrequency = 0.02;
     
@@ -50,6 +51,7 @@
 
       if (this.alpha < 0) {
         this.alpha = 0;
+        this.isDead = true;
       }
     }    
   };

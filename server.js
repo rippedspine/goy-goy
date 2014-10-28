@@ -67,19 +67,14 @@ io.on('connection', function(socket) {
     if (collisionData) {
       socket.emit(msgs.socket.collision, collisionData);
       socket.broadcast.emit(msgs.socket.collision, collisionData);
-
-      triangles.set(data.triangles);
-      triangles.remove(collisionData.obstacle.id);
-
-      socket.emit(msgs.socket.updateObstacles, triangles.get());
-      socket.broadcast.emit(msgs.socket.updateObstacles, triangles.get());
     }
   });
 
   socket.on(msgs.socket.deadObstacle, function(data) {
-    triangles.removeDead(data.deadID);
     triangles.set(data.triangles);
+    triangles.remove(data.deadID);
     socket.emit(msgs.socket.updateObstacles, triangles.get());
+    socket.broadcast.emit(msgs.socket.updateObstacles, triangles.get());
   });
 
   socket.on('disconnect', function() {

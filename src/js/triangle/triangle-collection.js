@@ -4,6 +4,10 @@
   var Collection = function(options) {
     this.collection = options.collection || {};
     this.model = options.model;
+
+    this.sendDeadEvent = new CustomEvent('deadObstacle', {
+      'detail': {'id': null}
+    });
   };
 
   Collection.prototype.get = function(id) {
@@ -21,6 +25,15 @@
 
   Collection.prototype.setCollision = function(id) {
     this.collection[id].didCollide = true;
+  };
+
+  Collection.prototype.getDead = function() {
+    for (var id in this.collection) { 
+      if (this.collection[id].isDead) {
+        this.sendDeadEvent.detail.id = id;
+        document.dispatchEvent(this.sendDeadEvent);
+      }
+    }
   };
 
   Collection.prototype.update = function() {
