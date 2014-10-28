@@ -8,7 +8,6 @@
   var ClientPlayerCollection = function(options) {
     BaseCollection.call(this, options);
     this.collisions = [];
-    this.audioplayer = options.audioplayer;
   };
 
   inherits(ClientPlayerCollection, BaseCollection);
