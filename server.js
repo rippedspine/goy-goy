@@ -57,34 +57,29 @@ io.on('connection', function(socket) {
     game.players.set(data.player);
     game.player = game.players.send(data.player.id);
 
+    socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
+
     game.collisions.triangle = new Collision(game.player, game.triangles.get());
     game.collisions.circle = new Collision(game.player, game.circles.get());
 
     for (var type in game.collisions) {
       if (_.size(game.collisions[type]) > 0) {
-        socket.emit(msgs.socket.collision, game.collisions[type]);
-        socket.broadcast.emit(msgs.socket.collision, game.collisions[type]);
+        io.emit(msgs.socket.collision, game.collisions[type]);
       }
     }
-    socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
   });
 
   socket.on(msgs.socket.deadObstacle, function(data) {
-    var resurrected = null;
     if (data.type === 'triangle') {
-      resurrected = game.triangles.resurrect(data.id);
-      socket.emit(msgs.socket.updateTriangles, resurrected);
-      socket.broadcast.emit(msgs.socket.updateTriangles, resurrected);
+      io.emit(msgs.socket.updateTriangles, game.triangles.resurrect(data.id));
     } else if (data.type === 'circle') {
-      resurrected = game.circles.resurrect(data.id);
-      socket.emit(msgs.socket.updateCircles, resurrected);
-      socket.broadcast.emit(msgs.socket.updateCircles, resurrected);
+      io.emit(msgs.socket.updateCircles, game.circles.resurrect(data.id));
     }
   });
 
   socket.on('disconnect', function() {
     msgs.logger.disconnect(socket.id);
-    socket.broadcast.emit(msgs.socket.disconnect, socket.id);
     game.players.remove(socket.id);
+    io.sockets.emit(msgs.socket.disconnect, socket.id);
   });
 }); 

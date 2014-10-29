@@ -64,9 +64,7 @@
 
   Client.Obstacle.Triangle.prototype.rotate = function() {
     this.rotation += this.updateHz;
-    if (this.rotation > 360) {
-      this.rotation = 0;
-    }
+    if (this.rotation > 360) {this.rotation = 0;}
   };
 
   Client.Obstacle.Triangle.prototype.set = function(data) {
