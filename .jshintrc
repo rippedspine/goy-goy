@@ -20,5 +20,17 @@
 	"trailing": true,
 	"smarttabs": true,
 	"laxcomma": true,
-	"globals": {}
+	"globals": {
+		"Audiolet": true,
+		"AudioletGroup": true,
+		"Square": true,
+		"WhiteNoise": true,
+		"Sine": true,
+		"Saw": true,
+		"ADSREnvelope": true,
+		"Gain": true,
+		"Reverb": true,
+		"LowPassFilter": true,
+		"extend": true
+	}
 }

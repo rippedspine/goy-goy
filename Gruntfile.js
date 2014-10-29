@@ -43,6 +43,16 @@ module.exports = function(grunt) {
       browserify: {
         files: ['<%= config.src %>/js/**/*.js', 'shared/**/*.js'],
         tasks: ['browserify:dev']
+      },
+      scripts: {
+        files: [
+          '<%= config.src %>/js/**/*.js',
+          'server/**/*.js',
+          '<%= config.shared %>/**/*.js',
+          '<%= config.main %>',
+          'Gruntfile.js'
+        ],
+        tasks: ['jshint']
       }
     },
 
@@ -98,6 +108,7 @@ module.exports = function(grunt) {
         '<%= config.src %>/js/**/*.js',
         '<%= config.shared %>/**/*.js',
         '<%= config.main %>',
+        'server/**/*.js',
         'Gruntfile.js'
       ]
     },
@@ -162,7 +173,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('dev', [
-    // 'jshint',
+    'jshint',
     'nodeunit',
     'browserify:dev',
     'cssmin:dev',

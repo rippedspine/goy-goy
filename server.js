@@ -70,7 +70,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on(msgs.socket.deadObstacle, function(data) {
-    var resurrected = null
+    var resurrected = null;
     if (data.type === 'triangle') {
       resurrected = game.triangles.resurrect(data.id);
       socket.emit(msgs.socket.updateTriangles, resurrected);

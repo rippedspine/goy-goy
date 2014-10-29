@@ -42,4 +42,4 @@
 
   module.exports = Stage;
 
-})(this)
+})(this);

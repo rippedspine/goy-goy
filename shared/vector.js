@@ -1,10 +1,10 @@
 (function() {	
-	'use strict'
+	'use strict';
 	
 	function Vector(x, y) {
 		this.x = x;
 		this.y = y;
-	};
+	}
 
 	Vector.prototype.getXY = function() {
 		return {
@@ -91,7 +91,7 @@
 			this.normalize();
 			this.multiplyBy(max);
 		}
-	}
+	};
 
 	module.exports = Vector;
 	

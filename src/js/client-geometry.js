@@ -23,7 +23,11 @@
     context.scale(this.scale, this.scale);
     context.beginPath();
 
-    this.vertices ? this.drawPolygon(context) : this.drawCircle(context);
+    if (this.vertices) {
+      this.drawPolygon(context);
+    } else {
+      this.drawCircle(context);
+    }
 
     context.closePath();
     context.globalAlpha = this.alpha;
@@ -42,7 +46,11 @@
     for (var i = 0; i < this.vertices.length; i++) {
       xv = this.vertices[i].x;
       yv = this.vertices[i].y;
-      i === 0 ? context.moveTo(xv, yv) : context.lineTo(xv, yv);
+      if (i === 0) {
+        context.moveTo(xv, yv);
+      } else {
+        context.lineTo(xv, yv);
+      }
     }
   };
 

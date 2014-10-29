@@ -28,13 +28,10 @@
     switch(waveform) {
       case 'saw':
         return new Saw(this.audiolet, this.frequency);
-        break;
       case 'square':
         return new Square(this.audiolet, this.frequency);
-        break;
       case 'noise':
         return new WhiteNoise(this.audiolet, this.frequency);
-        break;
       default:
         return new Sine(this.audiolet, this.frequency);
     }
