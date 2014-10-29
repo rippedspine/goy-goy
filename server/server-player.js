@@ -6,9 +6,13 @@
     , inherits = utils.inherits
     , config = require('../shared/config.js');
 
-  var Player = {};
+  var Server = { Player: {} };
 
-  Player.Model = function(id) {
+  // ==============================
+  // SERVER PLAYER MODEL
+  // ==============================
+
+  Server.Player.Model = function(id) {
     this.id = id;
     this.radius = config.radius.player;
     this.position = {
@@ -18,7 +22,7 @@
     this.vertices = utils.getVertices(5, this.radius);
   };
 
-  Player.Model.prototype.send = function() {
+  Server.Player.Model.prototype.send = function() {
     return {
       id: this.id,
       radius: this.radius,
@@ -27,21 +31,29 @@
     };
   };
 
-  Player.Model.prototype.set = function(data) {
+  Server.Player.Model.prototype.set = function(data) {
     this.id = data.id;
     this.position = data.position;
   };
 
-  Player.Collection = function(options) {
+  // ==============================
+  // SERVER PLAYER COLLECTION
+  // ==============================
+
+  Server.Player.Collection = function(options) {
     BaseCollection.call(this, options);
   };
 
-  inherits(Player.Collection, BaseCollection);
+  inherits(Server.Player.Collection, BaseCollection);
 
-  Player.Collection.prototype.add = function(data) {
+  Server.Player.Collection.prototype.add = function(data) {
     this.collection[data.id] = new this.model(data.id);
   };
 
-  module.exports = Player;
+  Server.Player.Collection.prototype.set = function(data) {
+    this.collection[data.id].set(data);
+  };
+
+  module.exports = Server.Player;
 
 })(this);

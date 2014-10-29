@@ -11,7 +11,7 @@
   // ==============================
   // CLIENT PLAYER MODEL
   // ==============================
-  
+
   Client.Player.Model = function(data) {
     this.id = data.id;
 
@@ -20,10 +20,7 @@
     this.velocity = new Vector(0, 0);
 
     this.shape = new Geometry({
-      position: {
-        x: this.position.x,
-        y: this.position.y
-      },
+      position: data.position,
       color: '#fff',
       vertices: data.vertices
     });
@@ -32,16 +29,13 @@
     this.colorTimer = 1;
 
     this.angle = 0;
-    this.updateFrequency = 0.05;
+    this.updateHz = 0.05;
   };
 
   Client.Player.Model.prototype.send = function() {
     return {
       id: this.id,
-      position: {
-        x: this.position.x,
-        y: this.position.y
-      }
+      position: this.position.getXY()
     };
   };
 
@@ -58,8 +52,7 @@
     this.velocity.limit(10);
     this.position.addTo(this.velocity);
 
-    this.shape.position.x = this.position.x;
-    this.shape.position.y = this.position.y;
+    this.shape.position = this.position.getXY();
   };
 
   Client.Player.Model.prototype.draw = function(context) {
@@ -79,12 +72,11 @@
 
   Client.Player.Model.prototype.pulse = function() {
     this.shape.strokeWidth = 3 + Math.sin(this.angle) * 2;
-    this.angle += this.updateFrequency;
+    this.angle += this.updateHz;
   };
 
   Client.Player.Model.prototype.move = function(position) {
-    this.controller.x = position.x;
-    this.controller.y = position.y;
+    this.controller.setXY(position);
   };
 
   // ==============================

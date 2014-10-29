@@ -6,6 +6,18 @@
 		this.y = y;
 	};
 
+	Vector.prototype.getXY = function() {
+		return {
+			x: this.x,
+			y: this.y
+		};
+	};	
+
+	Vector.prototype.setXY = function(point) {
+		this.x = point.x;
+		this.y = point.y;
+	};	
+
 	Vector.prototype.setAngle = function(angle) {
 		var length = this.getLength();
 		this.x = Math.cos(angle) * length;

@@ -15,10 +15,6 @@
     return this.collection[id];
   };
 
-  BaseCollection.prototype.set = function(data) {
-    this.collection[data.id].set(data);
-  };
-
   BaseCollection.prototype.send = function(id) {
     if (typeof id === 'undefined') {
       var collection = {};

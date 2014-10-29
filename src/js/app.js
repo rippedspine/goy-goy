@@ -5,7 +5,7 @@
     , Stage = require('./stage.js')
     , Player = require('./client-player.js')
     , Obstacle = require('./client-obstacle.js')
-    , Game = require('./game.js')
+    , Game = require('./client-game.js')
     , AudioPlayer = require('./audioplayer/audioplayer.js');
 
   var game = new Game(
