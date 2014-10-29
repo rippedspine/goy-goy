@@ -13,10 +13,10 @@
     },
 
     getRandomPosition: function(area) {
-      return [
-        this.getRandomInt([0, area[0]]),
-        this.getRandomInt([0, area[1]])
-      ];
+      return {
+        x: this.getRandomInt([0, area[0]]),
+        y: this.getRandomInt([0, area[1]])
+      };
     },
 
     getRandomIntFromColorRange: function() {
@@ -33,14 +33,8 @@
     },
 
     distance: function(v1, v2) {
-      var dx = v2[0] - v1[0]
-        , dy = v2[1] - v1[1];
-      return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    distanceXY: function(v1, v2) {
-      var dx = v2[0] - v1[0]
-        , dy = v2[1] - v1[1];
+      var dx = v2.x - v1.x
+        , dy = v2.y - v1.y;
       return Math.sqrt(dx * dx + dy * dy);
     },
 
@@ -49,7 +43,34 @@
     },
 
     circlePointCollision: function(point, circle) {
-      return this.distanceXY(point, circle.position) < circle.radius;
+      return this.distance(point, circle.position) < circle.radius;
+    },
+
+    getPosition: function(canvas, event) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    },
+
+    getVertices: function(points, radius) {
+      var vertices = [];
+      for (var i = 0; i < points; i++) {
+        var angle = i * 2 * Math.PI / points
+          , xv = radius * Math.cos(angle) + this.rand() * radius * 0.4
+          , yv = radius * Math.sin(angle) + this.rand() * radius * 0.4;
+        vertices.push({x: xv, y: yv});
+      }
+      return vertices;
+    },
+
+    getDecay: function(min, max, range, radius) {
+      return min + (max * range.indexOf(radius));
+    },
+
+    inherits: function(child, parent) {
+      child.prototype = Object.create(parent.prototype);
     }
   };
 

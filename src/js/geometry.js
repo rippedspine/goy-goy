@@ -4,57 +4,54 @@
   var utils = require('../../shared/utils.js');
 
   var Geometry = function(options) {
+    this.position = options.position;
+    this.color = options.color;
     this.radius = options.radius || 0;
-    this.position = options.position || [0, 0];
-    this.color = options.color || '#000';
     this.rotation = options.rotation || 0;
-    this.type = options.type || 'polygon';
+    this.vertices = options.vertices || false;
+    this.alpha = options.alpha || 1;
+    this.scale = options.scale || 1;
 
-    this.alpha = 1;
-    this.scale = 1;
     this.strokeWidth = 1;
     this.isFilled = false;
-    
-    this.vertices = [];
   };
 
   Geometry.prototype.draw = function(context) {
-    this.context = context;
+    context.save();
+    context.translate(this.position.x, this.position.y);
+    context.rotate(this.rotation);
+    context.scale(this.scale, this.scale);
+    context.beginPath();
 
-    var x = this.position[0]
-      , y = this.position[1];
-
-    this.context.save();
-    this.context.translate(x, y);
-    this.context.rotate(this.rotation);
-    this.context.scale(this.scale, this.scale);
-    this.context.beginPath();
-
-    this.type === 'polygon' ? this.drawPolygon() : this.drawCircle();
-
-    this.context.closePath();
-    this.context.globalAlpha = this.alpha;
-    this.context.strokeStyle = this.color;
-    this.context.lineWidth = this.strokeWidth;
-    this.context.stroke();
-    if (this.isFilled) {
-      this.context.fillStyle = this.color;
-      this.context.fill();
+    if (this.vertices) {
+      this.drawPolygon(context);
+    } else {
+      this.drawCircle(context);
     }
-    this.context.restore();
+
+    context.closePath();
+    context.globalAlpha = this.alpha;
+    context.strokeStyle = this.color;
+    context.lineWidth = this.strokeWidth;
+    context.stroke();
+    if (this.isFilled) {
+      context.fillStyle = this.color;
+      context.fill();
+    }
+    context.restore();
   };
 
-  Geometry.prototype.drawPolygon = function() {
+  Geometry.prototype.drawPolygon = function(context) {
     var xv, yv;
     for (var i = 0; i < this.vertices.length; i++) {
-      xv = this.vertices[i][0];
-      yv = this.vertices[i][1];
-      i === 0 ? this.context.moveTo(xv, yv) : this.context.lineTo(xv, yv);
+      xv = this.vertices[i].x;
+      yv = this.vertices[i].y;
+      i === 0 ? context.moveTo(xv, yv) : context.lineTo(xv, yv);
     }
   };
 
-  Geometry.prototype.drawCircle = function() {
-    this.context.arc(0, 0, this.radius, 0, 2 * Math.PI, false);
+  Geometry.prototype.drawCircle = function(context) {
+    context.arc(0, 0, this.radius, 0, 2 * Math.PI, false);
   };
 
   module.exports = Geometry;

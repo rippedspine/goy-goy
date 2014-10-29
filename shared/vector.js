@@ -2,16 +2,10 @@
 	'use strict'
 	
 	function Vector(x, y) {
-		this.setX(x);
-		this.setY(y);
+		this.x = x;
+		this.y = y;
 	};
-		
 
-	Vector.prototype.setX = function(value) { this.x = value; };
-	Vector.prototype.setY = function(value) { this.y = value; };
-	Vector.prototype.getX = function() { return this.x; };
-	Vector.prototype.getY = function() { return this.y; };
-	
 	Vector.prototype.setAngle = function(angle) {
 		var length = this.getLength();
 		this.x = Math.cos(angle) * length;
@@ -33,11 +27,11 @@
 	};
 
 	Vector.prototype.add = function(v2) {
-		return new Vector(this.x + v2.getX(), this.y + v2.getY());
+		return new Vector(this.x + v2.x, this.y + v2.y);
 	};
 
 	Vector.prototype.subtract = function(v2) {
-		return new Vector(this.x - v2.getX(), this.y - v2.getY());
+		return new Vector(this.x - v2.x, this.y - v2.y);
 	};
 
 	Vector.prototype.multiply = function(val) {
@@ -48,13 +42,13 @@
 	};
 
 	Vector.prototype.addTo = function(v2) {
-		this.x += v2.getX();
-		this.y += v2.getY();
+		this.x += v2.x;
+		this.y += v2.y;
 	};
 
 	Vector.prototype.subtractFrom = function(v2) {
-		this.x -= v2.getX();
-		this.y -= v2.getY();
+		this.x -= v2.x;
+		this.y -= v2.y;
 	};
 
 	Vector.prototype.multiplyBy = function(val) {
@@ -87,6 +81,6 @@
 		}
 	}
 
-
 	module.exports = Vector;
+	
 })(this);

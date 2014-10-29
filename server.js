@@ -14,39 +14,49 @@ http.listen(port, function() {
   console.log('\n\n:::::::::: listening on localhost:' + port + ' ::::::::::\n');
 });
 
-var config = require('./shared/config.js')
-  , utils = require('./shared/utils.js')
-  , Player = require('./server/server-player.js')
-  , msgs = require('./shared/messages.js')
+var Player = require('./server/server-player.js')
+  , Obstacle = require('./server/server-obstacle.js')
 
-  , myPlayer = null
-  , players = new Player.Collection({model: Player.Model});
+  , msgs = require('./shared/messages.js')
+  , game = {};
+
+game.player = null;
+game.players = new Player.Collection({model: Player.Model});
+
+game.triangles = new Obstacle.Collection({model: Obstacle.Triangle});
+game.circles = new Obstacle.Collection({model: Obstacle.Circle});
+
+game.triangles.spawn(20);
+game.circles.spawn(20);
 
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
 
-  if (players.count() > 0) {
-    socket.emit(msgs.socket.sendPlayers, players.send()); 
+  if (game.players.count() > 0) {
+    socket.emit(msgs.socket.sendPlayers, game.players.send()); 
   }
 
-  myPlayer = new Player.Model();
-  myPlayer.setup(socket.id);
+  game.player = new Player.Model(socket.id);
 
-  socket.emit(msgs.socket.connect, {player: myPlayer});
+  socket.emit(msgs.socket.connect, {
+    circles: game.circles.get(),
+    triangles: game.triangles.get(),
+    player: game.player
+  });
 
   socket.on(msgs.socket.newPlayer, function(data) {
-    players.add(data);
-    socket.broadcast.emit(msgs.socket.newPlayer, players.send(data.id));
+    game.players.add(data);
+    socket.broadcast.emit(msgs.socket.newPlayer, game.players.send(data.id));
   });
 
   socket.on(msgs.socket.updatePlayer, function(data) {
-    players.set(data.player);
-    socket.broadcast.emit(msgs.socket.updatePlayer, players.send(data.player.id));
+    game.players.set(data.player);
+    socket.broadcast.emit(msgs.socket.updatePlayer, game.players.send(data.player.id));
   });
 
   socket.on('disconnect', function() {
     msgs.logger.disconnect(socket.id);
     socket.broadcast.emit(msgs.socket.disconnect, socket.id);
-    players.remove(socket.id);
+    game.players.remove(socket.id);
   });
 });

@@ -2,70 +2,90 @@
   'use strict';
 
   var utils = require('../shared/utils.js')
+    , inherits = utils.inherits
     , config = require('../shared/config.js')
-    , amount = config.obstacles.amount
-    , area = config.area;
+    , triangle = config.triangle
+    , circle = config.circle
+    , sound = config.sound
 
-  var Obstacles = function(options) {
-    this.triangle = options.triangle;
-    this.circle = options.circle;
+    , Obstacle = {};
 
-    this.collection = {
-      triangle: {}, 
-      circle: {}
+  Obstacle.Triangle = function(id) {
+    this.id = id;
+    this.alpha = 1;
+    this.scale = 1;
+    this.rotation = 0;
+
+    var colorSoundID = utils.getRandomIntFromColorRange();
+
+    this.position = utils.getRandomPosition(config.area);
+    this.radius = utils.getRandomInt(triangle.radiusRange);
+    this.color = utils.getColor(colorSoundID);
+    this.vertices = utils.getVertices(3, this.radius);
+
+    this.sound = {
+      id: Math.floor(colorSoundID/36),
+      decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
+      waveform: config.waveform
     };
   };
 
-  Obstacles.prototype.spawn = function() {
-    for (var id = 0; id < amount * 0.5; id++) {
-      this.collection.triangle[id] = new this.triangle(id, utils.getRandomPosition(area));
-      this.collection.circle[id] = new this.circle(id, utils.getRandomPosition(area));
+  Obstacle.Triangle.prototype.set = function(data) {
+    this.alpha = data.alpha;
+    this.position = data.position;
+    this.rotation = data.rotation;
+    this.scale = data.scale;
+  };
+
+  Obstacle.Circle = function(id) {
+    this.id = id;
+    this.alpha = 1;
+    this.scale = 1;
+
+    var colorSoundID = utils.getRandomIntFromColorRange();
+    
+    this.position = utils.getRandomPosition(config.area);
+    this.radius = utils.getRandomInt(circle.radiusRange);
+    this.color = utils.getColor(colorSoundID);
+
+    this.sound = {
+      id: Math.floor(colorSoundID/36),
+      decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
+      waveform: config.waveform
+    };
+  };
+
+  Obstacle.Circle.prototype.set = function(data) {
+    this.alpha = data.alpha;
+    this.position = data.position;
+    this.scale = data.scale;
+  };
+
+  var BaseCollection = require('../shared/base/collection.js')
+    , inherits =require('../shared/utils.js').inherits;
+
+  Obstacle.Collection = function(options) {
+    BaseCollection.call(this, options);
+  };
+
+  inherits(Obstacle.Collection, BaseCollection);
+
+  Obstacle.Collection.prototype.spawn = function(amount) {
+    for (var id = 0; id < amount; id++) {
+      this.collection[id] = new this.model(id);
     }
   };
 
-  Obstacles.prototype.get = function(typeID, id) {
-    if (typeof id === 'undefined') {
-      if (typeof typeID === 'undefined') {
-        return this.collection;
-      }
-      return this.collection[typeID];
-    }
-    return this.collection[typeID][id];
+  Obstacle.Collection.prototype.resurrect = function(id) {
+    this.collection[id] = new this.model(id);
   };
 
-  Obstacles.prototype.send = function(typeID) {
-    var obstaclesData = {};
-    if (typeof typeID === 'undefined') {
-      for (var type in this.collection) {
-        for (var id in this.collection[type]) {
-          obstaclesData[type][id] = this.collection[type][id].send();
-        }
-      }
-    } else {
-      for (var id in this.collection[typeID]) {
-        obstaclesData[typeID][id] = this.collection[typeID][id].send();
-      }
-    }
-    return obstaclesData;
-  };
-
-  Obstacles.prototype.remove = function(type, id) {
-    delete this.collection[type][id];
-    this.resurrect(type, id);
-  };
-
-  Obstacles.prototype.resurrect = function(type, id) {
-    this.collection[type][id] = new this.type(id, utils.getRandomPosition(area));
-  };
-
-  Obstacles.prototype.set = function(obstacles) {
-    for (var type in obstacles) {
-      for (id in obstacles[type]) {
-        this.collection[type][id].set(data[type][id]);
-      }
+  Obstacle.Collection.prototype.set = function(data) {
+    for (var id in data) {
+      this.collection[id].set(data[id]);
     }
   };
 
-  module.exports = Obstacles;
-  
+  module.exports = Obstacle;
+
 })(this);

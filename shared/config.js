@@ -6,18 +6,19 @@
     radius: {
       player: 30,
     },
-    obstacles: {
-      line: {
-        waveform: 'noise'
-      },
-      circle: {
-        waveform: 'sine'
-      },
-      triangle: {
-        amount: 20,
-        waveform: 'saw',
-        radiusRange: [7, 16]
-      }
+    line: {
+      amount: 20,
+      waveform: 'noise'
+    },
+    circle: {
+      amount: 20,
+      waveform: 'sine',
+      radiusRange: [7, 16]
+    },
+    triangle: {
+      amount: 20,
+      waveform: 'saw',
+      radiusRange: [7, 16]
     },
     color: {
       range: [0, 360],

@@ -1,44 +1,47 @@
 (function() {
   'use strict';
 
-  var BaseCollection = require('../shared/base-classes/base-collection.js')
-    , SharedPlayerModel = require('../shared/player/shared-player-model.js')
-    , helpers = require('../shared/helpers.js')
-    , inherits = helpers.inherits
+  var BaseCollection = require('../shared/base/collection.js')
     , utils = require('../shared/utils.js')
+    , inherits = utils.inherits
     , config = require('../shared/config.js');
 
-  var PlayerModel = function() {
-    SharedPlayerModel.call(this);
-  };
+  var Player = {};
 
-  inherits(PlayerModel, SharedPlayerModel);
-
-  PlayerModel.prototype.setup = function(id) {
+  Player.Model = function(id) {
     this.id = id;
     this.radius = config.radius.player;
-    this.position = [
-      (config.area[0] * 0.5) - (this.radius * 0.5),
-      (config.area[1] * 0.5) - (this.radius * 0.5)
-    ];
-    this.vertices = helpers.getVertices(5, this.radius);
+    this.position = {
+      x: (config.area[0] * 0.5) - (this.radius * 0.5),
+      y: (config.area[1] * 0.5) - (this.radius * 0.5)
+    };
+    this.vertices = utils.getVertices(5, this.radius);
   };
 
-  var PlayerCollection = function(options) {
+  Player.Model.prototype.send = function() {
+    return {
+      id: this.id,
+      radius: this.radius,
+      position: this.position,
+      vertices: this.vertices
+    };
+  };
+
+  Player.Model.prototype.set = function(data) {
+    this.id = data.id;
+    this.position = data.position;
+  };
+
+  Player.Collection = function(options) {
     BaseCollection.call(this, options);
   };
 
-  inherits(PlayerCollection, BaseCollection);
+  inherits(Player.Collection, BaseCollection);
 
-  PlayerCollection.prototype.add = function(modelData) {
-    var model = new this.model();
-    model.setup(modelData.id);
-    this.collection[modelData.id] = model;
+  Player.Collection.prototype.add = function(data) {
+    this.collection[data.id] = new this.model(data.id);
   };
 
-  module.exports = {
-    Model: PlayerModel,
-    Collection: PlayerCollection
-  };
+  module.exports = Player;
 
 })(this);

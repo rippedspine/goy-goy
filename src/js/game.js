@@ -2,13 +2,15 @@
   'use strict';
 
   var msgs = require('../../shared/messages.js')
-    , helpers = require('../../shared/helpers.js');
+    , utils = require('../../shared/utils.js');
 
-  var Game = function(socket, stage, players, audioplayer) {
+  var Game = function(socket, stage, players, triangles, circles, audioplayer) {
     this.socket = socket;
     this.stage = stage;
     this.players = players;
     this.audioplayer = audioplayer;
+    this.triangles = triangles;
+    this.circles = circles;
 
     this.player = null;
   };
@@ -32,7 +34,7 @@
   };
 
   Game.prototype.handleMouseMove = function(event) {
-    this.player.move(helpers.getPosition(this.stage.canvas, event));
+    this.player.move(utils.getPosition(this.stage.canvas, event));
     this.socket.emit(msgs.socket.updatePlayer, {
       player: this.player.send()
     });
@@ -49,6 +51,8 @@
   Game.prototype.onConnect = function(data) {
     this.players.add(data.player);
     this.player = this.players.get(data.player.id);
+
+    console.log(data);
 
     this.stage.setCollection('players', this.players);
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
