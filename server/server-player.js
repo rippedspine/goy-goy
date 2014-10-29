@@ -8,10 +8,9 @@
 
   var Server = { Player: {} };
 
-  // ==============================
+  // =============================================================
   // SERVER PLAYER MODEL
-  // ==============================
-
+  // =============================================================
   Server.Player.Model = function(id) {
     this.id = id;
     this.radius = config.radius.player;
@@ -36,10 +35,9 @@
     this.position = data.position;
   };
 
-  // ==============================
-  // SERVER PLAYER COLLECTION
-  // ==============================
-
+  // =============================================================
+  // SERVER PLAYER COLLECTION :: extends BASECOLLECTION
+  // =============================================================
   Server.Player.Collection = function(options) {
     BaseCollection.call(this, options);
   };
@@ -52,6 +50,17 @@
 
   Server.Player.Collection.prototype.set = function(data) {
     this.collection[data.id].set(data);
+  };
+
+  Server.Player.Collection.prototype.send = function(playerID) {
+    if (typeof playerID === 'undefined') {
+      var players = {};
+      for (var id in this.collection) {
+        players[id] = this.collection[id].send();
+      }
+      return players;
+    }
+    return this.collection[playerID].send();
   };
 
   module.exports = Server.Player;

@@ -2,7 +2,7 @@
   'use strict';
 
   var io = require('socket.io-client')
-    , Stage = require('./stage.js')
+    , Stage = require('./client-stage.js')
     , Player = require('./client-player.js')
     , Obstacle = require('./client-obstacle.js')
     , Game = require('./client-game.js')

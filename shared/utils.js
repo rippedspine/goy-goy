@@ -32,20 +32,6 @@
       ].join(',') + ')';
     },
 
-    distance: function(v1, v2) {
-      var dx = v2.x - v1.x
-        , dy = v2.y - v1.y;
-      return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    circleCollision: function(c1, c2) {
-      return this.distance(c1.position, c2.position) <= c1.radius + c2.radius;
-    },
-
-    circlePointCollision: function(point, circle) {
-      return this.distance(point, circle.position) < circle.radius;
-    },
-
     getPosition: function(canvas, event) {
       var rect = canvas.getBoundingClientRect();
       return {

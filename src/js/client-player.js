@@ -2,16 +2,15 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Geometry = require('./geometry.js')
+    , Geometry = require('./client-geometry.js')
     , Vector = require('../../shared/vector.js')
     , inherits = require('../../shared/utils.js').inherits
 
     , Client = { Player: {} };
 
-  // ==============================
+  // =============================================================
   // CLIENT PLAYER MODEL
-  // ==============================
-
+  // =============================================================
   Client.Player.Model = function(data) {
     this.id = data.id;
 
@@ -35,6 +34,7 @@
   Client.Player.Model.prototype.send = function() {
     return {
       id: this.id,
+      radius: this.radius,
       position: this.position.getXY()
     };
   };
@@ -43,6 +43,11 @@
     this.pulse();
     this.onCollision();
 
+    // this.updatePhysics();
+    this.shape.position = this.position.getXY();
+  };
+
+  Client.Player.Model.prototype.updatePhysics = function() {    
     this.direction = this.controller.subtract(this.position);
     this.direction.normalize();
     this.direction.multiplyBy(0.5);
@@ -51,8 +56,6 @@
     this.velocity.addTo(this.acceleration);
     this.velocity.limit(10);
     this.position.addTo(this.velocity);
-
-    this.shape.position = this.position.getXY();
   };
 
   Client.Player.Model.prototype.draw = function(context) {
@@ -76,13 +79,13 @@
   };
 
   Client.Player.Model.prototype.move = function(position) {
-    this.controller.setXY(position);
+    this.position.setXY(position);
+    // this.controller.setXY(position);
   };
 
-  // ==============================
-  // CLIENT PLAYER COLLECTION
-  // ==============================
-
+  // =============================================================
+  // CLIENT PLAYER COLLECTION :: extends BASECOLLECTION
+  // =============================================================
   Client.Player.Collection = function(options) {
     BaseCollection.call(this, options);
   };

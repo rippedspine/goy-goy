@@ -12,12 +12,12 @@
 
     , Server = { Obstacle: {} };
 
-  // ==============================
+  // =============================================================
   // SERVER OBSTACLE TRIANGLE
-  // ==============================
-
+  // =============================================================
   Server.Obstacle.Triangle = function(id) {
     this.id = id;
+    this.type = 'triangle';
     this.alpha = 1;
     this.scale = 1;
     this.rotation = 0;
@@ -32,7 +32,7 @@
     this.sound = {
       id: Math.floor(colorSoundID/36),
       decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
-      waveform: config.waveform
+      waveform: triangle.waveform
     };
   };
 
@@ -43,12 +43,12 @@
     this.scale = data.scale;
   };
 
-  // ==============================
+  // =============================================================
   // SERVER OBSTACLE CIRCLE
-  // ==============================
-
+  // =============================================================
   Server.Obstacle.Circle = function(id) {
     this.id = id;
+    this.type = 'circle';
     this.alpha = 1;
     this.scale = 1;
 
@@ -61,7 +61,7 @@
     this.sound = {
       id: Math.floor(colorSoundID/36),
       decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
-      waveform: config.waveform
+      waveform: circle.waveform
     };
   };
 
@@ -71,10 +71,18 @@
     this.scale = data.scale;
   };
 
-  // ==============================
-  // SERVER OBSTACLE COLLECTION
-  // ==============================
+  Server.Obstacle.Circle.prototype.send = function() {
+    return {
+      id: this.id,
+      position: this.position,
+      sound: this.sound,
+      color: this.color
+    };
+  };
 
+  // =============================================================
+  // SERVER OBSTACLE COLLECTION :: extends BASECOLLECTION
+  // =============================================================
   Server.Obstacle.Collection = function(options) {
     BaseCollection.call(this, options);
   };
@@ -89,12 +97,17 @@
 
   Server.Obstacle.Collection.prototype.resurrect = function(id) {
     this.collection[id] = new this.model(id);
+    return this.collection[id];
   };
 
   Server.Obstacle.Collection.prototype.set = function(data) {
     for (var id in data) {
       this.collection[id].set(data[id]);
     }
+  };
+
+  Server.Obstacle.Collection.prototype.send = function(id) {
+    return this.collection[id].send();
   };
 
   module.exports = Server.Obstacle;

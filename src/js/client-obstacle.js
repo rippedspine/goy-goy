@@ -2,27 +2,60 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Geometry = require('./geometry.js')
+    , Geometry = require('./client-geometry.js')
     , utils = require('../../shared/utils.js')
     , inherits = utils.inherits
+    , msgs = require('../../shared/messages.js')
 
-    , Client = {Obstacle: {}};
+    , Client = { Obstacle: {} };
 
-  // ==============================
-  // CLIENT OBSTACLE TRIANGLE
-  // ==============================
-
-  Client.Obstacle.Triangle = function(data) {
+  // =============================================================
+  // CLIENT OBSTACLE BASEMODEL :: extends GEOMETRY
+  // =============================================================
+  Client.Obstacle.BaseModel = function(data) {
     Geometry.call(this, data);
 
+    this.type = data.type;
     this.id = data.id;
     this.isAlive = true;
     this.didCollide = false;
     this.fillTimer = 1;
     this.updateHz = 0.02;
+
+    this.sendDeadEvent = new CustomEvent('dead', {
+      'detail': {id: null, type: null}
+    });
   };
 
-  inherits(Client.Obstacle.Triangle, Geometry);
+  inherits(Client.Obstacle.BaseModel, Geometry);
+
+  Client.Obstacle.BaseModel.prototype.onCollision = function() {
+    if (this.didCollide) {
+      this.isFilled = true;
+      this.fillTimer -= 0.05;
+      this.scale += this.updateHz;
+      this.alpha -= this.updateHz;
+
+      if (this.fillTimer < 0) {this.isFilled = false;}
+      if (this.alpha < 0) {        
+        this.sendDeadEvent.detail.id = this.id;
+        this.sendDeadEvent.detail.type = this.type;
+        document.dispatchEvent(this.sendDeadEvent);
+
+        this.alpha = 0;
+        this.didCollide = false;
+      }
+    }
+  };
+
+  // =============================================================
+  // CLIENT OBSTACLE TRIANGLE :: extends CLIENT OBSTACLE BASEMODEL
+  // =============================================================
+  Client.Obstacle.Triangle = function(data) {
+    Client.Obstacle.BaseModel.call(this, data);
+  };
+
+  inherits(Client.Obstacle.Triangle, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Triangle.prototype.update = function() {
     this.rotate();
@@ -36,18 +69,6 @@
     }
   };
 
-  Client.Obstacle.Triangle.prototype.onCollision = function() {
-    if (this.didCollide) {
-      this.isFilled = true;
-      this.fillTimer -= 0.05;
-      this.scale += this.updateHz;
-      this.alpha -= this.updateHz;
-
-      if (this.fillTimer < 0) {this.isFilled = false;}
-      if (this.alpha < 0) {this.isAlive = false;}
-    }
-  };
-
   Client.Obstacle.Triangle.prototype.set = function(data) {
     this.rotation = data.rotation;
     this.alpha = data.alpha;
@@ -56,42 +77,24 @@
 
   Client.Obstacle.Triangle.prototype.send = function() {
     return {
+      type: this.type,
       alpha: this.alpha,
       scale: this.scale,
       rotation: this.rotation
     };
   };
 
-  // ==============================
-  // CLIENT OBSTACLE CIRCLE
-  // ==============================
-
+  // =============================================================
+  // CLIENT OBSTACLE CIRCLE :: extends CLIENT OBSTACLE BASEMODEL
+  // =============================================================
   Client.Obstacle.Circle = function(data) {
-    Geometry.call(this, data);
-
-    this.id = data.id;
-    this.isAlive = true;
-    this.didCollide = false;
-    this.fillTimer = 1;
-    this.updateHz = 0.02;
+    Client.Obstacle.BaseModel.call(this, data);
   };
 
-  inherits(Client.Obstacle.Circle, Geometry);
+  inherits(Client.Obstacle.Circle, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Circle.prototype.update = function() {
     this.onCollision();
-  };
-
-  Client.Obstacle.Circle.prototype.onCollision = function() {
-    if (this.didCollide) {
-      this.isFilled = true;
-      this.fillTimer -= 0.05;
-      this.scale += this.updateHz;
-      this.alpha -= this.updateHz;
-
-      if (this.fillTimer < 0) {this.isFilled = false;}
-      if (this.alpha < 0) {this.isAlive = false;}
-    }
   };
 
   Client.Obstacle.Triangle.prototype.set = function(data) {
@@ -101,15 +104,15 @@
 
   Client.Obstacle.Triangle.prototype.send = function() {
     return {
+      type: this.type,
       alpha: this.alpha,
       scale: this.scale
     };
   };
 
-  // ==============================
-  // CLIENT OBSTACLE COLLECTION
-  // ==============================
-
+  // =============================================================
+  // CLIENT OBSTACLE COLLECTION :: extends BASECOLLECTION
+  // =============================================================
   Client.Obstacle.Collection = function(options) {
     BaseCollection.call(this, options);
   };
@@ -126,6 +129,15 @@
     for (var id in data) {
       this.collection[id].set(data[id]);
     }
+  };
+
+  Client.Obstacle.Collection.prototype.resurrect = function(data) {
+    this.collection[data.id] = new this.model(data);
+    return this.collection[data.id];
+  };
+
+  Client.Obstacle.Collection.prototype.setCollision = function(id, socket) {
+    this.collection[id].didCollide = true;
   };
 
   Client.Obstacle.Collection.prototype.update = function() {

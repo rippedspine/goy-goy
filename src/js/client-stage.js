@@ -31,6 +31,10 @@
     this.objects[type] = collection;
   };
 
+  Stage.prototype.addToCollection = function(type, object) {
+    this.objects[type][object.id] = object;
+  };
+
   Stage.prototype.setSize = function(area) {
     this.width = this.canvas.width = area[0];
     this.height = this.canvas.height = area[1];  

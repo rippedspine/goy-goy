@@ -23,11 +23,7 @@
     context.scale(this.scale, this.scale);
     context.beginPath();
 
-    if (this.vertices) {
-      this.drawPolygon(context);
-    } else {
-      this.drawCircle(context);
-    }
+    this.vertices ? this.drawPolygon(context) : this.drawCircle(context);
 
     context.closePath();
     context.globalAlpha = this.alpha;
