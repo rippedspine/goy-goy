@@ -17,7 +17,7 @@ http.listen(port, function() {
 
 var Player = require('./server/server-player.js')
   , Obstacle = require('./server/server-obstacle.js')
-  , Collision = require('./server/server-collision.js')
+  , collision = require('./server/server-collision.js')
 
   , msgs = require('./shared/messages.js')
   , game = {};
@@ -28,7 +28,7 @@ game.players = new Player.Collection({model: Player.Model});
 game.triangles = new Obstacle.Collection({model: Obstacle.Triangle});
 game.circles = new Obstacle.Collection({model: Obstacle.Circle});
 
-game.collisions = {};
+game.collisions = [];
 
 game.triangles.spawn(10);
 game.circles.spawn(10);
@@ -62,11 +62,11 @@ io.on('connection', function(socket) {
 
     socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
 
-    game.collisions.triangle = new Collision(game.player, game.triangles.get());
-    game.collisions.circle = new Collision(game.player, game.circles.get());
+    game.collisions.triangle = collision(game.player, game.triangles.get());
+    game.collisions.circle = collision(game.player, game.circles.get());
 
     for (var type in game.collisions) {
-      if (_.size(game.collisions[type]) > 0) {
+      if (typeof game.collisions[type] !== 'undefined') {
         game.newHash = game.collisions[type].obstacle.sound.hash;
         if (game.newHash !== game.oldHash) {
           io.emit(msgs.socket.collision, game.collisions[type]);
