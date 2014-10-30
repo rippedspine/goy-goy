@@ -33,6 +33,9 @@ game.collisions = {};
 game.triangles.spawn(10);
 game.circles.spawn(10);
 
+game.newHash = null;
+game.oldHash = null;
+
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
 
@@ -64,7 +67,11 @@ io.on('connection', function(socket) {
 
     for (var type in game.collisions) {
       if (_.size(game.collisions[type]) > 0) {
-        io.emit(msgs.socket.collision, game.collisions[type]);
+        game.newHash = game.collisions[type].obstacle.sound.hash;
+        if (game.newHash !== game.oldHash) {
+          io.emit(msgs.socket.collision, game.collisions[type]);
+          game.oldHash = game.newHash;
+        }
       }
     }
   });

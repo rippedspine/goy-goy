@@ -31,6 +31,7 @@
 		"Gain": true,
 		"Reverb": true,
 		"LowPassFilter": true,
-		"extend": true
+		"extend": true,
+		"crypto": true
 	}
 }

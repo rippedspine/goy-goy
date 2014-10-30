@@ -5,6 +5,7 @@
     , utils = require('../shared/utils.js')
     , inherits = utils.inherits
     , config = require('../shared/config.js')
+    , uuid = require('node-uuid')
     
     , triangle = config.triangle
     , circle = config.circle
@@ -30,6 +31,7 @@
     this.vertices = utils.getVertices(3, this.radius);
 
     this.sound = {
+      hash: 't' + uuid.v1(),
       id: Math.floor(colorSoundID/36),
       decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
       waveform: triangle.waveform
@@ -59,6 +61,7 @@
     this.color = utils.getColor(colorSoundID);
 
     this.sound = {
+      hash: 'c' + uuid.v1(),
       id: Math.floor(colorSoundID/36),
       decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
       waveform: circle.waveform
