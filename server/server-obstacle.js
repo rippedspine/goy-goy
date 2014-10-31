@@ -23,7 +23,6 @@
     this.rotation = 0;
 
     this.position = utils.getRandomPosition(config.area);
-    this.radius = utils.getRandomInt(triangle.radiusRange);
     this.colorSoundID = utils.getRandomIntFromColorRange();
     this.color = utils.getColor(this.colorSoundID);
 
@@ -46,6 +45,7 @@
 
     this.type = 'triangle';
     this.vertices = utils.getVertices(3, this.radius);
+    this.radius = utils.getRandomInt(triangle.radiusRange);
     this.sound = this.createSound(triangle.waveform);
   };
 
@@ -65,6 +65,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'circle';
+    this.radius = utils.getRandomInt(circle.radiusRange);
     this.sound = this.createSound(circle.waveform);
   };
 
