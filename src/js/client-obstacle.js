@@ -105,6 +105,7 @@
     this.rotation = data.rotation;
     this.alpha = data.alpha;
     this.scale = data.scale;
+    this.vertices = data.vertices;
   };
 
   Client.Obstacle.Zigzag.prototype.send = function() {
@@ -112,7 +113,8 @@
       type: this.type,
       alpha: this.alpha,
       scale: this.scale,
-      rotation: this.rotation
+      rotation: this.rotation,
+      vertices: this.vertices
     };
   };
 
