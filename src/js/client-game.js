@@ -36,15 +36,10 @@
   Client.Game.prototype.handleDOMEvents = function() {
     this.stage.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     document.addEventListener('dead', this.handleDeadObstacle.bind(this));
-    document.addEventListener('collided', this.handleCollision.bind(this));
   };
 
   Client.Game.prototype.handleDeadObstacle = function(event) {
     this.socket.emit(msgs.socket.deadObstacle, event.detail);
-  };
-
-  Client.Game.prototype.handleCollision = function(event) {
-    this.audioplayer.play(event.detail.sound);
   };
 
   Client.Game.prototype.handleMouseMove = function(event) {
@@ -107,16 +102,13 @@
 
   Client.Game.prototype.onCollision = function(data) {
     this.players.setCollision(data.playerID, data.obstacle.color);
+    this.audioplayer.play(data.obstacle.sound);
 
     if (data.obstacle.type === 'triangle') {
       this.triangles.setCollision(data.obstacle.id, this.socket);
-
     } else if (data.obstacle.type === 'circle') {
       this.circles.setCollision(data.obstacle.id, this.socket);
     }
-
-    console.log(data.obstacle.sound);
-    this.audioplayer.play(data.obstacle.sound);
   };
 
   Client.Game.prototype.onUpdateCircles = function(data) {
