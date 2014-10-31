@@ -20,6 +20,10 @@
       waveform: 'saw',
       radiusRange: [7, 16]
     },
+    zigzag: {
+      amount: 20,
+      waveform: 'noise'
+    },
     color: {
       range: [0, 360],
       saturation: '60%',
