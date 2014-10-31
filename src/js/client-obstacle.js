@@ -53,7 +53,7 @@
   // =============================================================
   Client.Obstacle.Triangle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
-    console.log(this);
+    console.log(data);
   };
 
   inherits(Client.Obstacle.Triangle, Client.Obstacle.BaseModel);
@@ -122,8 +122,8 @@
   // =============================================================
   Client.Obstacle.Circle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
-    this.angle = 0;
-    this.updateHz = 0.1;
+    // this.angle = 0;
+    // this.updateHz = 0.1;
   };
 
   inherits(Client.Obstacle.Circle, Client.Obstacle.BaseModel);

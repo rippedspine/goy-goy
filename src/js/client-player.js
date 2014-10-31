@@ -18,7 +18,8 @@
     this.shape = new Geometry({
       position: data.position,
       color: '#fff',
-      vertices: data.vertices
+      vertices: data.vertices,
+      radius: data.radius
     });
 
     this.didCollide = false;
@@ -47,10 +48,7 @@
     return {
       id: this.id,
       radius: this.radius,
-      position: {
-        x: this.x,
-        y: this.y
-      }
+      position: {x: this.x, y: this.y}
     };
   };
 

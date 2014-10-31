@@ -29,7 +29,7 @@
       this.drawCircle(context);
     }
 
-    context.closePath();
+    if (this.radius !== 0) {context.closePath();}
     context.globalAlpha = this.alpha;
     context.strokeStyle = this.color;
     context.lineWidth = this.strokeWidth;
