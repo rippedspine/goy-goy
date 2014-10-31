@@ -9,6 +9,7 @@
     
     , triangle = config.triangle
     , circle = config.circle
+    , zigzag = config.zigzag
     , sound = config.sound
 
     , Server = { Obstacle: {} };
@@ -56,6 +57,46 @@
     this.position = data.position;
     this.rotation = data.rotation;
     this.scale = data.scale;
+  };
+
+  Server.Obstacle.Triangle.prototype.send = function() {
+    return {
+      id: this.id,
+      position: this.position,
+      sound: this.sound,
+      color: this.color,
+      vertices: this.vertices
+    };
+  };
+
+  // =============================================================
+  // SERVER OBSTACLE ZIGZAG :: extends SERVER OBSTACLE MODEL
+  // =============================================================
+  Server.Obstacle.Zigzag = function(id) {
+    Server.Obstacle.Model.call(this, id);
+
+    this.type = 'zigzag';
+    this.vertices = utils.getVertices(3, 0);
+    this.sound = this.createSound(zigzag.waveform);
+  };
+
+  inherits(Server.Obstacle.Zigzag, Server.Obstacle.Model);
+
+  Server.Obstacle.Zigzag.prototype.set = function(data) {
+    this.alpha = data.alpha;
+    this.position = data.position;
+    this.rotation = data.rotation;
+    this.scale = data.scale;
+  };
+
+  Server.Obstacle.Zigzag.prototype.send = function() {
+    return {
+      id: this.id,
+      position: this.position,
+      sound: this.sound,
+      color: this.color,
+      vertices: this.vertices
+    };
   };
 
   // =============================================================

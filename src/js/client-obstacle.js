@@ -84,6 +84,40 @@
   };
 
   // =============================================================
+  // CLIENT OBSTACLE ZIGZAG :: extends CLIENT OBSTACLE BASEMODEL
+  // =============================================================
+  Client.Obstacle.Zigzag = function(data) {
+    Client.Obstacle.BaseModel.call(this, data);
+  };
+
+  inherits(Client.Obstacle.Zigzag, Client.Obstacle.BaseModel);
+
+  Client.Obstacle.Zigzag.prototype.update = function() {
+    this.rotate();
+    this.onCollision();
+  };
+
+  Client.Obstacle.Zigzag.prototype.rotate = function() {
+    this.rotation += this.updateHz;
+    if (this.rotation > 360) {this.rotation = 0;}
+  };
+
+  Client.Obstacle.Zigzag.prototype.set = function(data) {
+    this.rotation = data.rotation;
+    this.alpha = data.alpha;
+    this.scale = data.scale;
+  };
+
+  Client.Obstacle.Zigzag.prototype.send = function() {
+    return {
+      type: this.type,
+      alpha: this.alpha,
+      scale: this.scale,
+      rotation: this.rotation
+    };
+  };
+
+  // =============================================================
   // CLIENT OBSTACLE CIRCLE :: extends CLIENT OBSTACLE BASEMODEL
   // =============================================================
   Client.Obstacle.Circle = function(data) {
