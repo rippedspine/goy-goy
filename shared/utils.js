@@ -41,17 +41,11 @@
     },
 
     getVertices: function(points, radius) {
-      var vertices = [], xv, yv;
+      var vertices = [];
       for (var i = 0; i < points; i++) {
-        if(radius !== 0) {
-          var angle = i * 2 * Math.PI / points;
-          xv = radius * Math.cos(angle) + this.rand() * radius * 0.4;
-          yv = radius * Math.sin(angle) + this.rand() * radius * 0.4;  
-        } else {
-          xv = i;
-          yv = yv % 2 === 0 ? 0 : 1;
-        }
-        
+        var angle = i * 2 * Math.PI / points
+          , xv = radius * Math.cos(angle) + this.rand() * radius * 0.4
+          , yv = radius * Math.sin(angle) + this.rand() * radius * 0.4;
         vertices.push({x: xv, y: yv});
       }
       return vertices;

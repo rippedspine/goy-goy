@@ -53,6 +53,7 @@
   // =============================================================
   Client.Obstacle.Triangle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    console.log(data);
   };
 
   inherits(Client.Obstacle.Triangle, Client.Obstacle.BaseModel);
@@ -123,20 +124,29 @@
   // =============================================================
   Client.Obstacle.Circle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    // this.angle = 0;
+    // this.updateHz = 0.1;
   };
 
   inherits(Client.Obstacle.Circle, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Circle.prototype.update = function() {
     this.onCollision();
+    this.wiggle();
   };
 
-  Client.Obstacle.Triangle.prototype.set = function(data) {
+  Client.Obstacle.Circle.prototype.wiggle = function() {
+    this.angle += this.updateHz;
+    // this.position.x = -120 + Math.sin(this.angle) * 20;
+    // this.position.y = -100 + Math.cos(this.angle) * 20;
+  };
+
+  Client.Obstacle.Circle.prototype.set = function(data) {
     this.alpha = data.alpha;
     this.scale = data.scale;
   };
 
-  Client.Obstacle.Triangle.prototype.send = function() {
+  Client.Obstacle.Circle.prototype.send = function() {
     return {
       type: this.type,
       alpha: this.alpha,

@@ -45,8 +45,8 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'triangle';
-    this.vertices = utils.getVertices(3, this.radius);
     this.radius = utils.getRandomInt(triangle.radiusRange);
+    this.vertices = utils.getVertices(3, this.radius);
     this.sound = this.createSound(triangle.waveform);
   };
 
