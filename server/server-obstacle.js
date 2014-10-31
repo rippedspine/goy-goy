@@ -14,30 +14,42 @@
     , Server = { Obstacle: {} };
 
   // =============================================================
-  // SERVER OBSTACLE TRIANGLE
+  // SERVER OBSTACLE MODEL
   // =============================================================
-  Server.Obstacle.Triangle = function(id) {
+  Server.Obstacle.Model = function(id) {
     this.id = id;
-    this.type = 'triangle';
     this.alpha = 1;
     this.scale = 1;
     this.rotation = 0;
-    this.shouldBeRemoved = false;
-
-    var colorSoundID = utils.getRandomIntFromColorRange();
 
     this.position = utils.getRandomPosition(config.area);
     this.radius = utils.getRandomInt(triangle.radiusRange);
-    this.color = utils.getColor(colorSoundID);
-    this.vertices = utils.getVertices(3, this.radius);
+    this.colorSoundID = utils.getRandomIntFromColorRange();
+    this.color = utils.getColor(this.colorSoundID);
 
-    this.sound = {
-      hash: 't' + uuid.v1(),
-      id: Math.floor(colorSoundID/36),
+    this.shouldBeRemoved = false;
+  };
+
+  Server.Obstacle.Model.prototype.createSound = function(waveform) {
+    return {
+      id: Math.floor(this.colorSoundID/36),
       decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
-      waveform: triangle.waveform
+      waveform: waveform
     };
   };
+
+  // =============================================================
+  // SERVER OBSTACLE TRIANGLE :: extends SERVER OBSTACLE MODEL
+  // =============================================================
+  Server.Obstacle.Triangle = function(id) {
+    Server.Obstacle.Model.call(this, id);
+
+    this.type = 'triangle';
+    this.vertices = utils.getVertices(3, this.radius);
+    this.sound = this.createSound(triangle.waveform);
+  };
+
+  inherits(Server.Obstacle.Triangle, Server.Obstacle.Model);
 
   Server.Obstacle.Triangle.prototype.set = function(data) {
     this.alpha = data.alpha;
@@ -47,28 +59,16 @@
   };
 
   // =============================================================
-  // SERVER OBSTACLE CIRCLE
+  // SERVER OBSTACLE CIRCLE :: extends SERVER OBSTACLE MODEL
   // =============================================================
   Server.Obstacle.Circle = function(id) {
-    this.id = id;
+    Server.Obstacle.Model.call(this, id);
+
     this.type = 'circle';
-    this.alpha = 1;
-    this.scale = 1;
-    this.shouldBeRemoved = false;
-
-    var colorSoundID = utils.getRandomIntFromColorRange();
-    
-    this.position = utils.getRandomPosition(config.area);
-    this.radius = utils.getRandomInt(circle.radiusRange);
-    this.color = utils.getColor(colorSoundID);
-
-    this.sound = {
-      hash: 'c' + uuid.v1(),
-      id: Math.floor(colorSoundID/36),
-      decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
-      waveform: circle.waveform
-    };
+    this.sound = this.createSound(circle.waveform);
   };
+
+  inherits(Server.Obstacle.Circle, Server.Obstacle.Model);
 
   Server.Obstacle.Circle.prototype.set = function(data) {
     this.alpha = data.alpha;
