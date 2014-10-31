@@ -33,9 +33,6 @@ game.collisions = [];
 game.triangles.spawn(10);
 game.circles.spawn(10);
 
-game.newHash = null;
-game.oldHash = null;
-
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
 
@@ -62,15 +59,15 @@ io.on('connection', function(socket) {
 
     socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
 
-    game.collisions.triangle = collision(game.player, game.triangles.get());
-    game.collisions.circle = collision(game.player, game.circles.get());
+    game.collisions.triangles = collision(game.player, game.triangles.get());
+    game.collisions.circles = collision(game.player, game.circles.get());
 
     for (var type in game.collisions) {
       if (typeof game.collisions[type] !== 'undefined') {
-        game.newHash = game.collisions[type].obstacle.sound.hash;
-        if (game.newHash !== game.oldHash) {
+        var id = game.collisions[type].obstacle.id;
+        if (!game[type].get(id).shouldBeRemoved) {
           io.emit(msgs.socket.collision, game.collisions[type]);
-          game.oldHash = game.newHash;
+          game[type].get(id).shouldBeRemoved = true;
         }
       }
     }

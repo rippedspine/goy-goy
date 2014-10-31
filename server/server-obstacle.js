@@ -22,6 +22,7 @@
     this.alpha = 1;
     this.scale = 1;
     this.rotation = 0;
+    this.shouldBeRemoved = false;
 
     var colorSoundID = utils.getRandomIntFromColorRange();
 
@@ -53,6 +54,7 @@
     this.type = 'circle';
     this.alpha = 1;
     this.scale = 1;
+    this.shouldBeRemoved = false;
 
     var colorSoundID = utils.getRandomIntFromColorRange();
     
