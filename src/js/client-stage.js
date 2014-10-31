@@ -10,7 +10,8 @@
     this.objects = {
       players: null,
       triangles: null,
-      circles: null
+      circles: null,
+      zigzags: null
     };
     
     this.canvas.style.background = '#222';

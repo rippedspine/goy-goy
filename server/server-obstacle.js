@@ -76,6 +76,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'zigzag';
+    this.radius = 10;
     this.vertices = utils.getZigzagVertices(id+1);
     this.sound = this.createSound(zigzag.waveform);
   };
@@ -85,7 +86,7 @@
   Server.Obstacle.Zigzag.prototype.set = function(data) {
     this.alpha = data.alpha;
     this.position = data.position;
-    this.rotation = data.rotation;
+    // this.rotation = data.rotation;
     this.scale = data.scale;
   };
 

@@ -92,7 +92,8 @@
   inherits(Client.Obstacle.Zigzag, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Zigzag.prototype.update = function() {
-    this.rotate();
+    // this.rotate();
+    this.growShrink();
     this.onCollision();
   };
 
@@ -100,6 +101,8 @@
     this.rotation += this.updateHz;
     if (this.rotation > 360) {this.rotation = 0;}
   };
+
+  Client.Obstacle.Zigzag.prototype.growShrink = function() {};
 
   Client.Obstacle.Zigzag.prototype.set = function(data) {
     this.rotation = data.rotation;

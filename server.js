@@ -64,6 +64,7 @@ io.on('connection', function(socket) {
 
     game.collisions.triangles = collision(game.player, game.triangles.get());
     game.collisions.circles = collision(game.player, game.circles.get());
+    game.collisions.zigzags = collision(game.player, game.zigzags.get());
 
     for (var type in game.collisions) {
       if (typeof game.collisions[type] !== 'undefined') {
@@ -81,6 +82,8 @@ io.on('connection', function(socket) {
       io.emit(msgs.socket.updateTriangles, game.triangles.resurrect(data.id));
     } else if (data.type === 'circle') {
       io.emit(msgs.socket.updateCircles, game.circles.resurrect(data.id));
+    } else if (data.type === 'zigzag') {
+      io.emit(msgs.socket.updateZigzags, game.zigzags.resurrect(data.id));
     }
   });
 

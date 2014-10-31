@@ -60,6 +60,7 @@
     this.socket.on(msgs.socket.collision, this.onCollision.bind(this));
     this.socket.on(msgs.socket.updateTriangles, this.onUpdateTriangles.bind(this));
     this.socket.on(msgs.socket.updateCircles, this.onUpdateCircles.bind(this));
+    this.socket.on(msgs.socket.updateZigzags, this.onUpdateZigzags.bind(this));
   };
 
   Client.Game.prototype.onConnect = function(data) {
@@ -114,6 +115,8 @@
       this.triangles.setCollision(data.obstacle.id, this.socket);
     } else if (data.obstacle.type === 'circle') {
       this.circles.setCollision(data.obstacle.id, this.socket);
+    } else if (data.obstacle.type === 'zigzag') {
+      this.zigzags.setCollision(data.obstacle.id, this.socket);
     }
   };
 
@@ -123,6 +126,10 @@
 
   Client.Game.prototype.onUpdateTriangles = function(data) {
     this.stage.addToCollection('triangles', this.triangles.resurrect(data));
+  };
+
+  Client.Game.prototype.onUpdateZigzags = function(data) {
+    this.stage.addToCollection('zigzags', this.zigzags.resurrect(data));
   };
 
   module.exports = Client.Game;
