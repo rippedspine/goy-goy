@@ -27,11 +27,13 @@ game.players = new Player.Collection({model: Player.Model});
 
 game.triangles = new Obstacle.Collection({model: Obstacle.Triangle});
 game.circles = new Obstacle.Collection({model: Obstacle.Circle});
+game.zigzags = new Obstacle.Collection({model: Obstacle.Zigzag});
 
 game.collisions = [];
 
 game.triangles.spawn(10);
 game.circles.spawn(10);
+game.zigzags.spawn(10);
 
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
@@ -45,6 +47,7 @@ io.on('connection', function(socket) {
   socket.emit(msgs.socket.connect, {
     circles: game.circles.get(),
     triangles: game.triangles.get(),
+    zigzags: game.zigzags.get(),
     player: game.player
   });
 

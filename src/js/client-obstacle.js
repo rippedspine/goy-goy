@@ -53,7 +53,6 @@
   // =============================================================
   Client.Obstacle.Triangle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
-    console.log(data);
   };
 
   inherits(Client.Obstacle.Triangle, Client.Obstacle.BaseModel);

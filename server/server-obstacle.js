@@ -76,7 +76,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'zigzag';
-    this.vertices = utils.getVertices(3, 0);
+    this.vertices = utils.getZigzagVertices(id+1);
     this.sound = this.createSound(zigzag.waveform);
   };
 

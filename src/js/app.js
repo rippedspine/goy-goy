@@ -14,6 +14,7 @@
     new Player.Collection({model: Player.Model}), 
     new Obstacle.Collection({model: Obstacle.Triangle}),
     new Obstacle.Collection({model: Obstacle.Circle}),
+    new Obstacle.Collection({model: Obstacle.Zigzag}),
     new AudioPlayer(new Audiolet())
   );
 

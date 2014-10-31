@@ -6,13 +6,14 @@
 
     , Client = {};
 
-  Client.Game = function(socket, stage, players, triangles, circles, audioplayer) {
+  Client.Game = function(socket, stage, players, triangles, circles, zigzags, audioplayer) {
     this.socket = socket;
     this.stage = stage;
     this.players = players;
     this.audioplayer = audioplayer;
     this.triangles = triangles;
     this.circles = circles;
+    this.zigzags = zigzags;
 
     this.player = null;
   };
@@ -31,6 +32,7 @@
     this.players.update();
     this.triangles.update();
     this.circles.update();
+    this.zigzags.update();
   };
 
   Client.Game.prototype.handleDOMEvents = function() {
@@ -68,15 +70,19 @@
 
     this.triangles.spawn(data.triangles);
     this.circles.spawn(data.circles);
+    this.zigzags.spawn(data.zigzags);
 
     this.stage.setCollection('players', this.players);
     this.stage.setCollection('triangles', this.triangles);
     this.stage.setCollection('circles', this.circles);
+    this.stage.setCollection('zigzags', this.zigzags);
 
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
 
     this.handleDOMEvents();
     this.loop();
+
+    console.log(data.zigzags);
   };
 
   Client.Game.prototype.onDisonnect = function(id) {
