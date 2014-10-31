@@ -64,7 +64,7 @@
 
   Client.Player.Model.prototype.onCollision = function() {
     if (this.didCollide) {
-      this.colorTimer -= 0.05;
+      this.colorTimer -= 0.01;
       if (this.colorTimer < 0) {
         this.didCollide = false;
         this.colorTimer = 1;
