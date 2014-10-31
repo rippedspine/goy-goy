@@ -1,98 +1,142 @@
 (function() {	
 	'use strict';
+
+  var Vector = function(attrs) {
+    this.x = attrs.x;
+    this.y = attrs.y;
+
+    this.direction = attrs.direction || 0;
+    this.speed = attrs.speed || 0;
+    this.vx = Math.cos(this.direction) * this.speed;
+    this.vy = Math.sin(this.direction) * this.speed;
+
+    this.gravity = attrs.gravity || 0;
+    this.friction = attrs.friction || 1;
+    this.mass = attrs.mass || 1;
+    this.radius = attrs.radius || 0;
+
+    this.springs = [];
+    this.gravitations = [];
+  };
+
+  Vector.prototype.updatePhysics = function() {
+    this.handleSprings();
+    this.handleGravitations();
+    this.vx *= this.friction;
+    this.vy *= this.friction;
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+  };
+
+  Vector.prototype.addGravitation = function(p) {
+    this.removeGravitation(p);
+    this.gravitations.push(p);
+  };
+
+  Vector.prototype.removeGravitation = function(p) {
+    for (var i = 0; i < this.gravitations.length; i += 1) {
+      if (p === this.gravitations[i]) {
+        this.gravitations.splice(i, 1);
+        return;
+      }
+    }
+  };
+
+  Vector.prototype.addSpring = function(point, k, length) {
+    this.removeSpring(point);
+    this.springs.push({
+      point: point,
+      k: k,
+      length: length || 0
+    });
+  };
+
+  Vector.prototype.removeSpring = function(point) {
+    for (var i = 0; i < this.springs.length; i += 1) {
+      if (point === this.springs[i].point) {
+        this.springs.splice(i, 1);
+        return;
+      }
+    }
+  };
+
+  Vector.prototype.getSpeed = function() {
+    return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+  };
+
+  Vector.prototype.setSpeed = function(speed) {
+    var heading = this.getHeading();
+    this.vx = Math.cos(heading) * speed;
+    this.vy = Math.sin(heading) * speed;
+  };
+
+  Vector.prototype.getHeading = function() {
+    return Math.atan2(this.vy, this.vx);
+  };
+
+  Vector.prototype.setHeading = function(heading) {
+    var speed = this.getSpeed();
+    this.vx = Math.cos(heading) * speed;
+    this.vy = Math.sin(heading) * speed;
+  };
+
+  Vector.prototype.accelerate = function(ax, ay) {
+    this.vx += ax;
+    this.vy += ay;
+  };
+
+  Vector.prototype.angleTo = function(p2) {
+    return Math.atan2(p2.y - this.y, p2.x - this.x);
+  };
+
+  Vector.prototype.distanceTo = function(p2) {
+    var dx = p2.x - this.x
+      , dy = p2.y - this.y;
+
+    return Math.sqrt((dx * dx) + (dy * dy));
+  };
+
+  Vector.prototype.handleGravitations = function() {
+    for (var i = 0; i < this.gravitations.length; i += 1) {
+      this.gravitateTo(this.gravitations[i]);
+    }
+  };
+
+  Vector.prototype.handleSprings = function() {
+    for (var i = 0; i < this.springs.length; i += 1) {
+      var spring = this.springs[i];
+      this.springTo(spring.point, spring.k, spring.length);
+    }
+  };
+
+  Vector.prototype.gravitateTo = function(p2) {
+    var dx = p2.x - this.x
+      , dy = p2.y - this.y
+      , distSQ = dx * dx + dy * dy
+      , dist = Math.sqrt(distSQ)
+      , force = p2.mass / distSQ
+
+      , ax = dx / dist * force
+      , ay = dy / dist * force;
+
+    this.vx += ax;
+    this.vy += ay;
+  };
+
+  Vector.prototype.springTo = function(point, k, length) {
+    var dx = point.x - this.x
+      , dy = point.y - this.y
+      , distance = Math.sqrt(dx * dx + dy * dy)
+      , springForce = (distance - length || 0) * k
+
+      , vx = this.vx + dx / distance * springForce
+      , vy = this.vy + dy / distance * springForce;
+
+    this.vx = isNaN(vx) ? 0 : vx;
+    this.vy = isNaN(vy) ? 0 : vy;
+  };
 	
-	function Vector(x, y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	Vector.prototype.getXY = function() {
-		return {
-			x: this.x,
-			y: this.y
-		};
-	};	
-
-	Vector.prototype.setXY = function(point) {
-		this.x = point.x;
-		this.y = point.y;
-	};	
-
-	Vector.prototype.setAngle = function(angle) {
-		var length = this.getLength();
-		this.x = Math.cos(angle) * length;
-		this.y = Math.sin(angle) * length;
-	};
-
-	Vector.prototype.getAngle = function() {
-		return Math.atan2(this.y, this.x);
-	};
-
-	Vector.prototype.setLength = function(length) {
-		var angle = this.getAngle();
-		this.x = Math.cos(angle) * length;
-		this.y = Math.sin(angle) * length;	
-	};
-
-	Vector.prototype.getLength = function() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	};
-
-	Vector.prototype.add = function(v2) {
-		return new Vector(this.x + v2.x, this.y + v2.y);
-	};
-
-	Vector.prototype.subtract = function(v2) {
-		return new Vector(this.x - v2.x, this.y - v2.y);
-	};
-
-	Vector.prototype.multiply = function(val) {
-		return new Vector(this.x * val, this.y * val); };
-
-	Vector.prototype.divide = function(val) {
-		return new Vector(this.x / val, this.y / val);
-	};
-
-	Vector.prototype.addTo = function(v2) {
-		this.x += v2.x;
-		this.y += v2.y;
-	};
-
-	Vector.prototype.subtractFrom = function(v2) {
-		this.x -= v2.x;
-		this.y -= v2.y;
-	};
-
-	Vector.prototype.multiplyBy = function(val) {
-		this.x *= val;
-		this.y *= val;
-	};
-
-	Vector.prototype.DivideBy = function(val) {
-		this.x /= val;
-		this.y /= val;
-	};
-
-	Vector.prototype.magnitude = function() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
-	};
-
-	Vector.prototype.normalize = function() {
-		var m = this.magnitude();
-		if(m !== 0) {
-			this.DivideBy(m);
-		}
-	};
-
-	Vector.prototype.limit = function(max) {
-		var m = this.magnitude();
-
-		if(m > max) {
-			this.normalize();
-			this.multiplyBy(max);
-		}
-	};
-
 	module.exports = Vector;
 	
 })(this);

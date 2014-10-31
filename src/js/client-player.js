@@ -4,19 +4,16 @@
   var BaseCollection = require('../../shared/base/collection.js')
     , Geometry = require('./client-geometry.js')
     , Vector = require('../../shared/vector.js')
-    , inherits = require('../../shared/utils.js').inherits
+    , utils = require('../../shared/utils.js')
+    , inherits = utils.inherits
 
     , Client = { Player: {} };
 
   // =============================================================
-  // CLIENT PLAYER MODEL
+  // CLIENT PLAYER MODEL :: extends Vector
   // =============================================================
   Client.Player.Model = function(data) {
     this.id = data.id;
-
-    this.position = new Vector(data.position.x, data.position.y);
-    this.controller = new Vector(data.position.x, data.position.y);
-    this.velocity = new Vector(0, 0);
 
     this.shape = new Geometry({
       position: data.position,
@@ -29,33 +26,40 @@
 
     this.angle = 0;
     this.updateHz = 0.05;
+
+    var x = data.position.x
+      , y = data.position.y;
+
+    Vector.call(this, {
+      x: x,
+      y: y,
+      direction: utils.rand() * Math.PI * 2,
+      friction: 0.32
+    });
+
+    this.springPoint = {x: x, y: y};
+    this.addSpring(this.springPoint, 0.1);
   };
+
+  inherits(Client.Player.Model, Vector);
 
   Client.Player.Model.prototype.send = function() {
     return {
       id: this.id,
       radius: this.radius,
-      position: this.position.getXY()
+      position: {
+        x: this.x,
+        y: this.y
+      }
     };
   };
 
   Client.Player.Model.prototype.update = function() {
     this.pulse();
     this.onCollision();
-
-    // this.updatePhysics();
-    this.shape.position = this.position.getXY();
-  };
-
-  Client.Player.Model.prototype.updatePhysics = function() {    
-    this.direction = this.controller.subtract(this.position);
-    this.direction.normalize();
-    this.direction.multiplyBy(0.5);
-
-    this.acceleration = this.direction;
-    this.velocity.addTo(this.acceleration);
-    this.velocity.limit(10);
-    this.position.addTo(this.velocity);
+    this.updatePhysics();
+    this.shape.position.x = this.x;
+    this.shape.position.y = this.y;
   };
 
   Client.Player.Model.prototype.draw = function(context) {
@@ -79,7 +83,9 @@
   };
 
   Client.Player.Model.prototype.move = function(position) {
-    this.position.setXY(position);
+    this.springPoint.x = position.x;
+    this.springPoint.y = position.y;
+    // this.position.setXY(position);
     // this.controller.setXY(position);
   };
 
