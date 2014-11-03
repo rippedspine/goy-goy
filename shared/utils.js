@@ -32,6 +32,12 @@
       ].join(',') + ')';
     },
 
+    distance: function(v1, v2) {
+      var dx = v2.x - v1.x
+        , dy = v2.y - v1.y;
+      return Math.sqrt(dx * dx + dy * dy); 
+    },
+
     getPosition: function(canvas, event) {
       var rect = canvas.getBoundingClientRect();
       return {

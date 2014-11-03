@@ -86,6 +86,14 @@
     this.vy = Math.sin(heading) * speed;
   };
 
+  Vector.prototype.setHeadingMinus = function(heading) {
+    var speed = this.getSpeed()
+      , vx = Math.cos(heading) * speed
+      , vy = Math.sin(heading) * speed;
+    this.vx -= vx;
+    this.vy -= vy;
+  };
+
   Vector.prototype.accelerate = function(ax, ay) {
     this.vx += ax;
     this.vy += ay;

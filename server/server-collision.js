@@ -23,7 +23,7 @@
   };
 
   var circleCollision = function(c1, c2) {
-    return distance(c1, c2) <= c1.radius + c2.radius;
+    return distance(c1, c2) <= c1.radius + c2.radius * 1.5;
   };
 
   module.exports = Collision;

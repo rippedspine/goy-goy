@@ -21,7 +21,8 @@
       x: data.x,
       y: data.y,
       direction: 45,
-      friction: 0.32
+      friction: 0.32,
+      radius: data.radius
     });
 
     this.didCollide = false;
@@ -30,6 +31,8 @@
 
     this.angle = 0;
     this.updateHz = 0.05;
+
+    this.particles = [];
 
     this.springPoint = {x: data.x, y: data.y};
     this.addSpring(this.springPoint, 0.1);
@@ -52,6 +55,42 @@
     this.updatePhysics();
     this.shape.x = this.x;
     this.shape.y = this.y;
+  };
+
+  Client.Player.Model.prototype.draw = function(context) {
+    this.shape.draw(context);
+    this.generateParticles(context);
+  };
+
+  Client.Player.Model.prototype.generateParticles = function(context) {
+    if (this.particles.length < 20) {
+      this.particles.push(new Vector({
+        x: this.x, 
+        y: this.y,
+        speed: Math.random() * 1 + (this.getSpeed() * 0.5),
+        direction: this.angleTo(this.springPoint),
+        radius: utils.getRandomInt([2, 5])
+      }));
+    }
+
+    for (var i = 0; i < this.particles.length; i++) {
+      var p = this.particles[i];
+      p.updatePhysics();
+      context.save();
+      context.translate(p.x, p.y);
+      context.beginPath();
+      context.arc(0, 0, p.radius, 0, Math.PI * 2, false);
+      context.fillStyle = this.shape.color;
+      context.fill();
+      context.restore();
+
+      if (this.distanceTo(p) > this.radius * this.getSpeed() * 10) {
+        p.x = this.x;
+        p.y = this.y;
+        p.setSpeed(Math.random() * 1 + (this.getSpeed() * 0.5));
+        p.setHeadingMinus(Math.random() * 1 + this.angleTo(this.springPoint));
+      }
+    }
   };
 
   Client.Player.Model.prototype.onCollision = function() {
@@ -86,7 +125,7 @@
 
   Client.Player.Collection.prototype.draw = function(context) {
     for (var id in this.collection) {
-      this.collection[id].shape.draw(context);
+      this.collection[id].draw(context);
     }
   };
 

@@ -8,16 +8,17 @@
     , Game = require('./client-game.js')
     , AudioPlayer = require('./audioplayer/audioplayer.js');
 
-  var game = new Game(
-    io(),
-    new Stage(), 
-    new Player.Collection({model: Player.Model}), 
-    new Obstacle.Collection({model: Obstacle.Triangle}),
-    new Obstacle.Collection({model: Obstacle.Circle}),
-    new Obstacle.Collection({model: Obstacle.Zigzag}),
-    new AudioPlayer(new Audiolet())
-  );
-
-  game.start();
+  window.addEventListener('load', function(event) {
+    var game = new Game(
+      io(),
+      new Stage(), 
+      new Player.Collection({model: Player.Model}), 
+      new Obstacle.Collection({model: Obstacle.Triangle}),
+      new Obstacle.Collection({model: Obstacle.Circle}),
+      new Obstacle.Collection({model: Obstacle.Zigzag}),
+      new AudioPlayer(new Audiolet())
+    );
+    game.start();
+  });
 
 })(this);
