@@ -12,6 +12,7 @@
     this.alpha = options.alpha || 1;
     this.scale = options.scale || 1;
 
+    this.origin = this.position;
     this.strokeWidth = 1;
     this.isFilled = false;
   };
