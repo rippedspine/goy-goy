@@ -23,10 +23,11 @@
     this.scale = 1;
     this.rotation = 0;
 
-    this.x = utils.getRandomPosition(config.area).x;
-    this.y = utils.getRandomPosition(config.area).y;
+    this.x = utils.getRandomPosition(config.area.size).x;
+    this.y = utils.getRandomPosition(config.area.size).y;
     this.colorSoundID = utils.getRandomIntFromColorRange();
     this.color = utils.getColor(this.colorSoundID);
+    this.direction = [-125, -45, 45, 125][utils.getRandomInt([0, 3])];
 
     this.shouldBeRemoved = false;
   };
@@ -63,7 +64,8 @@
   Server.Obstacle.Triangle.prototype.send = function() {
     return {
       id: this.id,
-      position: this.position,
+      x: this.x,
+      y: this.y,
       sound: this.sound,
       color: this.color,
       vertices: this.vertices
@@ -77,7 +79,8 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'zigzag';
-    this.vertices = utils.getVertices(3, 0);
+    this.radius = utils.getRandomInt(triangle.radiusRange);
+    this.degree = this.radius - 4;
     this.sound = this.createSound(zigzag.waveform);
   };
 
@@ -85,7 +88,8 @@
 
   Server.Obstacle.Zigzag.prototype.set = function(data) {
     this.alpha = data.alpha;
-    this.position = data.position;
+    this.x = data.x;
+    this.y = data.y;
     this.rotation = data.rotation;
     this.scale = data.scale;
   };
@@ -93,10 +97,11 @@
   Server.Obstacle.Zigzag.prototype.send = function() {
     return {
       id: this.id,
-      position: this.position,
+      x: this.x,
+      y: this.y,
       sound: this.sound,
       color: this.color,
-      vertices: this.vertices
+      degree: this.degree
     };
   };
 
@@ -109,7 +114,6 @@
     this.type = 'circle';
     this.radius = utils.getRandomInt(circle.radiusRange);
     this.sound = this.createSound(circle.waveform);
-    this.direction = [-125, -45, 45, 125][utils.getRandomInt([0, 3])];
   };
 
   inherits(Server.Obstacle.Circle, Server.Obstacle.Model);

@@ -11,17 +11,16 @@
       players: null,
       triangles: null,
       circles: null,
-      zigzapgs: null
+      zigzags: null
     };
     
-    this.canvas.style.background = '#222';
-    this.setSize(config.area);
+    this.canvas.style.background = config.area.color;
+    this.setSize(config.area.size);
     document.body.appendChild(this.canvas);
   };
 
   Stage.prototype.render = function() {
-    this.context.fillStyle = 'rgba(0,0,0,0.05)';
-    this.context.fillRect(0, 0, this.width, this.height);
+    this.context.clearRect(0, 0, this.width, this.height);
     for (var type in this.objects) {
       if (this.objects[type] !== null) {
         this.objects[type].draw(this.context);

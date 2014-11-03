@@ -13,10 +13,10 @@
   // =============================================================
   Server.Player.Model = function(id) {
     this.id = id;
-    this.radius = config.radius.player;
-    this.x = (config.area[0] * 0.5) - (this.radius * 0.5);
-    this.y = (config.area[1] * 0.5) - (this.radius * 0.5);
-    this.color = '#fff';
+    this.radius = config.player.radius;
+    this.x = (config.area.size[0] * 0.5) - (this.radius * 0.5);
+    this.y = (config.area.size[1] * 0.5) - (this.radius * 0.5);
+    this.color = config.player.color;
   };
 
   Server.Player.Model.prototype.send = function() {
@@ -25,7 +25,6 @@
       radius: this.radius,
       x: this.x,
       y: this.y,
-      // vertices: this.vertices,
       color: this.color
     };
   };

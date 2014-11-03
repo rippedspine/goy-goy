@@ -6,13 +6,14 @@
 
     , Client = {};
 
-  Client.Game = function(socket, stage, players, triangles, circles, audioplayer) {
+  Client.Game = function(socket, stage, players, triangles, circles, zigzags, audioplayer) {
     this.socket = socket;
     this.stage = stage;
     this.players = players;
     this.audioplayer = audioplayer;
     this.triangles = triangles;
     this.circles = circles;
+    this.zigzags = zigzags;
 
     this.player = null;
   };
@@ -31,6 +32,7 @@
     this.players.update();
     this.triangles.update();
     this.circles.update();
+    this.zigzags.update();
   };
 
   Client.Game.prototype.handleDOMEvents = function() {
@@ -56,6 +58,7 @@
     this.socket.on(msgs.socket.collision, this.onCollision.bind(this));
     this.socket.on(msgs.socket.updateTriangles, this.onUpdateTriangles.bind(this));
     this.socket.on(msgs.socket.updateCircles, this.onUpdateCircles.bind(this));
+    this.socket.on(msgs.socket.updateZigzags, this.onUpdateZigzags.bind(this));
   };
 
   Client.Game.prototype.onConnect = function(data) {
@@ -66,10 +69,12 @@
 
     this.triangles.spawn(data.triangles);
     this.circles.spawn(data.circles);
+    this.zigzags.spawn(data.zigzags);
 
     this.stage.setCollection('players', this.players);
     this.stage.setCollection('triangles', this.triangles);
     this.stage.setCollection('circles', this.circles);
+    this.stage.setCollection('zigzags', this.zigzags);
 
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
 
@@ -106,6 +111,8 @@
       this.triangles.setCollision(data.obstacle.id, this.socket);
     } else if (data.obstacle.type === 'circle') {
       this.circles.setCollision(data.obstacle.id, this.socket);
+    } else if (data.obstacle.type === 'zigzag') {
+      this.zigzags.setCollision(data.obstacle.id, this.socket);
     }
   };
 
@@ -115,6 +122,10 @@
 
   Client.Game.prototype.onUpdateTriangles = function(data) {
     this.stage.addToCollection('triangles', this.triangles.resurrect(data));
+  };
+
+  Client.Game.prototype.onUpdateZigzags = function(data) {
+    this.stage.addToCollection('zigzags', this.zigzags.resurrect(data));
   };
 
   module.exports = Client.Game;

@@ -70,6 +70,16 @@
       }
     },
 
+    getZigzagVertices: function(points) {
+      var vertices = [];
+      for (var i = 0; i < points; i++) {
+        var xv = i
+          , yv = i % 2 === 0 ? 0 : 1;
+        vertices.push({x: xv * 10, y: yv * 10});
+      }
+      return vertices;
+    },
+
     getDecay: function(min, max, range, radius) {
       return min + (max * range.indexOf(radius));
     },

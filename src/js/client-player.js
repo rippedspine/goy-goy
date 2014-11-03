@@ -5,6 +5,7 @@
     , Geometry = require('./client-geometry.js')
     , Vector = require('../../shared/vector.js')
     , utils = require('../../shared/utils.js')
+    , config = require('../../shared/config.js')
     , inherits = utils.inherits
 
     , Client = { Player: {} };
@@ -59,7 +60,7 @@
       if (this.colorTimer < 0) {
         this.didCollide = false;
         this.colorTimer = 1;
-        this.shape.color = '#fff';
+        this.shape.color = config.player.color;
       }
     }
   };

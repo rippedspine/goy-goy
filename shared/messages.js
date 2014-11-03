@@ -12,7 +12,8 @@
       collision: 6,
       deadObstacle: 7,
       updateTriangles: 8,
-      updateCircles: 9
+      updateCircles: 9,
+      updateZigzags: 10
     },
 
     logger: {

@@ -2,9 +2,13 @@
   'use strict';
 
   module.exports = {
-    area: [800, 400],
-    radius: {
-      player: 5,
+    area: {
+      size: [800, 400],
+      color: '#111'
+    },
+    player: {
+      radius: 5,
+      color: '#eee'
     },
     line: {
       amount: 20,

@@ -26,7 +26,7 @@
       x: data.x,
       y: data.y,
       direction: data.direction,
-      speed: 0.3,
+      speed: 0.1,
       friction: 0
     });
 
@@ -61,6 +61,11 @@
     }
   };
 
+  Client.Obstacle.BaseModel.prototype.rotate = function() {
+    this.shape.rotation += this.updateHz;
+    if (this.shape.rotation > 360) {this.shape.rotation = 0;}
+  };
+
   // =============================================================
   // CLIENT OBSTACLE TRIANGLE :: extends CLIENT OBSTACLE BASEMODEL
   // =============================================================
@@ -79,11 +84,6 @@
     this.shape.y = this.position.y;
   };
 
-  Client.Obstacle.Triangle.prototype.rotate = function() {
-    this.shape.rotation += this.updateHz;
-    if (this.shape.rotation > 360) {this.shape.rotation = 0;}
-  };
-
   // =============================================================
   // CLIENT OBSTACLE ZIGZAG :: extends CLIENT OBSTACLE BASEMODEL
   // =============================================================
@@ -94,13 +94,12 @@
   inherits(Client.Obstacle.Zigzag, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Zigzag.prototype.update = function() {
-    this.rotate();
     this.onCollision();
-  };
-
-  Client.Obstacle.Zigzag.prototype.rotate = function() {
-    this.shape.rotation += this.updateHz;
-    if (this.shape.rotation > 360) {this.shape.rotation = 0;}
+    this.rotate();
+    utils.wrapBounce(this.position, this.boundary);
+    this.position.updatePhysics();
+    this.shape.x = this.position.x;
+    this.shape.y = this.position.y;
   };
 
   // =============================================================

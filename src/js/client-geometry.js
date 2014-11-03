@@ -12,6 +12,7 @@
     this.vertices = options.vertices || false;
     this.alpha = options.alpha || 1;
     this.scale = options.scale || 1;
+    this.degree = options.degree || false;
 
     this.strokeWidth = 1;
     this.isFilled = false;
@@ -26,15 +27,17 @@
 
     if (this.vertices) {
       this.drawPolygon(context);
+    } else if (this.degree) {
+      this.drawSnow(context, this.degree);
     } else {
       this.drawCircle(context);
     }
 
     if (this.radius !== 0) {context.closePath();}
-    context.globalAlpha = this.alpha;
-    context.strokeStyle = this.color;
-    context.lineWidth = this.strokeWidth;
-    context.stroke();
+      context.globalAlpha = this.alpha;
+      context.strokeStyle = this.color;
+      context.lineWidth = this.strokeWidth;
+      context.stroke();
     if (this.isFilled) {
       context.fillStyle = this.color;
       context.fill();
@@ -52,6 +55,22 @@
       } else {
         context.lineTo(xv, yv);
       }
+    }
+  };
+
+  Geometry.prototype.drawSnow = function(context, degree) {
+    var angle = 0
+      , radians, i, endX, endY;
+
+    for(i = 0; i < degree; i++) {
+      radians = angle / 180 * Math.PI;
+      endX = 15 * Math.cos(radians);
+      endY = 15 * Math.sin(radians);
+
+      context.moveTo(0, 0);
+      context.lineTo(endX, endY);
+
+      angle += 360/degree;
     }
   };
 
