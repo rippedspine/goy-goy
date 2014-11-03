@@ -4,7 +4,8 @@
   var utils = require('../../shared/utils.js');
 
   var Geometry = function(options) {
-    this.position = options.position;
+    this.x = options.x;
+    this.y = options.y;
     this.color = options.color;
     this.radius = options.radius || 0;
     this.rotation = options.rotation || 0;
@@ -12,14 +13,13 @@
     this.alpha = options.alpha || 1;
     this.scale = options.scale || 1;
 
-    this.origin = this.position;
     this.strokeWidth = 1;
     this.isFilled = false;
   };
 
   Geometry.prototype.draw = function(context) {
     context.save();
-    context.translate(this.position.x, this.position.y);
+    context.translate(this.x, this.y);
     context.rotate(this.rotation);
     context.scale(this.scale, this.scale);
     context.beginPath();

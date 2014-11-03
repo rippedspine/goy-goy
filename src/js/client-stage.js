@@ -10,7 +10,8 @@
     this.objects = {
       players: null,
       triangles: null,
-      circles: null
+      circles: null,
+      zigzapgs: null
     };
     
     this.canvas.style.background = '#222';
@@ -19,7 +20,8 @@
   };
 
   Stage.prototype.render = function() {
-    this.context.clearRect(0, 0, this.width, this.height);
+    this.context.fillStyle = 'rgba(0,0,0,0.05)';
+    this.context.fillRect(0, 0, this.width, this.height);
     for (var type in this.objects) {
       if (this.objects[type] !== null) {
         this.objects[type].draw(this.context);

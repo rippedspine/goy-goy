@@ -2,9 +2,9 @@
   'use strict';
 
   module.exports = {
-    area: [1000, 600],
+    area: [800, 400],
     radius: {
-      player: 30,
+      player: 5,
     },
     line: {
       amount: 20,

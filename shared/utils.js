@@ -51,6 +51,25 @@
       return vertices;
     },
 
+    wrapBounce: function(p, rect) {
+      if (p.x + p.radius > rect.right) {
+        p.x = rect.right - p.radius;
+        p.vx *= p.bounciness;
+      }
+      if (p.x - p.radius < rect.left) {
+        p.x = p.radius + rect.left;
+        p.vx *= p.bounciness;
+      }
+      if (p.y + p.radius > rect.bottom) {
+        p.y = rect.bottom - p.radius;
+        p.vy *= p.bounciness;
+      }
+      if (p.y - p.radius < rect.top) {
+        p.y = p.radius + rect.top;
+        p.vy *= p.bounciness;
+      }
+    },
+
     getDecay: function(min, max, range, radius) {
       return min + (max * range.indexOf(radius));
     },

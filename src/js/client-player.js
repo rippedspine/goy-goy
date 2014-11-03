@@ -14,31 +14,23 @@
   // =============================================================
   Client.Player.Model = function(data) {
     this.id = data.id;
+    this.shape = new Geometry(data);
 
-    this.shape = new Geometry({
-      position: data.position,
-      color: '#fff',
-      vertices: data.vertices,
-      radius: data.radius
+    Vector.call(this, {
+      x: data.x,
+      y: data.y,
+      direction: 45,
+      friction: 0.32
     });
 
     this.didCollide = false;
     this.colorTimer = 1;
+    this.shape.isFilled = true;
 
     this.angle = 0;
     this.updateHz = 0.05;
 
-    var x = data.position.x
-      , y = data.position.y;
-
-    Vector.call(this, {
-      x: x,
-      y: y,
-      direction: utils.rand() * Math.PI * 2,
-      friction: 0.32
-    });
-
-    this.springPoint = {x: x, y: y};
+    this.springPoint = {x: data.x, y: data.y};
     this.addSpring(this.springPoint, 0.1);
   };
 
@@ -48,7 +40,8 @@
     return {
       id: this.id,
       radius: this.radius,
-      position: {x: this.x, y: this.y}
+      x: this.x, 
+      y: this.y
     };
   };
 
@@ -56,12 +49,8 @@
     this.pulse();
     this.onCollision();
     this.updatePhysics();
-    this.shape.position.x = this.x;
-    this.shape.position.y = this.y;
-  };
-
-  Client.Player.Model.prototype.draw = function(context) {
-    this.shape.draw(context);
+    this.shape.x = this.x;
+    this.shape.y = this.y;
   };
 
   Client.Player.Model.prototype.onCollision = function() {
@@ -76,15 +65,13 @@
   };
 
   Client.Player.Model.prototype.pulse = function() {
-    this.shape.strokeWidth = 3 + Math.sin(this.angle) * 2;
+    this.shape.scale = 2 + Math.sin(this.angle) * 0.5;
     this.angle += this.updateHz;
   };
 
   Client.Player.Model.prototype.move = function(position) {
     this.springPoint.x = position.x;
     this.springPoint.y = position.y;
-    // this.position.setXY(position);
-    // this.controller.setXY(position);
   };
 
   // =============================================================
@@ -98,7 +85,7 @@
 
   Client.Player.Collection.prototype.draw = function(context) {
     for (var id in this.collection) {
-      this.collection[id].draw(context);
+      this.collection[id].shape.draw(context);
     }
   };
 

@@ -3,6 +3,7 @@
 
   var BaseCollection = require('../../shared/base/collection.js')
     , Geometry = require('./client-geometry.js')
+    , Vector = require('../../shared/vector.js')
     , utils = require('../../shared/utils.js')
     , inherits = utils.inherits
     , msgs = require('../../shared/messages.js')
@@ -13,8 +14,6 @@
   // CLIENT OBSTACLE BASEMODEL :: extends GEOMETRY
   // =============================================================
   Client.Obstacle.BaseModel = function(data) {
-    Geometry.call(this, data);
-
     this.type = data.type;
     this.id = data.id;
     this.isAlive = true;
@@ -22,27 +21,41 @@
     this.fillTimer = 1;
     this.updateHz = 0.02;
 
+    this.shape = new Geometry(data);
+    this.position = new Vector({
+      x: data.x,
+      y: data.y,
+      direction: data.direction,
+      speed: 0.3,
+      friction: 0
+    });
+
+    this.boundary = {
+      top: data.y - data.radius * 0.5,
+      left: data.x - data.radius * 0.5,
+      bottom: data.y + data.radius * 0.5,
+      right: data.x + data.radius * 0.5
+    };
+
     this.sendDeadEvent = new CustomEvent('dead', {
       'detail': {id: null, type: null}
     });
   };
 
-  inherits(Client.Obstacle.BaseModel, Geometry);
-
   Client.Obstacle.BaseModel.prototype.onCollision = function() {
     if (this.didCollide) {
-      this.isFilled = true;
+      this.shape.isFilled = true;
       this.fillTimer -= 0.05;
-      this.scale += this.updateHz;
-      this.alpha -= this.updateHz;
+      this.shape.scale += this.updateHz;
+      this.shape.alpha -= this.updateHz;
 
-      if (this.fillTimer < 0) {this.isFilled = false;}
-      if (this.alpha < 0) {        
+      if (this.fillTimer < 0) {this.shape.isFilled = false;}
+      if (this.shape.alpha < 0) {        
         this.sendDeadEvent.detail.id = this.id;
         this.sendDeadEvent.detail.type = this.type;
         document.dispatchEvent(this.sendDeadEvent);
 
-        this.alpha = 0;
+        this.shape.alpha = 0;
         this.didCollide = false;
       }
     }
@@ -60,26 +73,15 @@
   Client.Obstacle.Triangle.prototype.update = function() {
     this.rotate();
     this.onCollision();
+    utils.wrapBounce(this.position, this.boundary);
+    this.position.updatePhysics();
+    this.shape.x = this.position.x;
+    this.shape.y = this.position.y;
   };
 
   Client.Obstacle.Triangle.prototype.rotate = function() {
-    this.rotation += this.updateHz;
-    if (this.rotation > 360) {this.rotation = 0;}
-  };
-
-  Client.Obstacle.Triangle.prototype.set = function(data) {
-    this.rotation = data.rotation;
-    this.alpha = data.alpha;
-    this.scale = data.scale;
-  };
-
-  Client.Obstacle.Triangle.prototype.send = function() {
-    return {
-      type: this.type,
-      alpha: this.alpha,
-      scale: this.scale,
-      rotation: this.rotation
-    };
+    this.shape.rotation += this.updateHz;
+    if (this.shape.rotation > 360) {this.shape.rotation = 0;}
   };
 
   // =============================================================
@@ -97,23 +99,8 @@
   };
 
   Client.Obstacle.Zigzag.prototype.rotate = function() {
-    this.rotation += this.updateHz;
-    if (this.rotation > 360) {this.rotation = 0;}
-  };
-
-  Client.Obstacle.Zigzag.prototype.set = function(data) {
-    this.rotation = data.rotation;
-    this.alpha = data.alpha;
-    this.scale = data.scale;
-  };
-
-  Client.Obstacle.Zigzag.prototype.send = function() {
-    return {
-      type: this.type,
-      alpha: this.alpha,
-      scale: this.scale,
-      rotation: this.rotation
-    };
+    this.shape.rotation += this.updateHz;
+    if (this.shape.rotation > 360) {this.shape.rotation = 0;}
   };
 
   // =============================================================
@@ -121,37 +108,16 @@
   // =============================================================
   Client.Obstacle.Circle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
-    this.angle = 0;
-    this.animationContainer = this.radius * 1.5;
-    // thing.moveTo(-120 + Math.sin(count) * 20, -100 + Math.cos(count)* 20);
   };
 
   inherits(Client.Obstacle.Circle, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Circle.prototype.update = function() {
     this.onCollision();
-    this.wiggle(1);
-  };
-
-  Client.Obstacle.Circle.prototype.wiggle = function(radius) {
-    this.angle += this.updateHz;
-    this.newPos = {
-      x: Math.floor(Math.random * this.animationContainer),
-      y: Math.floor(Math.random * this.animationContainer)
-    };
-  };
-
-  Client.Obstacle.Circle.prototype.set = function(data) {
-    this.alpha = data.alpha;
-    this.scale = data.scale;
-  };
-
-  Client.Obstacle.Circle.prototype.send = function() {
-    return {
-      type: this.type,
-      alpha: this.alpha,
-      scale: this.scale
-    };
+    utils.wrapBounce(this.position, this.boundary);
+    this.position.updatePhysics();
+    this.shape.x = this.position.x;
+    this.shape.y = this.position.y;
   };
 
   // =============================================================
@@ -169,18 +135,12 @@
     }
   };
 
-  Client.Obstacle.Collection.prototype.set = function(data) {
-    for (var id in data) {
-      this.collection[id].set(data[id]);
-    }
-  };
-
   Client.Obstacle.Collection.prototype.resurrect = function(data) {
     this.collection[data.id] = new this.model(data);
     return this.collection[data.id];
   };
 
-  Client.Obstacle.Collection.prototype.setCollision = function(id, socket) {
+  Client.Obstacle.Collection.prototype.setCollision = function(id) {
     this.collection[id].didCollide = true;
   };
 
@@ -192,7 +152,7 @@
 
   Client.Obstacle.Collection.prototype.draw = function(context) {
     for (var id in this.collection) { 
-      this.collection[id].draw(context); 
+      this.collection[id].shape.draw(context); 
     }
   };
 

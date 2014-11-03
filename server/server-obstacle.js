@@ -23,7 +23,8 @@
     this.scale = 1;
     this.rotation = 0;
 
-    this.position = utils.getRandomPosition(config.area);
+    this.x = utils.getRandomPosition(config.area).x;
+    this.y = utils.getRandomPosition(config.area).y;
     this.colorSoundID = utils.getRandomIntFromColorRange();
     this.color = utils.getColor(this.colorSoundID);
 
@@ -108,6 +109,7 @@
     this.type = 'circle';
     this.radius = utils.getRandomInt(circle.radiusRange);
     this.sound = this.createSound(circle.waveform);
+    this.direction = [-125, -45, 45, 125][utils.getRandomInt([0, 3])];
   };
 
   inherits(Server.Obstacle.Circle, Server.Obstacle.Model);

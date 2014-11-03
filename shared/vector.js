@@ -1,19 +1,24 @@
 (function() {	
 	'use strict';
 
-  var Vector = function(attrs) {
-    this.x = attrs.x;
-    this.y = attrs.y;
+  var Vector = function(options) {
+    this.x = options.x;
+    this.y = options.y;
 
-    this.direction = attrs.direction || 0;
-    this.speed = attrs.speed || 0;
+    this.ox = options.x;
+    this.oy = options.y;
+
+    this.direction = options.direction || 0;
+    this.speed = options.speed || 0;
+
+    this.gravity = options.gravity || 0;
+    this.bounciness = options.bounciness || -1;
+    this.friction = options.friction || 1;
+    this.mass = options.mass || 1;
+    this.radius = options.radius || 0;
+
     this.vx = Math.cos(this.direction) * this.speed;
     this.vy = Math.sin(this.direction) * this.speed;
-
-    this.gravity = attrs.gravity || 0;
-    this.friction = attrs.friction || 1;
-    this.mass = attrs.mass || 1;
-    this.radius = attrs.radius || 0;
 
     this.springs = [];
     this.gravitations = [];
@@ -136,7 +141,7 @@
     this.vx = isNaN(vx) ? 0 : vx;
     this.vy = isNaN(vy) ? 0 : vy;
   };
-	
+
 	module.exports = Vector;
 	
 })(this);

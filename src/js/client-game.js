@@ -44,9 +44,7 @@
 
   Client.Game.prototype.handleMouseMove = function(event) {
     this.player.move(utils.getPosition(this.stage.canvas, event));
-    this.socket.emit(msgs.socket.updatePlayer, {
-      player: this.player.send()
-    });
+    this.socket.emit(msgs.socket.updatePlayer, this.player.send());
   };
 
   Client.Game.prototype.handleSocketEvents = function() {

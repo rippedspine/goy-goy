@@ -53,9 +53,9 @@ io.on('connection', function(socket) {
     socket.broadcast.emit(msgs.socket.newPlayer, game.players.send(data.id));
   });
 
-  socket.on(msgs.socket.updatePlayer, function(data) {
-    game.players.set(data.player);
-    game.player = game.players.send(data.player.id);
+  socket.on(msgs.socket.updatePlayer, function(player) {
+    game.players.set(player);
+    game.player = game.players.send(player.id);
 
     socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
 

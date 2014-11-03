@@ -19,11 +19,11 @@
   };
 
   var circlePointCollision = function(p, c) {
-    return distance(p, c.position) < c.radius;
+    return distance(p, c) < c.radius;
   };
 
   var circleCollision = function(c1, c2) {
-    return distance(c1.position, c2.position) <= c1.radius + c2.radius;
+    return distance(c1, c2) <= c1.radius + c2.radius;
   };
 
   module.exports = Collision;
