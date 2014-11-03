@@ -93,7 +93,6 @@
 
   Client.Obstacle.Zigzag.prototype.update = function() {
     // this.rotate();
-    this.growShrink();
     this.onCollision();
   };
 
@@ -102,13 +101,11 @@
     if (this.rotation > 360) {this.rotation = 0;}
   };
 
-  Client.Obstacle.Zigzag.prototype.growShrink = function() {};
-
   Client.Obstacle.Zigzag.prototype.set = function(data) {
     this.rotation = data.rotation;
     this.alpha = data.alpha;
     this.scale = data.scale;
-    this.vertices = data.vertices;
+    this.degree = data.degree;
   };
 
   Client.Obstacle.Zigzag.prototype.send = function() {
@@ -117,7 +114,7 @@
       alpha: this.alpha,
       scale: this.scale,
       rotation: this.rotation,
-      vertices: this.vertices
+      degree: this.degree
     };
   };
 
