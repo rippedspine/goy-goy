@@ -154,7 +154,7 @@
   };
 
   Client.Player.Collection.prototype.updatePlayer = function(data) {
-    this.collection[data.id].move(data.position);
+    this.collection[data.id].move({x: data.x, y: data.y});
   };
 
   Client.Player.Collection.prototype.set = function(players) {
