@@ -83,8 +83,8 @@
     var x, y;
     context.moveTo(0, 0);
 
-    for(x = 0; x < 95; x++) {
-        y = 10 * Math.sin(x / this.growth);
+    for(x = 0; x < this.width; x++) {
+        y = this.height * Math.sin(x / this.growth);
         context.lineTo(x, y);
     }
   };
