@@ -82,6 +82,7 @@
       context.lineTo(this.tailSegments[i].x, this.tailSegments[i].y);
     }
     context.lineWidth = this.radius * 0.8 + Math.sin(this.angle) * 2;
+    context.lineCap = 'round';
     context.strokeStyle = this.shape.color;
     context.stroke();
   };
