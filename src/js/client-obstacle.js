@@ -107,14 +107,13 @@
   // =============================================================
   Client.Obstacle.Bassform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
-    this.position = new Vector({
-      x: data.x,
-      y: data.y
-    });
+
+    this.position = new Vector({x: data.x, y: data.y});
+
     this.angle = 0;
     this.shape.growth = data.growth;
-    this.shape.width = data.width;
     this.shape.height = data.height;
+    this.shape.width = data.width;
   };
 
   inherits(Client.Obstacle.Bassform, Client.Obstacle.BaseModel);
@@ -127,9 +126,9 @@
   };
 
   Client.Obstacle.Bassform.prototype.pulse = function() {
-    this.shape.growth = 2 + Math.sin(this.angle) * 0.5;
+    this.shape.growth = 6 + Math.sin(this.angle) * 0.5;
     this.angle += this.updateHz;
-  };  
+  };
 
   // =============================================================
   // CLIENT OBSTACLE CIRCLE :: extends CLIENT OBSTACLE BASEMODEL

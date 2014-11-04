@@ -123,6 +123,7 @@
     this.alpha = data.alpha;
     this.position = data.position;
     this.scale = data.scale;
+    this.pulse = data.pulse;
   };
 
   Server.Obstacle.Bassform.prototype.send = function() {
