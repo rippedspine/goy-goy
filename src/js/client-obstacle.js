@@ -120,6 +120,7 @@
 
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
+    this.shape.isFilled = false;
     this.pulse();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
