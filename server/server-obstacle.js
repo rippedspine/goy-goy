@@ -5,7 +5,6 @@
     , utils = require('../shared/utils.js')
     , inherits = utils.inherits
     , config = require('../shared/config.js')
-    , uuid = require('node-uuid')
     
     , triangle = config.triangle
     , circle = config.circle
@@ -112,6 +111,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'bassform';
+    this.growth = 5.05;
     this.sound = this.createSound(bassform.waveform);
   };
 

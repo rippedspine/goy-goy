@@ -14,7 +14,6 @@
     this.scale = options.scale || 1;
     this.degree = options.degree || false;
     this.type = options.type || 'triangle';
-    this.pulse = options.pulse;
 
     this.strokeWidth = 2;
     this.isFilled = false;
@@ -85,7 +84,7 @@
     context.moveTo(0, 0);
 
     for(x = 0; x < 95; x++) {
-        y = 10 * Math.sin(x / 5);
+        y = 10 * Math.sin(x / this.growth);
         context.lineTo(x, y);
     }
   };

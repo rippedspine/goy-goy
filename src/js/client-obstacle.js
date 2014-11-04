@@ -112,22 +112,23 @@
       x: data.x,
       y: data.y
     });
+    this.angle = 0;
+    this.shape.growth = data.growth;
   };
 
   inherits(Client.Obstacle.Bassform, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
-    // this.pulse();
-    this.position.updatePhysics();
+    this.pulse();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };
 
-  // Client.Obstacle.Bassform.prototype.pulse = function() {
-  //   this.shape.scale = 3 + Math.sin(this.angle) * 0.5;
-  //   this.angle += this.updateHz;
-  // };
+  Client.Obstacle.Bassform.prototype.pulse = function() {
+    this.shape.growth = 2 + Math.sin(this.angle) * 0.5;
+    this.angle += this.updateHz;
+  };
 
   // =============================================================
   // CLIENT OBSTACLE CIRCLE :: extends CLIENT OBSTACLE BASEMODEL
