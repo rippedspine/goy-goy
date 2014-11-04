@@ -111,6 +111,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'bassform';
+    this.rotation = [-45, 0, 45, 90][utils.getRandomInt([0, 3])];
     this.growth = 5.05;
     this.width = 95;
     this.height = 10;
