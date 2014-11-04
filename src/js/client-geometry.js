@@ -26,24 +26,18 @@
     context.scale(this.scale, this.scale);
     context.beginPath();
 
-    switch(this.type) {
-      case 'triangle':
-        this.drawPolygon(context);
-        break;
-      case 'noiseform':
+    if (this.vertices) {
+      this.drawPolygon(context);
+    } else {
+      if (this.type === 'noiseform') {
         this.drawNoiseform(context);
-        break;
-      case 'bassform':
+      } else if (this.type === 'bassform') {
         this.drawBassform(context);
-        break;
-      case 'player':
+      } else {
         this.drawCircle(context);
-        break;
-      case 'circle':
-        this.drawCircle(context);
-        break;
+      }
     }
-
+    
     if (this.radius !== 0) {context.closePath();}
       context.globalAlpha = this.alpha;
       context.strokeStyle = this.color;

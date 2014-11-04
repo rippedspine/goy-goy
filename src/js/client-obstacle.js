@@ -107,14 +107,16 @@
   // =============================================================
   Client.Obstacle.Bassform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.position = new Vector({
+      x: data.x,
+      y: data.y
+    });
   };
 
   inherits(Client.Obstacle.Bassform, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
-    // this.rotate();
-    utils.wrapBounce(this.position, this.boundary);
     this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
