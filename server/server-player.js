@@ -17,6 +17,7 @@
     this.x = (config.area.size[0] * 0.5) - (this.radius * 0.5);
     this.y = (config.area.size[1] * 0.5) - (this.radius * 0.5);
     this.color = config.player.color;
+    this.type = 'player';
   };
 
   Server.Player.Model.prototype.send = function() {

@@ -13,6 +13,7 @@
     this.alpha = options.alpha || 1;
     this.scale = options.scale || 1;
     this.degree = options.degree || false;
+    this.type = options.type || 'triangle';
 
     this.strokeWidth = 1;
     this.isFilled = false;
@@ -24,14 +25,26 @@
     context.rotate(this.rotation);
     context.scale(this.scale, this.scale);
     context.beginPath();
-
-    if (this.vertices) {
-      this.drawPolygon(context);
-    } else if (this.degree) {
-      this.drawSnow(context, this.degree);
-    } else {
-      this.drawCircle(context);
+    
+    switch(this.type) {
+      case 'triangle':
+        this.drawPolygon(context);
+        break;
+      case 'noiseform':
+        this.drawNoiseform(context, this.degree);
+        break;
+      case 'bassform':
+        this.drawBassform(context);
+        break;
+      case 'player':
+        this.drawCircle(context);
+        break;
+      case 'circle':
+        this.drawCircle(context);
+        break;
     }
+
+
 
     if (this.radius !== 0) {context.closePath();}
       context.globalAlpha = this.alpha;
@@ -58,7 +71,7 @@
     }
   };
 
-  Geometry.prototype.drawSnow = function(context, degree) {
+  Geometry.prototype.drawNoiseform = function(context, degree) {
     var angle = 0
       , radians, i, endX, endY;
 
@@ -74,7 +87,7 @@
     }
   };
 
-  Geometry.prototype.drawBass = function(context) {
+  Geometry.prototype.drawBassform = function(context) {
     var x, y;
     context.moveTo(0, 0);
 
