@@ -31,6 +31,8 @@
         return new Square(this.audiolet, this.frequency);
       case 'noise':
         return new WhiteNoise(this.audiolet, this.frequency);
+      case 'bass':
+        return new Sine(this.audiolet, this.frequency/3);
       default:
         return new Sine(this.audiolet, this.frequency);
     }
