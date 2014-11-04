@@ -15,7 +15,7 @@
     this.degree = options.degree || false;
     this.type = options.type || 'triangle';
 
-    this.strokeWidth = 1;
+    this.strokeWidth = 2;
     this.isFilled = false;
   };
 
@@ -25,13 +25,13 @@
     context.rotate(this.rotation);
     context.scale(this.scale, this.scale);
     context.beginPath();
-    
+
     switch(this.type) {
       case 'triangle':
         this.drawPolygon(context);
         break;
       case 'noiseform':
-        this.drawNoiseform(context, this.degree);
+        this.drawNoiseform(context);
         break;
       case 'bassform':
         this.drawBassform(context);
@@ -43,8 +43,6 @@
         this.drawCircle(context);
         break;
     }
-
-
 
     if (this.radius !== 0) {context.closePath();}
       context.globalAlpha = this.alpha;
@@ -71,19 +69,19 @@
     }
   };
 
-  Geometry.prototype.drawNoiseform = function(context, degree) {
+  Geometry.prototype.drawNoiseform = function(context) {
     var angle = 0
-      , radians, i, endX, endY;
+      , radians, endX, endY;
 
-    for(i = 0; i < degree; i++) {
+    for(var i = 0; i < this.degree; i++) {
       radians = angle / 180 * Math.PI;
-      endX = 15 * Math.cos(radians);
-      endY = 15 * Math.sin(radians);
+      endX = this.radius * Math.cos(radians);
+      endY = this.radius * Math.sin(radians);
 
       context.moveTo(0, 0);
       context.lineTo(endX, endY);
 
-      angle += 360/degree;
+      angle += 360/this.degree;
     }
   };
 

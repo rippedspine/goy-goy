@@ -3,9 +3,15 @@
 
   module.exports = {
     area: {
-      size: [800, 400],
-      color: '#111'
+      color: '#111',
+      size: [2569, 1600],
+      ratioFactor: {
+        h: 0.625,
+        w: 1.6
+      }
     },
+    sizeFactor: 2569 / 800,
+    angleArray: [-125, -45, 45, 125],
     player: {
       radius: 5,
       color: '#eee'

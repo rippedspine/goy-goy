@@ -26,7 +26,7 @@
       x: data.x,
       y: data.y,
       direction: data.direction,
-      speed: 0.1,
+      speed: 1,
       friction: 0
     });
 
