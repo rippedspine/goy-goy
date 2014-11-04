@@ -71,7 +71,7 @@
 
   Geometry.prototype.drawNoiseform = function(context) {
     var angle = 0
-      , radians, i, endX, endY;
+      , radians, endX, endY;
 
     for(var i = 0; i < this.degree; i++) {
       radians = angle / 180 * Math.PI;
