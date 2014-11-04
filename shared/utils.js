@@ -1,7 +1,9 @@
 (function() {
   'use strict';
 
-  var color = require('./config.js').color;
+  var config = require('./config.js')
+  ,   color = config.color;
+  
 
   module.exports = {
     rand: function() {
