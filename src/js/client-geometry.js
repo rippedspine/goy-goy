@@ -74,6 +74,16 @@
     }
   };
 
+  Geometry.prototype.drawBass = function(context) {
+    var x, y;
+    context.moveTo(0, 0);
+
+    for(x = 0; x < 95; x++) {
+        y = 10 * Math.sin(x / 5.05);
+        context.lineTo(x, y);
+    }
+  };
+
   Geometry.prototype.drawCircle = function(context) {
     context.arc(0, 0, this.radius, 0, 2 * Math.PI, false);
   };

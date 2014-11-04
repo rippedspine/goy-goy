@@ -9,7 +9,7 @@
     
     , triangle = config.triangle
     , circle = config.circle
-    , zigzag = config.zigzag
+    , noiseform = config.noiseform
     , sound = config.sound
 
     , Server = { Obstacle: {} };
@@ -73,20 +73,20 @@
   };
 
   // =============================================================
-  // SERVER OBSTACLE ZIGZAG :: extends SERVER OBSTACLE MODEL
+  // SERVER OBSTACLE NOISEFORM :: extends SERVER OBSTACLE MODEL
   // =============================================================
-  Server.Obstacle.Zigzag = function(id) {
+  Server.Obstacle.Noiseform = function(id) {
     Server.Obstacle.Model.call(this, id);
 
-    this.type = 'zigzag';
+    this.type = 'noiseform';
     this.radius = utils.getRandomInt(triangle.radiusRange);
     this.degree = this.radius - 4;
-    this.sound = this.createSound(zigzag.waveform);
+    this.sound = this.createSound(noiseform.waveform);
   };
 
-  inherits(Server.Obstacle.Zigzag, Server.Obstacle.Model);
+  inherits(Server.Obstacle.Noiseform, Server.Obstacle.Model);
 
-  Server.Obstacle.Zigzag.prototype.set = function(data) {
+  Server.Obstacle.Noiseform.prototype.set = function(data) {
     this.alpha = data.alpha;
     this.x = data.x;
     this.y = data.y;
@@ -94,7 +94,7 @@
     this.scale = data.scale;
   };
 
-  Server.Obstacle.Zigzag.prototype.send = function() {
+  Server.Obstacle.Noiseform.prototype.send = function() {
     return {
       id: this.id,
       x: this.x,

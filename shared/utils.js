@@ -76,7 +76,7 @@
       }
     },
 
-    getZigzagVertices: function(points) {
+    getNoiseformVertices: function(points) {
       var vertices = [];
       for (var i = 0; i < points; i++) {
         var xv = i
