@@ -28,6 +28,7 @@
     this.didCollide = false;
     this.colorTimer = 1;
     this.shape.isFilled = true;
+    this.type = 'player';
 
     this.angle = 0;
     this.updateHz = 0.05;

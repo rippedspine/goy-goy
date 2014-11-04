@@ -85,15 +85,15 @@
   };
 
   // =============================================================
-  // CLIENT OBSTACLE ZIGZAG :: extends CLIENT OBSTACLE BASEMODEL
+  // CLIENT OBSTACLE NOISEFORM :: extends CLIENT OBSTACLE BASEMODEL
   // =============================================================
-  Client.Obstacle.Zigzag = function(data) {
+  Client.Obstacle.Noiseform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
   };
 
-  inherits(Client.Obstacle.Zigzag, Client.Obstacle.BaseModel);
+  inherits(Client.Obstacle.Noiseform, Client.Obstacle.BaseModel);
 
-  Client.Obstacle.Zigzag.prototype.update = function() {
+  Client.Obstacle.Noiseform.prototype.update = function() {
     this.onCollision();
     this.rotate();
     utils.wrapBounce(this.position, this.boundary);

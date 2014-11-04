@@ -30,7 +30,7 @@
       waveform: 'saw',
       radiusRange: [7, 16]
     },
-    zigzag: {
+    noiseform: {
       amount: 20,
       waveform: 'noise'
     },
