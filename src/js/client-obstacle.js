@@ -113,6 +113,8 @@
     });
     this.angle = 0;
     this.shape.growth = data.growth;
+    this.shape.width = data.width;
+    this.shape.height = data.height;
   };
 
   inherits(Client.Obstacle.Bassform, Client.Obstacle.BaseModel);

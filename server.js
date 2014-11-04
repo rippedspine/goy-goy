@@ -65,10 +65,10 @@ io.on('connection', function(socket) {
 
     socket.broadcast.emit(msgs.socket.updatePlayer, game.player);
 
-    game.collisions.triangles = collision(game.player, game.triangles.get());
-    game.collisions.circles = collision(game.player, game.circles.get());
-    game.collisions.noiseforms = collision(game.player, game.noiseforms.get());
-    game.collisions.bassforms = collision(game.player, game.bassforms.get());
+    game.collisions.triangles = collision.circleCircle(game.player, game.triangles.get());
+    game.collisions.circles = collision.circleCircle(game.player, game.circles.get());
+    game.collisions.noiseforms = collision.circleCircle(game.player, game.noiseforms.get());
+    game.collisions.bassforms = collision.circleRect(game.player, game.bassforms.get());
 
     for (var type in game.collisions) {
       if (typeof game.collisions[type] !== 'undefined') {

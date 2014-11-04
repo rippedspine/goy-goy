@@ -112,6 +112,8 @@
 
     this.type = 'bassform';
     this.growth = 5.05;
+    this.width = 95;
+    this.height = 10;
     this.sound = this.createSound(bassform.waveform);
   };
 
