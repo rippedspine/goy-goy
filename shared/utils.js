@@ -16,8 +16,8 @@
 
     getRandomPosition: function(area) {
       return {
-        x: this.getRandomInt([0, area[0]]),
-        y: this.getRandomInt([0, area[1]])
+        x: this.getRandomInt([0, area[0] - 100]),
+        y: this.getRandomInt([0, area[1] - 100])
       };
     },
 

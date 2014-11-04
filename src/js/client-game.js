@@ -51,6 +51,11 @@
     this.socket.emit(msgs.socket.updatePlayer, this.player.send());
   };
 
+  Client.Game.prototype.handleMouseLeave = function(event) {
+    this.player.move(utils.getPosition(this.stage.canvas, event));
+    this.socket.emit(msgs.socket.updatePlayer, this.player.send());
+  };
+
   Client.Game.prototype.handleSocketEvents = function() {
     this.socket.on(msgs.socket.connect, this.onConnect.bind(this));
     this.socket.on(msgs.socket.disconnect, this.onDisonnect.bind(this));
