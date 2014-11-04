@@ -107,6 +107,7 @@
   // =============================================================
   Client.Obstacle.Bassform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.angle = 0;
     this.position = new Vector({
       x: data.x,
       y: data.y
@@ -117,10 +118,16 @@
 
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
+    // this.pulse();
     this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };
+
+  // Client.Obstacle.Bassform.prototype.pulse = function() {
+  //   this.shape.scale = 3 + Math.sin(this.angle) * 0.5;
+  //   this.angle += this.updateHz;
+  // };
 
   // =============================================================
   // CLIENT OBSTACLE CIRCLE :: extends CLIENT OBSTACLE BASEMODEL
