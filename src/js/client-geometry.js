@@ -14,7 +14,7 @@
     this.scale = options.scale || 1;
     this.degree = options.degree || false;
 
-    this.strokeWidth = 1;
+    this.strokeWidth = 2;
     this.isFilled = false;
   };
 
@@ -28,7 +28,7 @@
     if (this.vertices) {
       this.drawPolygon(context);
     } else if (this.degree) {
-      this.drawSnow(context, this.degree);
+      this.drawSnow(context);
     } else {
       this.drawCircle(context);
     }
@@ -58,19 +58,18 @@
     }
   };
 
-  Geometry.prototype.drawSnow = function(context, degree) {
-    var angle = 0
-      , radians, i, endX, endY;
+  Geometry.prototype.drawSnow = function(context) {
+    var angle = 0, radians, endX, endY;
 
-    for(i = 0; i < degree; i++) {
+    for(var i = 0; i < this.degree; i++) {
       radians = angle / 180 * Math.PI;
-      endX = 15 * Math.cos(radians);
-      endY = 15 * Math.sin(radians);
+      endX = this.radius * Math.cos(radians);
+      endY = this.radius * Math.sin(radians);
 
       context.moveTo(0, 0);
       context.lineTo(endX, endY);
 
-      angle += 360/degree;
+      angle += 360/this.degree;
     }
   };
 

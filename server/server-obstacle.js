@@ -27,7 +27,7 @@
     this.y = utils.getRandomPosition(config.area.size).y;
     this.colorSoundID = utils.getRandomIntFromColorRange();
     this.color = utils.getColor(this.colorSoundID);
-    this.direction = [-125, -45, 45, 125][utils.getRandomInt([0, 3])];
+    this.direction = config.angleArray[utils.getRandomInt([0, 3])];
 
     this.shouldBeRemoved = false;
   };
@@ -47,7 +47,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'triangle';
-    this.radius = utils.getRandomInt(triangle.radiusRange);
+    this.radius = utils.getRandomInt(triangle.radiusRange) * config.sizeFactor;
     this.vertices = utils.getVertices(3, this.radius);
     this.sound = this.createSound(triangle.waveform);
   };
@@ -79,8 +79,8 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'zigzag';
-    this.radius = utils.getRandomInt(triangle.radiusRange);
-    this.degree = this.radius - 4;
+    this.degree = utils.getRandomInt(triangle.radiusRange) - 4;
+    this.radius = (this.degree + 4) * config.sizeFactor;
     this.sound = this.createSound(zigzag.waveform);
   };
 
@@ -112,7 +112,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'circle';
-    this.radius = utils.getRandomInt(circle.radiusRange);
+    this.radius = utils.getRandomInt(circle.radiusRange) * config.sizeFactor;
     this.sound = this.createSound(circle.waveform);
   };
 

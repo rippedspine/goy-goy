@@ -41,8 +41,8 @@
     getPosition: function(canvas, event) {
       var rect = canvas.getBoundingClientRect();
       return {
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top
+        x: (event.clientX - rect.left) * canvas.zoom,
+        y: (event.clientY - rect.top) * canvas.zoom
       };
     },
 
