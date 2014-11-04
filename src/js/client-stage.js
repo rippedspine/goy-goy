@@ -11,7 +11,8 @@
       players: null,
       triangles: null,
       circles: null,
-      noiseforms: null
+      noiseforms: null,
+      bassforms: null
     };
     
     this.canvas.style.background = config.area.color;

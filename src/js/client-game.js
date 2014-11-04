@@ -6,7 +6,7 @@
 
     , Client = {};
 
-  Client.Game = function(socket, stage, players, triangles, circles, noiseforms, audioplayer) {
+  Client.Game = function(socket, stage, players, triangles, circles, noiseforms, bassforms, audioplayer) {
     this.socket = socket;
     this.stage = stage;
     this.players = players;
@@ -14,6 +14,7 @@
     this.triangles = triangles;
     this.circles = circles;
     this.noiseforms = noiseforms;
+    this.bassforms = bassforms;
 
     this.player = null;
   };
@@ -33,6 +34,7 @@
     this.triangles.update();
     this.circles.update();
     this.noiseforms.update();
+    this.bassforms.update();
   };
 
   Client.Game.prototype.handleDOMEvents = function() {
@@ -59,6 +61,7 @@
     this.socket.on(msgs.socket.updateTriangles, this.onUpdateTriangles.bind(this));
     this.socket.on(msgs.socket.updateCircles, this.onUpdateCircles.bind(this));
     this.socket.on(msgs.socket.updateNoiseforms, this.onUpdateNoiseforms.bind(this));
+    this.socket.on(msgs.socket.updateBassforms, this.onUpdateBassforms.bind(this));
   };
 
   Client.Game.prototype.onConnect = function(data) {
@@ -70,11 +73,13 @@
     this.triangles.spawn(data.triangles);
     this.circles.spawn(data.circles);
     this.noiseforms.spawn(data.noiseforms);
+    this.bassforms.spawn(data.bassforms);
 
     this.stage.setCollection('players', this.players);
     this.stage.setCollection('triangles', this.triangles);
     this.stage.setCollection('circles', this.circles);
     this.stage.setCollection('noiseforms', this.noiseforms);
+    this.stage.setCollection('bassforms', this.bassforms);
 
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
 
@@ -113,6 +118,8 @@
       this.circles.setCollision(data.obstacle.id, this.socket);
     } else if (data.obstacle.type === 'noiseform') {
       this.noiseforms.setCollision(data.obstacle.id, this.socket);
+    } else if (data.obstacle.type === 'bassform') {
+      this.bassforms.setCollision(data.obstacle.id, this.socket);
     }
   };
 
@@ -126,6 +133,10 @@
 
   Client.Game.prototype.onUpdateNoiseforms = function(data) {
     this.stage.addToCollection('noiseforms', this.noiseforms.resurrect(data));
+  };
+
+  Client.Game.prototype.onUpdateBassforms = function(data) {
+    this.stage.addToCollection('bassforms', this.bassforms.resurrect(data));
   };
 
   module.exports = Client.Game;

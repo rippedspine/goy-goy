@@ -28,12 +28,14 @@ game.players = new Player.Collection({model: Player.Model});
 game.triangles = new Obstacle.Collection({model: Obstacle.Triangle});
 game.circles = new Obstacle.Collection({model: Obstacle.Circle});
 game.noiseforms = new Obstacle.Collection({model: Obstacle.Noiseform});
+game.bassforms = new Obstacle.Collection({model: Obstacle.Bassform});
 
 game.collisions = [];
 
 game.triangles.spawn(10);
 game.circles.spawn(10);
 game.noiseforms.spawn(10);
+game.bassforms.spawn(10);
 
 io.on('connection', function(socket) {
   msgs.logger.connect(socket.id);
@@ -48,6 +50,7 @@ io.on('connection', function(socket) {
     circles: game.circles.get(),
     triangles: game.triangles.get(),
     noiseforms: game.noiseforms.get(),
+    bassforms: game.bassforms.get(),
     player: game.player
   });
 
@@ -65,6 +68,7 @@ io.on('connection', function(socket) {
     game.collisions.triangles = collision(game.player, game.triangles.get());
     game.collisions.circles = collision(game.player, game.circles.get());
     game.collisions.noiseforms = collision(game.player, game.noiseforms.get());
+    game.collisions.bassforms = collision(game.player, game.bassforms.get());
 
     for (var type in game.collisions) {
       if (typeof game.collisions[type] !== 'undefined') {
@@ -84,6 +88,8 @@ io.on('connection', function(socket) {
       io.emit(msgs.socket.updateCircles, game.circles.resurrect(data.id));
     } else if (data.type === 'noiseform') {
       io.emit(msgs.socket.updateNoiseforms, game.noiseforms.resurrect(data.id));
+    } else if (data.type === 'bassform') {
+      io.emit(msgs.socket.updateBassforms, game.bassforms.resurrect(data.id));
     }
   });
 
