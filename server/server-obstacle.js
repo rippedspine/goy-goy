@@ -10,6 +10,7 @@
     , triangle = config.triangle
     , circle = config.circle
     , noiseform = config.noiseform
+    , bassform = config.bassform
     , sound = config.sound
 
     , Server = { Obstacle: {} };
@@ -102,6 +103,34 @@
       sound: this.sound,
       color: this.color,
       degree: this.degree
+    };
+  };
+
+  // =============================================================
+  // SERVER OBSTACLE BASSFORM :: extends SERVER OBSTACLE MODEL
+  // =============================================================
+  Server.Obstacle.Bassform = function(id) {
+    Server.Obstacle.Model.call(this, id);
+
+    this.type = 'bassform';
+    // this.radius = utils.getRandomInt(bassform.radiusRange);
+    this.sound = this.createSound(bassform.waveform);
+  };
+
+  inherits(Server.Obstacle.Bassform, Server.Obstacle.Model);
+
+  Server.Obstacle.Bassform.prototype.set = function(data) {
+    this.alpha = data.alpha;
+    this.position = data.position;
+    this.scale = data.scale;
+  };
+
+  Server.Obstacle.Bassform.prototype.send = function() {
+    return {
+      id: this.id,
+      position: this.position,
+      sound: this.sound,
+      color: this.color
     };
   };
 

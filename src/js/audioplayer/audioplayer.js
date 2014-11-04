@@ -36,6 +36,8 @@
     this.synth = new Synth(this.audiolet);
     if(sound.waveform === 'noise') {
       this.synth.play(sound.waveform, sound.decay, 440, this.filterFrequencies[sound.id]);
+    } else if(sound.waveform === 'bass') {
+      this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 200);
     } else {
       this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 400);
     }

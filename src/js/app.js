@@ -16,6 +16,7 @@
       new Obstacle.Collection({model: Obstacle.Triangle}),
       new Obstacle.Collection({model: Obstacle.Circle}),
       new Obstacle.Collection({model: Obstacle.Noiseform}),
+      new Obstacle.Collection({model: Obstacle.Bassform}),
       new AudioPlayer(new Audiolet())
     );
     game.start();

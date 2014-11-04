@@ -28,6 +28,10 @@
       amount: 20,
       waveform: 'noise'
     },
+    bassform: {
+      amount: 20,
+      waveform: 'bass'
+    },
     color: {
       range: [0, 360],
       saturation: '60%',

@@ -13,7 +13,8 @@
       deadObstacle: 7,
       updateTriangles: 8,
       updateCircles: 9,
-      updateNoiseforms: 10
+      updateNoiseforms: 10,
+      updateBassforms: 11
     },
 
     logger: {
