@@ -36,6 +36,9 @@
 
     this.springPoint = {x: data.x, y: data.y};
     this.addSpring(this.springPoint, 0.1);
+
+    this.tailSegments = this.createTail(10);
+    this.addTailToPlayer(0.6);
   };
 
   inherits(Client.Player.Model, Vector);
@@ -49,48 +52,54 @@
     };
   };
 
+  Client.Player.Model.prototype.createTail = function(numSegments) {
+    var segments = [];
+    for (var i = 0; i < numSegments; i++) {
+      segments.push(new Vector({
+        x: this.x,
+        y: this.y,
+        direction: this.direction,
+        friction: this.friction
+      }));
+    }
+    return segments;
+  };
+
+  Client.Player.Model.prototype.addTailToPlayer = function(k) {
+    for (var j = 0; j < this.tailSegments.length; j++) {
+      if (j === 0) {
+        this.tailSegments[j].addSpring(this, k);
+      } else {
+        this.tailSegments[j].addSpring(this.tailSegments[j - 1], k);
+      }
+    }
+  };
+
+  Client.Player.Model.prototype.drawTail = function(context) {
+    context.beginPath();
+    context.moveTo(this.x, this.y);
+    for (var i = 0; i < this.tailSegments.length; i++) {
+      context.lineTo(this.tailSegments[i].x, this.tailSegments[i].y);
+    }
+    context.lineWidth = this.radius * 0.8 + Math.sin(this.angle) * 2;
+    context.strokeStyle = this.shape.color;
+    context.stroke();
+  };
+
   Client.Player.Model.prototype.update = function() {
     this.pulse();
     this.onCollision();
     this.updatePhysics();
+    for (var i = 0; i < this.tailSegments.length; i++) {
+      this.tailSegments[i].updatePhysics();
+    }
     this.shape.x = this.x;
     this.shape.y = this.y;
   };
 
   Client.Player.Model.prototype.draw = function(context) {
     this.shape.draw(context);
-    this.generateParticles(context);
-  };
-
-  Client.Player.Model.prototype.generateParticles = function(context) {
-    if (this.particles.length < 20) {
-      this.particles.push(new Vector({
-        x: this.x, 
-        y: this.y,
-        speed: Math.random() * 1 + (this.getSpeed() * 0.5),
-        direction: this.angleTo(this.springPoint),
-        radius: utils.getRandomInt([2, 5])
-      }));
-    }
-
-    for (var i = 0; i < this.particles.length; i++) {
-      var p = this.particles[i];
-      p.updatePhysics();
-      context.save();
-      context.translate(p.x, p.y);
-      context.beginPath();
-      context.arc(0, 0, p.radius, 0, Math.PI * 2, false);
-      context.fillStyle = this.shape.color;
-      context.fill();
-      context.restore();
-
-      if (this.distanceTo(p) > this.radius * this.getSpeed() * 10) {
-        p.x = this.x;
-        p.y = this.y;
-        p.setSpeed(Math.random() * 1 + (this.getSpeed() * 0.5));
-        p.setHeadingMinus(Math.random() * 1 + this.angleTo(this.springPoint));
-      }
-    }
+    this.drawTail(context);
   };
 
   Client.Player.Model.prototype.onCollision = function() {
