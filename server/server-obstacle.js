@@ -112,7 +112,6 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'bassform';
-    // this.radius = utils.getRandomInt(bassform.radiusRange);
     this.sound = this.createSound(bassform.waveform);
   };
 
