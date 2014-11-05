@@ -36,11 +36,11 @@ io.on('connection', function(socket) {
   }
 
   socket.emit(msgs.socket.connect, {
-    roundForms: game.roundForms.get(),
-    sharpForms: game.sharpForms.get(),
-    noiseForms: game.noiseForms.get(),
-    bassForms:  game.bassForms.get(),
-    player:     new Player.Model(socket.id)
+    roundForms : game.roundForms.get(),
+    sharpForms : game.sharpForms.get(),
+    noiseForms : game.noiseForms.get(),
+    bassForms  : game.bassForms.get(),
+    player     : new Player.Model(socket.id)
   });
 
   socket.on(msgs.socket.newPlayer, function(data) {

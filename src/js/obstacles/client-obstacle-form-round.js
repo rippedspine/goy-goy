@@ -19,6 +19,7 @@
     this.onCollision();
     utils.vector.wrapBounce(this.position, this.boundary);
     this.position.updatePhysics();
+
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };

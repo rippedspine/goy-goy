@@ -4,14 +4,15 @@
   var utils = {};
 
   utils.myMath = {
-    floor: Math.floor,
-    random: Math.random,
-    sqrt: Math.sqrt,
-    cos: Math.cos,
-    sin: Math.sin,
-    max: Math.max,
-    min: Math.min,
-    PI: Math.PI
+    floor  : Math.floor,
+    random : Math.random,
+    sqrt   : Math.sqrt,
+    cos    : Math.cos,
+    sin    : Math.sin,
+    atan2  : Math.atan2,
+    max    : Math.max,
+    min    : Math.min,
+    PI     : Math.PI
   };
 
   utils.inherits = function(child, parent) {

@@ -17,10 +17,10 @@
   Tail.prototype.create = function() {
     for (var i = 0; i < this.numPoints; i++) {
       this.points.push(new Vector({
-        x: this.origin.x,
-        y: this.origin.y,
-        direction: this.direction,
-        friction: this.friction
+        x         : this.origin.x,
+        y         : this.origin.y,
+        direction : this.direction,
+        friction  : this.friction
       }));
     }
   };
@@ -40,8 +40,8 @@
     for (var i = 0; i < this.points.length; i++) {
       context.lineTo(this.points[i].x, this.points[i].y);
     }
-    context.lineWidth = this.lineWidth;
-    context.lineCap = 'round';
+    context.lineWidth   = this.lineWidth;
+    context.lineCap     = 'round';
     context.strokeStyle = color;
     context.stroke();
   };

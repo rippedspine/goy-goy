@@ -21,18 +21,18 @@
 
   Server.Player.Model.prototype.send = function() {
     return {
-      id: this.id,
-      radius: this.radius,
-      x: this.x,
-      y: this.y,
-      color: this.color
+      id     : this.id,
+      radius : this.radius,
+      x      : this.x,
+      y      : this.y,
+      color  : this.color
     };
   };
 
   Server.Player.Model.prototype.set = function(data) {
     this.id = data.id;
-    this.x = data.x;
-    this.y = data.y;
+    this.x  = data.x;
+    this.y  = data.y;
   };
 
   // =============================================================

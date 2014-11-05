@@ -2,7 +2,7 @@
   'use strict';
 
   var BaseShape = require('./_base-shape.js')
-    , utils = require('../../../shared/utils.js')
+    , utils    = require('../../../shared/utils.js')
     , inherits = utils.inherits;
 
   var Polygon = function(options) {

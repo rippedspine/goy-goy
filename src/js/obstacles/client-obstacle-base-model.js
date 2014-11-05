@@ -15,18 +15,18 @@
     this.updateHz   = 0.02;
 
     this.position = new Vector({
-      x: data.x,
-      y: data.y,
-      direction: data.direction,
-      speed: 1,
-      friction: 0
+      x         : data.x,
+      y         : data.y,
+      direction : data.direction,
+      speed     : 1,
+      friction  : 0
     });
 
     this.boundary = {
-      top: data.y - data.radius * 0.5,
-      left: data.x - data.radius * 0.5,
-      bottom: data.y + data.radius * 0.5,
-      right: data.x + data.radius * 0.5
+      top    : data.y - data.radius * 0.5,
+      left   : data.x - data.radius * 0.5,
+      bottom : data.y + data.radius * 0.5,
+      right  : data.x + data.radius * 0.5
     };
 
     this.sendDeadEvent = new CustomEvent('dead', {
@@ -37,9 +37,10 @@
   Client.Obstacle.BaseModel.prototype.onCollision = function() {
     if (this.didCollide) {
       this.shape.isFilled = true;
-      this.fillTimer      -= 0.05;
-      this.shape.scale    += this.updateHz;
-      this.shape.alpha    -= this.updateHz;
+
+      this.fillTimer -= 0.05;
+      this.shape.scale += this.updateHz;
+      this.shape.alpha -= this.updateHz;
 
       if (this.fillTimer < 0) {this.shape.isFilled = false;}
       if (this.shape.alpha < 0) {        
@@ -48,7 +49,7 @@
         document.dispatchEvent(this.sendDeadEvent);
 
         this.shape.alpha = 0;
-        this.didCollide = false;
+        this.didCollide  = false;
       }
     }
   };

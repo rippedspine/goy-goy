@@ -1,6 +1,8 @@
 (function() {	
 	'use strict';
 
+  var utils = require('./utils.js');
+
   var Vector = function(options) {
     this.x = options.x;
     this.y = options.y;
@@ -9,18 +11,18 @@
     this.oy = options.y;
 
     this.direction = options.direction || 0;
-    this.speed = options.speed || 0;
+    this.speed     = options.speed || 0;
 
-    this.gravity = options.gravity || 0;
+    this.gravity    = options.gravity || 0;
     this.bounciness = options.bounciness || -1;
-    this.friction = options.friction || 1;
-    this.mass = options.mass || 1;
-    this.radius = options.radius || 0;
+    this.friction   = options.friction || 1;
+    this.mass       = options.mass || 1;
+    this.radius     = options.radius || 0;
 
-    this.vx = Math.cos(this.direction) * this.speed;
-    this.vy = Math.sin(this.direction) * this.speed;
+    this.vx = utils.myMath.cos(this.direction) * this.speed;
+    this.vy = utils.myMath.sin(this.direction) * this.speed;
 
-    this.springs = [];
+    this.springs      = [];
     this.gravitations = [];
   };
 
@@ -30,8 +32,8 @@
     this.vx *= this.friction;
     this.vy *= this.friction;
     this.vy += this.gravity;
-    this.x += this.vx;
-    this.y += this.vy;
+    this.x  += this.vx;
+    this.y  += this.vy;
   };
 
   Vector.prototype.addGravitation = function(p) {
@@ -67,29 +69,29 @@
   };
 
   Vector.prototype.getSpeed = function() {
-    return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+    return utils.myMath.sqrt(this.vx * this.vx + this.vy * this.vy);
   };
 
   Vector.prototype.setSpeed = function(speed) {
     var heading = this.getHeading();
-    this.vx = Math.cos(heading) * speed;
-    this.vy = Math.sin(heading) * speed;
+    this.vx     = utils.myMath.cos(heading) * speed;
+    this.vy     = utils.myMath.sin(heading) * speed;
   };
 
   Vector.prototype.getHeading = function() {
-    return Math.atan2(this.vy, this.vx);
+    return utils.myMath.atan2(this.vy, this.vx);
   };
 
   Vector.prototype.setHeading = function(heading) {
     var speed = this.getSpeed();
-    this.vx = Math.cos(heading) * speed;
-    this.vy = Math.sin(heading) * speed;
+    this.vx   = utils.myMath.cos(heading) * speed;
+    this.vy   = utils.myMath.sin(heading) * speed;
   };
 
   Vector.prototype.setHeadingMinus = function(heading) {
     var speed = this.getSpeed()
-      , vx = Math.cos(heading) * speed
-      , vy = Math.sin(heading) * speed;
+      , vx = utils.myMath.cos(heading) * speed
+      , vy = utils.myMath.sin(heading) * speed;
     this.vx -= vx;
     this.vy -= vy;
   };
@@ -100,14 +102,14 @@
   };
 
   Vector.prototype.angleTo = function(p2) {
-    return Math.atan2(p2.y - this.y, p2.x - this.x);
+    return utils.myMath.atan2(p2.y - this.y, p2.x - this.x);
   };
 
   Vector.prototype.distanceTo = function(p2) {
     var dx = p2.x - this.x
       , dy = p2.y - this.y;
 
-    return Math.sqrt((dx * dx) + (dy * dy));
+    return utils.myMath.sqrt((dx * dx) + (dy * dy));
   };
 
   Vector.prototype.handleGravitations = function() {
@@ -127,7 +129,7 @@
     var dx = p2.x - this.x
       , dy = p2.y - this.y
       , distSQ = dx * dx + dy * dy
-      , dist = Math.sqrt(distSQ)
+      , dist = utils.myMath.sqrt(distSQ)
       , force = p2.mass / distSQ
 
       , ax = dx / dist * force
@@ -140,7 +142,7 @@
   Vector.prototype.springTo = function(point, k, length) {
     var dx = point.x - this.x
       , dy = point.y - this.y
-      , distance = Math.sqrt(dx * dx + dy * dy)
+      , distance = utils.myMath.sqrt(dx * dx + dy * dy)
       , springForce = (distance - length || 0) * k
 
       , vx = this.vx + dx / distance * springForce

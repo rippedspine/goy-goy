@@ -36,10 +36,11 @@
     var ww = window.innerWidth
       , wh = window.innerHeight
       , nh = ww * config.area.ratioFactor.h;
-    this.canvas.style.width = ww + 'px';
+      
+    this.canvas.style.width  = ww + 'px';
     this.canvas.style.height = nh + 'px';
-    this.canvas.style.top = wh * 0.5 - nh * 0.5 + 'px';
-    this.context.zoom = this.canvas.zoom = config.area.size[0] / ww;
+    this.canvas.style.top    = wh * 0.5 - nh * 0.5 + 'px';
+    this.context.zoom        = this.canvas.zoom = config.area.size[0] / ww;
   };
 
   Stage.prototype.setCollection = function(type, collection) {

@@ -11,13 +11,9 @@
   Client.Obstacle.Bassform = function(data) {
     ObstacleBase.call(this, data);
     this.shape = new Shape.Wave(data);
-
+    this.angle = 0;
+    
     this.position.setSpeed(0);
-
-    this.angle        = 0;
-    this.shape.growth = data.growth;
-    this.shape.height = data.height;
-    this.shape.width  = data.width;
   };
 
   inherits(Client.Obstacle.Bassform, ObstacleBase);
@@ -27,8 +23,8 @@
     this.pulse();
 
     this.shape.isFilled = false;
-    this.shape.x        = this.position.x;
-    this.shape.y        = this.position.y;
+    this.shape.x = this.position.x;
+    this.shape.y = this.position.y;
   };
 
   Client.Obstacle.Bassform.prototype.pulse = function() {

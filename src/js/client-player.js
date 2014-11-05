@@ -17,26 +17,26 @@
     this.id = data.id;
 
     this.position = new Vector({
-      x: data.x,
-      y: data.y,
-      direction: 45,
-      friction: 0.32
+      x         : data.x,
+      y         : data.y,
+      direction : 45,
+      friction  : 0.32
     });
 
     this.head = new Shape.Circle({
-      x: data.x,
-      y: data.y,
-      color: data.color,
-      radius: data.radius,
-      isFilled: true
+      x        : data.x,
+      y        : data.y,
+      color    : data.color,
+      radius   : data.radius,
+      isFilled : true
     });
 
     this.tail = new Shape.Tail({
-      points: 8,
-      origin: {x: this.position.x, y: this.position.y},
-      direction: this.position.direction,
-      friction: this.position.friction,
-      stiffness: 0.6
+      points    : 8,
+      origin    : {x: this.position.x, y: this.position.y},
+      direction : this.position.direction,
+      friction  : this.position.friction,
+      stiffness : 0.6
     });
 
     this.springPoint = {x: data.x, y: data.y};
@@ -53,10 +53,10 @@
 
   Client.Player.Model.prototype.send = function() {
     return {
-      id: this.id,
-      radius: this.head.radius,
-      x: this.position.x, 
-      y: this.position.y
+      id     : this.id,
+      radius : this.head.radius,
+      x      : this.position.x, 
+      y      : this.position.y
     };
   };
 
@@ -77,6 +77,7 @@
     this.onCollision();
     this.position.updatePhysics();
     this.tail.update();
+
     this.head.x = this.position.x;
     this.head.y = this.position.y;
   };
@@ -89,7 +90,7 @@
 
   Client.Player.Model.prototype.pulse = function() {
     this.head.scale = 2 + utils.myMath.sin(this.angle) * 0.5;
-    this.angle      += this.updateHz;
+    this.angle += this.updateHz;
   };
 
   Client.Player.Model.prototype.move = function(position) {
