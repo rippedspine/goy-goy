@@ -79,19 +79,16 @@
   Server.Obstacle.Noiseform = function(id) {
     Server.Obstacle.Model.call(this, id);
     this.type = 'noiseform';
-    this.degree = utils.random.getInt(triangle.radiusRange) - 4;
-    this.radius = (this.degree + 4) * config.sizeFactor;
+    this.points = utils.random.getInt(triangle.radiusRange) - 4;
+    this.radius = (this.points + 4) * config.sizeFactor;
     this.sound = this.createSound(noiseform.waveform);
   };
 
   inherits(Server.Obstacle.Noiseform, Server.Obstacle.Model);
 
   Server.Obstacle.Noiseform.prototype.set = function(data) {
-    this.alpha = data.alpha;
     this.x = data.x;
     this.y = data.y;
-    this.rotation = data.rotation;
-    this.scale = data.scale;
   };
 
   Server.Obstacle.Noiseform.prototype.send = function() {
@@ -101,7 +98,8 @@
       y: this.y,
       sound: this.sound,
       color: this.color,
-      degree: this.degree
+      radius: this.radius,
+      points: this.points
     };
   };
 
@@ -112,7 +110,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'bassform';
-    this.growth = 5.05;
+    this.spread = 5.05;
     this.width = 95;
     this.height = 10;
     this.sound = this.createSound(bassform.waveform);

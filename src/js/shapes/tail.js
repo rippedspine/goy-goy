@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var Vector = require('../../shared/vector.js');
+  var Vector = require('../../../shared/vector.js');
 
   var Tail = function(options) {
     this.numPoints = options.points;

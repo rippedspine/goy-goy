@@ -12,7 +12,7 @@ http.listen(port, function() {
 });
 
 var Player = require('./server/server-player.js')
-  , Obstacle = require('./server/server-obstacle.js')
+  , Obstacle = require('./server/obstacles/_server-obstacle.js')
   , Game = require('./server/server-game.js')
   , CollisionHandler = require('./server/server-collision.js')
   , msgs = require('./shared/messages.js');
@@ -20,10 +20,10 @@ var Player = require('./server/server-player.js')
 var game = new Game(
   new CollisionHandler(),
   new Player.Collection({model: Player.Model}), 
-  new Obstacle.Collection({model: Obstacle.Triangle}),
-  new Obstacle.Collection({model: Obstacle.Circle}),
-  new Obstacle.Collection({model: Obstacle.Noiseform}),
-  new Obstacle.Collection({model: Obstacle.Bassform})
+  new Obstacle.Collection({model: Obstacle.SharpForm}),
+  new Obstacle.Collection({model: Obstacle.RoundForm}),
+  new Obstacle.Collection({model: Obstacle.NoiseForm}),
+  new Obstacle.Collection({model: Obstacle.BassForm})
 );
 
 game.start();
@@ -35,14 +35,12 @@ io.on('connection', function(socket) {
     socket.emit(msgs.socket.sendPlayers, game.players.send()); 
   }
 
-  game.player = new Player.Model(socket.id);
-
   socket.emit(msgs.socket.connect, {
-    circles: game.circles.get(),
-    triangles: game.triangles.get(),
-    noiseforms: game.noiseforms.get(),
-    bassforms: game.bassforms.get(),
-    player: game.player
+    roundForms: game.roundForms.get(),
+    sharpForms: game.sharpForms.get(),
+    noiseForms: game.noiseForms.get(),
+    bassForms: game.bassForms.get(),
+    player: new Player.Model(socket.id)
   });
 
   socket.on(msgs.socket.newPlayer, function(data) {

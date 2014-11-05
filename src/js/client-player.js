@@ -2,8 +2,7 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Circle = require('./shapes/circle.js')
-    , Tail = require('./tail.js')
+    , Shape = require('./shapes/_shapes.js')
     , Vector = require('../../shared/vector.js')
     , config = require('../../shared/config.js')
     , utils = require('../../shared/utils.js')
@@ -24,7 +23,7 @@
       friction: 0.32
     });
 
-    this.head = new Circle({
+    this.head = new Shape.Circle({
       x: data.x,
       y: data.y,
       color: data.color,
@@ -32,7 +31,7 @@
       isFilled: true
     });
 
-    this.tail = new Tail({
+    this.tail = new Shape.Tail({
       points: 8,
       origin: {x: this.position.x, y: this.position.y},
       direction: this.position.direction,

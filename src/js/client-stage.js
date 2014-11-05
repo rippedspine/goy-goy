@@ -13,6 +13,8 @@
     this.width = this.canvas.width = config.area.size[0];
     this.height = this.canvas.height = config.area.size[1];
 
+    this.zoom = 1;
+
     this.setSize();
 
     window.addEventListener('resize', this.setSize.bind(this));
@@ -37,7 +39,7 @@
     this.canvas.style.width = ww + 'px';
     this.canvas.style.height = nh + 'px';
     this.canvas.style.top = wh * 0.5 - nh * 0.5 + 'px';
-    this.canvas.zoom = config.area.size[0] / ww;
+    this.context.zoom = this.canvas.zoom = config.area.size[0] / ww;
   };
 
   Stage.prototype.setCollection = function(type, collection) {
