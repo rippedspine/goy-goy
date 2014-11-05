@@ -10,8 +10,8 @@
     this.context = this.canvas.getContext('2d');
     this.objects = {}; 
     
-    this.width = this.canvas.width = config.area.size[0];
-    this.height = this.canvas.height = config.area.size[1];
+    this.width   = this.canvas.width = config.area.size[0];
+    this.height  = this.canvas.height = config.area.size[1];
 
     this.zoom = 1;
 

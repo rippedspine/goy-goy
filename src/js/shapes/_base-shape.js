@@ -2,23 +2,23 @@
   'use strict';
 
   var BaseShape = function(options) {
-    this.x = options.x;
-    this.y = options.y;
+    this.x         = options.x;
+    this.y         = options.y;
 
-    this.color = options.color;
-
-    this.radius = options.radius || 0;
-    this.points = options.points || 0;
-    this.vertices = options.vertices || 0;
-    this.width = options.width || 0;
-    this.height = options.height || 0;
-    this.spread = options.spread || 0;
-
-    this.rotation = options.rotation || 0;
-    this.alpha = options.alpha || 1;
-    this.scale = options.scale || 1;
+    this.color     = options.color;
+    
+    this.radius    = options.radius || 0;
+    this.points    = options.points || 0;
+    this.vertices  = options.vertices || 0;
+    this.width     = options.width || 0;
+    this.height    = options.height || 0;
+    this.spread    = options.spread || 0;
+    
+    this.rotation  = options.rotation || 0;
+    this.alpha     = options.alpha || 1;
+    this.scale     = options.scale || 1;
     this.lineWidth = options.lineWidth || 1;
-    this.isFilled = options.isFilled || false;
+    this.isFilled  = options.isFilled || false;
   };
 
   BaseShape.prototype.beginDraw = function(context) {

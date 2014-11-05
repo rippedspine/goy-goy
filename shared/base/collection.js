@@ -4,7 +4,7 @@
   var _ = require('lodash');
 
   var BaseCollection = function(options) {
-    this.model = options.model;
+    this.model      = options.model;
     this.collection = options.collection || {};
   };
 
@@ -13,17 +13,6 @@
       return this.collection;
     }
     return this.collection[id];
-  };
-
-  BaseCollection.prototype.send = function(id) {
-    if (typeof id === 'undefined') {
-      var collection = {};
-      for (var keyID in this.collection) {
-        collection[keyID] = this.collection[keyID].send();
-      }
-      return collection;
-    }
-    return this.collection[id].send();
   };
 
   BaseCollection.prototype.remove = function(id) {

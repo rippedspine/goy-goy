@@ -6,7 +6,7 @@
 
     AudioletGroup.apply(this, [this.audiolet, 0, 1]);
 
-    this.gain = new Gain(this.audiolet);
+    this.gain   = new Gain(this.audiolet);
     this.reverb = new Reverb(this.audiolet, 0.5, 0.5, 0.5);
     this.gain.connect(this.reverb);
     this.reverb.connect(this.outputs[0]);
@@ -44,10 +44,10 @@
   };
 
   Synth.prototype.play = function(waveform, soundDecay, frequency, filterHz) {
-    this.frequency = frequency;
+    this.frequency  = frequency;
     this.soundDecay = soundDecay || 0.1;
-    this.filter = waveform === 'noise' ? this.createFilter(filterHz) : this.createFilter(400);
-    this.waveform = this.getWaveform(waveform);
+    this.filter     = waveform === 'noise' ? this.createFilter(filterHz) : this.createFilter(400);
+    this.waveform   = this.getWaveform(waveform);
 
     this.envelope = this.getEnvelope(this.soundDecay);
     this.envelope.connect(this.gain, 0, 1);

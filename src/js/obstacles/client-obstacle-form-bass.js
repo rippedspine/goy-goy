@@ -2,8 +2,8 @@
   'use strict';
 
   var ObstacleBase = require('./client-obstacle-base-model.js')
-    , Shape = require('../shapes/_shapes.js')
-    , utils = require('../../../shared/utils.js')
+    , Shape    = require('../shapes/_shapes.js')
+    , utils    = require('../../../shared/utils.js')
     , inherits = utils.inherits
 
     , Client = { Obstacle: {} };
@@ -14,10 +14,10 @@
 
     this.position.setSpeed(0);
 
-    this.angle = 0;
+    this.angle        = 0;
     this.shape.growth = data.growth;
     this.shape.height = data.height;
-    this.shape.width = data.width;
+    this.shape.width  = data.width;
   };
 
   inherits(Client.Obstacle.Bassform, ObstacleBase);
@@ -27,8 +27,8 @@
     this.pulse();
 
     this.shape.isFilled = false;
-    this.shape.x = this.position.x;
-    this.shape.y = this.position.y;
+    this.shape.x        = this.position.x;
+    this.shape.y        = this.position.y;
   };
 
   Client.Obstacle.Bassform.prototype.pulse = function() {

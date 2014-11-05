@@ -2,8 +2,8 @@
   'use strict';
 
   var ObstacleBase = require('./client-obstacle-base-model.js')
-    , Shape = require('../shapes/_shapes.js')
-    , utils = require('../../../shared/utils.js')
+    , Shape    = require('../shapes/_shapes.js')
+    , utils    = require('../../../shared/utils.js')
     , inherits = utils.inherits
 
     , Client = { Obstacle: {} };

@@ -1,7 +1,7 @@
 var express = require('express')
-  , app = express()
+  , app  = express()
   , http = require('http').Server(app)
-  , io = require('socket.io')(http)
+  , io   = require('socket.io')(http)
   , port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/.tmp'));
@@ -39,8 +39,8 @@ io.on('connection', function(socket) {
     roundForms: game.roundForms.get(),
     sharpForms: game.sharpForms.get(),
     noiseForms: game.noiseForms.get(),
-    bassForms: game.bassForms.get(),
-    player: new Player.Model(socket.id)
+    bassForms:  game.bassForms.get(),
+    player:     new Player.Model(socket.id)
   });
 
   socket.on(msgs.socket.newPlayer, function(data) {

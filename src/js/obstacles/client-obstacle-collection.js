@@ -2,8 +2,8 @@
   'use strict';
 
   var BaseCollection = require('../../../shared/base/collection.js')
-    , Vector = require('../../../shared/vector.js')
-    , utils = require('../../../shared/utils.js')
+    , Vector   = require('../../../shared/vector.js')
+    , utils    = require('../../../shared/utils.js')
     , inherits = utils.inherits
 
     , Client = { Obstacle: {} };

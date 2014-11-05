@@ -5,12 +5,12 @@
 
   var Tail = function(options) {
     this.numPoints = options.points;
-    this.origin = options.origin;
+    this.origin    = options.origin;
     this.direction = options.direction;
-    this.friction = options.friction;
-    this.k = options.stiffness;
+    this.friction  = options.friction;
+    this.k         = options.stiffness;
     this.lineWidth = 1;
-    this.points = [];
+    this.points    = [];
     this.create();
   };
 

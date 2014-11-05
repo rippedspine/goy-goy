@@ -14,14 +14,14 @@
     bassForms, 
     audioplayer) {
 
-    this.socket = socket;
-    this.stage = stage;
-    this.players = players;
+    this.socket      = socket;
+    this.stage       = stage;
+    this.players     = players;
     this.audioplayer = audioplayer;
-    this.sharpForms = sharpForms;
-    this.roundForms = roundForms;
-    this.noiseForms = noiseForms;
-    this.bassForms = bassForms;
+    this.sharpForms  = sharpForms;
+    this.roundForms  = roundForms;
+    this.noiseForms  = noiseForms;
+    this.bassForms   = bassForms;
 
     this.player = null;
   };

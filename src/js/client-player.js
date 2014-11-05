@@ -2,10 +2,10 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Shape = require('./shapes/_shapes.js')
-    , Vector = require('../../shared/vector.js')
-    , config = require('../../shared/config.js')
-    , utils = require('../../shared/utils.js')
+    , Shape    = require('./shapes/_shapes.js')
+    , Vector   = require('../../shared/vector.js')
+    , config   = require('../../shared/config.js')
+    , utils    = require('../../shared/utils.js')
     , inherits = utils.inherits
 
     , Client = { Player: {} };
@@ -89,7 +89,7 @@
 
   Client.Player.Model.prototype.pulse = function() {
     this.head.scale = 2 + utils.myMath.sin(this.angle) * 0.5;
-    this.angle += this.updateHz;
+    this.angle      += this.updateHz;
   };
 
   Client.Player.Model.prototype.move = function(position) {
@@ -120,7 +120,7 @@
 
   Client.Player.Collection.prototype.setCollision = function(id, color) {
     this.collection[id].didCollide = true;
-    this.collection[id].newColor = color;
+    this.collection[id].newColor   = color;
   };
 
   Client.Player.Collection.prototype.add = function(data) {
