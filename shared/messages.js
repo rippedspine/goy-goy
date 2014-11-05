@@ -11,10 +11,7 @@
       updatePlayer: 5,
       collision: 6,
       deadObstacle: 7,
-      updateTriangles: 8,
-      updateCircles: 9,
-      updateNoiseforms: 10,
-      updateBassforms: 11
+      updateObstacles: 8
     },
 
     logger: {

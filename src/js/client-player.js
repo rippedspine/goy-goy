@@ -2,10 +2,11 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Geometry = require('./client-geometry.js')
+    , Circle = require('./shapes/circle.js')
+    , Tail = require('./tail.js')
     , Vector = require('../../shared/vector.js')
-    , utils = require('../../shared/utils.js')
     , config = require('../../shared/config.js')
+    , utils = require('../../shared/utils.js')
     , inherits = utils.inherits
 
     , Client = { Player: {} };
@@ -15,108 +16,80 @@
   // =============================================================
   Client.Player.Model = function(data) {
     this.id = data.id;
-    this.shape = new Geometry(data);
 
-    Vector.call(this, {
+    this.position = new Vector({
       x: data.x,
       y: data.y,
       direction: 45,
-      friction: 0.32,
-      radius: data.radius
+      friction: 0.32
     });
 
+    this.head = new Circle({
+      x: data.x,
+      y: data.y,
+      color: data.color,
+      radius: data.radius,
+      isFilled: true
+    });
+
+    this.tail = new Tail({
+      points: 8,
+      origin: {x: this.position.x, y: this.position.y},
+      direction: this.position.direction,
+      friction: this.position.friction,
+      stiffness: 0.6
+    });
+
+    this.springPoint = {x: data.x, y: data.y};
+    this.position.addSpring(this.springPoint, 0.1);
+
+    this.tail.addSpringsTo(this.position);
+
     this.didCollide = false;
-    this.colorTimer = 1;
-    this.shape.isFilled = true;
-    this.type = 'player';
+    this.currentHue = utils.color.getValues(this.head.color)[0];
 
     this.angle = 0;
     this.updateHz = 0.05;
-
-    this.particles = [];
-
-    this.springPoint = {x: data.x, y: data.y};
-    this.addSpring(this.springPoint, 0.1);
-
-    this.tailSegments = this.createTail(10);
-    this.addTailToPlayer(0.6);
   };
-
-  inherits(Client.Player.Model, Vector);
 
   Client.Player.Model.prototype.send = function() {
     return {
       id: this.id,
-      radius: this.radius,
-      x: this.x, 
-      y: this.y
+      radius: this.head.radius,
+      x: this.position.x, 
+      y: this.position.y
     };
   };
 
-  Client.Player.Model.prototype.createTail = function(numSegments) {
-    var segments = [];
-    for (var i = 0; i < numSegments; i++) {
-      segments.push(new Vector({
-        x: this.x,
-        y: this.y,
-        direction: this.direction,
-        friction: this.friction
-      }));
-    }
-    return segments;
-  };
-
-  Client.Player.Model.prototype.addTailToPlayer = function(k) {
-    for (var j = 0; j < this.tailSegments.length; j++) {
-      if (j === 0) {
-        this.tailSegments[j].addSpring(this, k);
-      } else {
-        this.tailSegments[j].addSpring(this.tailSegments[j - 1], k);
-      }
+  Client.Player.Model.prototype.onCollision = function() {
+    if (this.didCollide) {
+      this.cycleColor(utils.color.getValues(this.newColor));
     }
   };
 
-  Client.Player.Model.prototype.drawTail = function(context) {
-    context.beginPath();
-    context.moveTo(this.x, this.y);
-    for (var i = 0; i < this.tailSegments.length; i++) {
-      context.lineTo(this.tailSegments[i].x, this.tailSegments[i].y);
-    }
-    context.lineWidth = this.radius * 0.8 + Math.sin(this.angle) * 2;
-    context.lineCap = 'round';
-    context.strokeStyle = this.shape.color;
-    context.stroke();
+  Client.Player.Model.prototype.cycleColor = function(newColor) {
+    if (this.currentHue > newColor[0]) {this.currentHue--;} else {this.currentHue++;}
+    this.head.color = utils.color.get(this.currentHue, newColor[1], newColor[2]);
+    if (this.currentHue === newColor[0]) {this.didCollide = false;}
   };
 
   Client.Player.Model.prototype.update = function() {
     this.pulse();
     this.onCollision();
-    this.updatePhysics();
-    for (var i = 0; i < this.tailSegments.length; i++) {
-      this.tailSegments[i].updatePhysics();
-    }
-    this.shape.x = this.x;
-    this.shape.y = this.y;
+    this.position.updatePhysics();
+    this.tail.update();
+    this.head.x = this.position.x;
+    this.head.y = this.position.y;
   };
 
   Client.Player.Model.prototype.draw = function(context) {
-    this.shape.draw(context);
-    this.drawTail(context);
-  };
-
-  Client.Player.Model.prototype.onCollision = function() {
-    if (this.didCollide) {
-      this.colorTimer -= 0.01;
-      if (this.colorTimer < 0) {
-        this.didCollide = false;
-        this.colorTimer = 1;
-        this.shape.color = config.player.color;
-      }
-    }
+    this.head.draw(context);
+    this.tail.lineWidth = this.head.radius * 0.8 + utils.myMath.sin(this.angle) * 2;
+    this.tail.draw(context, this.head.color);
   };
 
   Client.Player.Model.prototype.pulse = function() {
-    this.shape.scale = 2 + Math.sin(this.angle) * 0.5;
+    this.head.scale = 2 + utils.myMath.sin(this.angle) * 0.5;
     this.angle += this.updateHz;
   };
 
@@ -148,7 +121,7 @@
 
   Client.Player.Collection.prototype.setCollision = function(id, color) {
     this.collection[id].didCollide = true;
-    this.collection[id].shape.color = color;
+    this.collection[id].newColor = color;
   };
 
   Client.Player.Collection.prototype.add = function(data) {

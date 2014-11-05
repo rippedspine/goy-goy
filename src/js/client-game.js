@@ -47,12 +47,12 @@
   };
 
   Client.Game.prototype.handleMouseMove = function(event) {
-    this.player.move(utils.getPosition(this.stage.canvas, event));
+    this.player.move(utils.position.getScreenToWorld(this.stage.canvas, event));
     this.socket.emit(msgs.socket.updatePlayer, this.player.send());
   };
 
   Client.Game.prototype.handleMouseLeave = function(event) {
-    this.player.move(utils.getPosition(this.stage.canvas, event));
+    this.player.move(utils.position.getScreenToWorld(this.stage.canvas, event));
     this.socket.emit(msgs.socket.updatePlayer, this.player.send());
   };
 
@@ -63,10 +63,7 @@
     this.socket.on(msgs.socket.getPlayers, this.onGetPlayers.bind(this));
     this.socket.on(msgs.socket.updatePlayer, this.onUpdatePlayer.bind(this));
     this.socket.on(msgs.socket.collision, this.onCollision.bind(this));
-    this.socket.on(msgs.socket.updateTriangles, this.onUpdateTriangles.bind(this));
-    this.socket.on(msgs.socket.updateCircles, this.onUpdateCircles.bind(this));
-    this.socket.on(msgs.socket.updateNoiseforms, this.onUpdateNoiseforms.bind(this));
-    this.socket.on(msgs.socket.updateBassforms, this.onUpdateBassforms.bind(this));
+    this.socket.on(msgs.socket.updateObstacles, this.onUpdateObstacles.bind(this));
   };
 
   Client.Game.prototype.onConnect = function(data) {
@@ -94,14 +91,13 @@
 
   Client.Game.prototype.onDisonnect = function(id) {
     msgs.logger.disconnect(id);
-
     this.players.remove(id);
-    this.stage.setCollection('players', this.players);
+    this.stage.removeFromCollection('players', id);
   };
 
   Client.Game.prototype.getNewPlayer = function(player) {
     this.players.add(player);
-    this.stage.setCollection('players', this.players);
+    this.stage.addToCollection('players', this.players.get(player.id));
   };
 
   Client.Game.prototype.onGetPlayers = function(players) {
@@ -116,32 +112,11 @@
   Client.Game.prototype.onCollision = function(data) {
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.audioplayer.play(data.obstacle.sound);
-
-    if (data.obstacle.type === 'triangle') {
-      this.triangles.setCollision(data.obstacle.id, this.socket);
-    } else if (data.obstacle.type === 'circle') {
-      this.circles.setCollision(data.obstacle.id, this.socket);
-    } else if (data.obstacle.type === 'noiseform') {
-      this.noiseforms.setCollision(data.obstacle.id, this.socket);
-    } else if (data.obstacle.type === 'bassform') {
-      this.bassforms.setCollision(data.obstacle.id, this.socket);
-    }
+    this[data.obstacle.type + 's'].setCollision(data.obstacle.id, this.socket);
   };
 
-  Client.Game.prototype.onUpdateCircles = function(data) {
-    this.stage.addToCollection('circles', this.circles.resurrect(data));
-  };
-
-  Client.Game.prototype.onUpdateTriangles = function(data) {
-    this.stage.addToCollection('triangles', this.triangles.resurrect(data));
-  };
-
-  Client.Game.prototype.onUpdateNoiseforms = function(data) {
-    this.stage.addToCollection('noiseforms', this.noiseforms.resurrect(data));
-  };
-
-  Client.Game.prototype.onUpdateBassforms = function(data) {
-    this.stage.addToCollection('bassforms', this.bassforms.resurrect(data));
+  Client.Game.prototype.onUpdateObstacles = function(data) {
+    this.stage.addToCollection(data.type + 's', this[data.type + 's'].resurrect(data));
   };
 
   module.exports = Client.Game;

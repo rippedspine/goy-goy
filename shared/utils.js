@@ -1,62 +1,99 @@
 (function() {
   'use strict';
 
-  var config = require('./config.js')
-  ,   color = config.color;
-  
+  var utils = {};
 
-  module.exports = {
-    rand: function() {
-      return Math.random() - 0.5;
-    },
+  utils.myMath = {
+    floor: Math.floor,
+    random: Math.random,
+    sqrt: Math.sqrt,
+    cos: Math.cos,
+    sin: Math.sin,
+    max: Math.max,
+    min: Math.min,
+    PI: Math.PI
+  };
 
-    getRandomInt: function(range) {
-      return Math.floor(Math.random() * (range[1] - range[0] + 1) + range[0]);
-    },
+  utils.inherits = function(child, parent) {
+    child.prototype = Object.create(parent.prototype);
+  };
 
-    getRandomPosition: function(area) {
-      return {
-        x: this.getRandomInt([0, area[0] - 100]),
-        y: this.getRandomInt([0, area[1] - 100])
-      };
-    },
-
-    getRandomIntFromColorRange: function() {
-      var int = this.getRandomInt(color.range);
-      return int === 0 ? 1 : int;
-    },
-
-    getColor: function(hueDeg) {
+  utils.color = {
+    get: function(hue, saturation, luma) {
       return 'hsl(' + [
-        hueDeg, 
-        color.saturation, 
-        color.luma
+        hue, 
+        saturation + '%', 
+        luma + '%'
       ].join(',') + ')';
     },
 
-    distance: function(v1, v2) {
-      var dx = v2.x - v1.x
-        , dy = v2.y - v1.y;
-      return Math.sqrt(dx * dx + dy * dy); 
+    getValues: function(color) {
+      return color
+        .substring(4, color.length - 1)
+        .split(',')
+        .map(function(value) {
+          return parseInt(value);
+        });
+    }
+  };
+
+  utils.sound = {
+    getDecay: function(min, max, range, radius) {
+      return min + (max * range.indexOf(radius));
+    }
+  };
+
+  utils.position = {
+    getRandomInArea: function(area, offset) {
+      offset = typeof offset === 'undefined' ? 0 : offset;
+      return {
+        x: utils.random.getInt(offset, area[0] - offset),
+        y: utils.random.getInt(offset, area[1] - offset)
+      };
     },
 
-    getPosition: function(canvas, event) {
+    getScreenToWorld: function(canvas, event) {
       var rect = canvas.getBoundingClientRect();
       return {
         x: (event.clientX - rect.left) * canvas.zoom,
         y: (event.clientY - rect.top) * canvas.zoom
       };
-    },
+    }
+  };
 
-    getVertices: function(points, radius) {
+  utils.vertices = {
+    getIrregularPolygon: function(points, radius) {
       var vertices = [];
       for (var i = 0; i < points; i++) {
-        var angle = i * 2 * Math.PI / points
-          , xv = radius * Math.cos(angle) + this.rand() * radius * 0.4
-          , yv = radius * Math.sin(angle) + this.rand() * radius * 0.4;
+        var angle = i * 2 * utils.myMath.PI / points
+          , xv = radius * utils.myMath.cos(angle) + utils.random.get() * radius * 0.4
+          , yv = radius * utils.myMath.sin(angle) + utils.random.get() * radius * 0.4;
         vertices.push({x: xv, y: yv});
       }
       return vertices;
+    },
+
+    getStar: function(points) {
+      var vertices = [];
+      for (var i = 0; i < points; i++) {
+        var xv = i
+          , yv = i % 2 === 0 ? 0 : 1;
+        vertices.push({x: xv * 10, y: yv * 10});
+      }
+      return vertices;
+    }
+  };
+
+  utils.vector = {
+    distance: function(v1, v2) {
+      var dx = v2.x - v1.x
+        , dy = v2.y - v1.y;
+      return utils.myMath.sqrt(dx * dx + dy * dy); 
+    },
+
+    rangeIntersect: function(min0, max0, min1, max1) {
+      return utils.myMath.max(min0, max0) >= utils.myMath.min(min1, max1) && 
+        utils.myMath.min(min0, max0) <= utils.myMath.max(min1, max1);
     },
 
     wrapBounce: function(p, rect) {
@@ -76,25 +113,24 @@
         p.y = p.radius + rect.top;
         p.vy *= p.bounciness;
       }
-    },
-
-    getNoiseformVertices: function(points) {
-      var vertices = [];
-      for (var i = 0; i < points; i++) {
-        var xv = i
-          , yv = i % 2 === 0 ? 0 : 1;
-        vertices.push({x: xv * 10, y: yv * 10});
-      }
-      return vertices;
-    },
-
-    getDecay: function(min, max, range, radius) {
-      return min + (max * range.indexOf(radius));
-    },
-
-    inherits: function(child, parent) {
-      child.prototype = Object.create(parent.prototype);
     }
   };
+
+  utils.random = {
+    getInt: function(minOrRange, max) {
+      var min = minOrRange;
+      if (arguments.length === 1) {
+        min = minOrRange[0];
+        max = minOrRange[1];
+      }
+      return utils.myMath.floor(utils.myMath.random() * (max - min + 1) + min);  
+    },
+
+    get: function() {
+      return utils.myMath.random() - 0.5;  
+    }
+  };
+
+  module.exports = utils;
 
 })(this);

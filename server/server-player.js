@@ -2,8 +2,7 @@
   'use strict';
 
   var BaseCollection = require('../shared/base/collection.js')
-    , utils = require('../shared/utils.js')
-    , inherits = utils.inherits
+    , inherits = require('../shared/utils.js').inherits
     , config = require('../shared/config.js');
 
   var Server = { Player: {} };

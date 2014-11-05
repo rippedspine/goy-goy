@@ -14,7 +14,7 @@
     angleArray: [-125, -45, 45, 125],
     player: {
       radius: 5,
-      color: '#eee'
+      color: 'hsl(180,0%,100%)'
     },
     line: {
       amount: 20,
@@ -40,8 +40,8 @@
     },
     color: {
       range: [0, 360],
-      saturation: '60%',
-      luma: '60%'
+      saturation: 60,
+      luma: 60
     },
     sound: {
       decayRange: [

@@ -5,6 +5,7 @@
     , utils = require('../shared/utils.js')
     , inherits = utils.inherits
     , config = require('../shared/config.js')
+    , color = config.color
     
     , triangle = config.triangle
     , circle = config.circle
@@ -23,11 +24,11 @@
     this.scale = 1;
     this.rotation = 0;
 
-    this.x = utils.getRandomPosition(config.area.size).x;
-    this.y = utils.getRandomPosition(config.area.size).y;
-    this.colorSoundID = utils.getRandomIntFromColorRange();
-    this.color = utils.getColor(this.colorSoundID);
-    this.direction = config.angleArray[utils.getRandomInt([0, 3])];
+    this.x = utils.position.getRandomInArea(config.area.size, 100).x;
+    this.y = utils.position.getRandomInArea(config.area.size, 100).y;
+    this.colorSoundID = utils.random.getInt(color.range[0] + 1, color.range[1]);
+    this.color = utils.color.get(this.colorSoundID, color.saturation, color.luma);
+    this.direction = config.angleArray[utils.random.getInt(0, 3)];
 
     this.shouldBeRemoved = false;
   };
@@ -35,7 +36,7 @@
   Server.Obstacle.Model.prototype.createSound = function(waveform) {
     return {
       id: Math.floor(this.colorSoundID/36),
-      decay: utils.getDecay(0.02, 0.07, sound.decayRange, this.radius),
+      decay: utils.sound.getDecay(0.02, 0.07, sound.decayRange, this.radius),
       waveform: waveform
     };
   };
@@ -47,8 +48,8 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'triangle';
-    this.radius = utils.getRandomInt(triangle.radiusRange) * config.sizeFactor;
-    this.vertices = utils.getVertices(3, this.radius);
+    this.radius = utils.random.getInt(triangle.radiusRange) * config.sizeFactor;
+    this.vertices = utils.vertices.getIrregularPolygon(3, this.radius);
     this.sound = this.createSound(triangle.waveform);
   };
 
@@ -78,7 +79,7 @@
   Server.Obstacle.Noiseform = function(id) {
     Server.Obstacle.Model.call(this, id);
     this.type = 'noiseform';
-    this.degree = utils.getRandomInt(triangle.radiusRange) - 4;
+    this.degree = utils.random.getInt(triangle.radiusRange) - 4;
     this.radius = (this.degree + 4) * config.sizeFactor;
     this.sound = this.createSound(noiseform.waveform);
   };
@@ -111,7 +112,6 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'bassform';
-    this.rotation = [-45, 0, 45, 90][utils.getRandomInt([0, 3])];
     this.growth = 5.05;
     this.width = 95;
     this.height = 10;
@@ -143,7 +143,7 @@
     Server.Obstacle.Model.call(this, id);
 
     this.type = 'circle';
-    this.radius = utils.getRandomInt(circle.radiusRange) * config.sizeFactor;
+    this.radius = utils.random.getInt(circle.radiusRange) * config.sizeFactor;
     this.sound = this.createSound(circle.waveform);
   };
 

@@ -1,8 +1,6 @@
 (function() {
   'use strict';
-
-  var utils = require('../../shared/utils.js');
-
+  
   var Geometry = function(options) {
     this.x = options.x;
     this.y = options.y;

@@ -5,17 +5,10 @@
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
-    this.context = this.canvas.getContext('2d');
-
-    this.objects = {
-      players: null,
-      triangles: null,
-      circles: null,
-      noiseforms: null,
-      bassforms: null
-    };
-    
     this.canvas.style.background = config.area.color;
+    
+    this.context = this.canvas.getContext('2d');
+    this.objects = {}; 
     
     this.width = this.canvas.width = config.area.size[0];
     this.height = this.canvas.height = config.area.size[1];
@@ -37,14 +30,6 @@
     this.context.restore();
   };
 
-  Stage.prototype.setCollection = function(type, collection) {
-    this.objects[type] = collection;
-  };
-
-  Stage.prototype.addToCollection = function(type, object) {
-    this.objects[type][object.id] = object;
-  };
-
   Stage.prototype.setSize = function() {
     var ww = window.innerWidth
       , wh = window.innerHeight
@@ -53,6 +38,18 @@
     this.canvas.style.height = nh + 'px';
     this.canvas.style.top = wh * 0.5 - nh * 0.5 + 'px';
     this.canvas.zoom = config.area.size[0] / ww;
+  };
+
+  Stage.prototype.setCollection = function(type, collection) {
+    this.objects[type] = collection;
+  };
+
+  Stage.prototype.addToCollection = function(type, object) {
+    this.objects[type][object.id] = object;
+  };
+
+  Stage.prototype.removeFromCollection = function(type, id) {
+    delete this.objects[type][id];
   };
 
   module.exports = Stage;

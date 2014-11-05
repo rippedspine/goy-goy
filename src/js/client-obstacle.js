@@ -4,6 +4,7 @@
   var BaseCollection = require('../../shared/base/collection.js')
     , Geometry = require('./client-geometry.js')
     , Vector = require('../../shared/vector.js')
+    , Circle = require('./shapes/circle.js')
     , utils = require('../../shared/utils.js')
     , inherits = utils.inherits
     , msgs = require('../../shared/messages.js')
@@ -16,12 +17,11 @@
   Client.Obstacle.BaseModel = function(data) {
     this.type = data.type;
     this.id = data.id;
-    this.isAlive = true;
     this.didCollide = false;
+
     this.fillTimer = 1;
     this.updateHz = 0.02;
 
-    this.shape = new Geometry(data);
     this.position = new Vector({
       x: data.x,
       y: data.y,
@@ -71,6 +71,7 @@
   // =============================================================
   Client.Obstacle.Triangle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.shape = new Geometry(data);
   };
 
   inherits(Client.Obstacle.Triangle, Client.Obstacle.BaseModel);
@@ -78,7 +79,7 @@
   Client.Obstacle.Triangle.prototype.update = function() {
     this.rotate();
     this.onCollision();
-    utils.wrapBounce(this.position, this.boundary);
+    utils.vector.wrapBounce(this.position, this.boundary);
     this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
@@ -89,6 +90,7 @@
   // =============================================================
   Client.Obstacle.Noiseform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.shape = new Geometry(data);
   };
 
   inherits(Client.Obstacle.Noiseform, Client.Obstacle.BaseModel);
@@ -96,7 +98,7 @@
   Client.Obstacle.Noiseform.prototype.update = function() {
     this.onCollision();
     this.rotate();
-    utils.wrapBounce(this.position, this.boundary);
+    utils.vector.wrapBounce(this.position, this.boundary);
     this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
@@ -107,8 +109,9 @@
   // =============================================================
   Client.Obstacle.Bassform = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.shape = new Geometry(data);
 
-    this.position = new Vector({x: data.x, y: data.y});
+    this.position.setSpeed(0);
 
     this.angle = 0;
     this.shape.growth = data.growth;
@@ -120,14 +123,15 @@
 
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
-    this.shape.isFilled = false;
     this.pulse();
+
+    this.shape.isFilled = false;
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };
 
   Client.Obstacle.Bassform.prototype.pulse = function() {
-    this.shape.growth = 6 + Math.sin(this.angle) * 0.5;
+    this.shape.growth = 6 + utils.myMath.sin(this.angle) * 0.5;
     this.angle += this.updateHz;
   };
 
@@ -136,13 +140,13 @@
   // =============================================================
   Client.Obstacle.Circle = function(data) {
     Client.Obstacle.BaseModel.call(this, data);
+    this.shape = new Circle(data);
   };
 
   inherits(Client.Obstacle.Circle, Client.Obstacle.BaseModel);
 
   Client.Obstacle.Circle.prototype.update = function() {
     this.onCollision();
-    utils.wrapBounce(this.position, this.boundary);
     this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
