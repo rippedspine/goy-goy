@@ -45,11 +45,11 @@
       radiusRange: [7, 16],
       sharp: {
         amount: 10,
-        waveform: 'sine'
+        waveform: 'saw'
       },
       round: {
         amount: 10,
-        waveform: 'saw'
+        waveform: 'sine'
       },
       noise: {
         amount: 10,
