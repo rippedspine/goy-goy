@@ -22,6 +22,7 @@
 
   ClientGame.prototype.start = function() {
     this.handleSocketEvents();
+    this.audioplayer.sequence();
   };
 
   ClientGame.prototype.loop = function() {

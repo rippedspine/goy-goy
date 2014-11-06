@@ -28,12 +28,15 @@
 		"Sine": true,
 		"Saw": true,
 		"Pulse": true,
+		"Triangle": true,
 		"ADSREnvelope": true,
 		"Gain": true,
 		"Reverb": true,
 		"LowPassFilter": true,
 		"extend": true,
 		"MulAdd": true,
+		"PSequence": true,
+		"PChoose": true,
 		"crypto": true
 	}
 }
