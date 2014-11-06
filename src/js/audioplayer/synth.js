@@ -33,6 +33,8 @@
         return new Pulse(this.audiolet, this.frequency);
       case 'bass':
         return new Sine(this.audiolet, this.frequency/3);
+      case 'triangle':
+        return new Triangle(this.audiolet, this.frequency/3);
       default:
         return new Sine(this.audiolet, this.frequency);
     }
@@ -53,13 +55,17 @@
     this.envelope.connect(this.gain, 0, 1);
 
     if(waveform === 'bass') {
-      this.modulator = new WhiteNoise(this.audiolet, frequency * 2);
+      this.modulator = new Sine(this.audiolet, frequency / 4);
       this.modulatorMulAdd = new MulAdd(this.audiolet, 200, frequency / 4);
-      this.modulator.connect(this.modulatorMulAdd);
-      this.modulatorMulAdd.connect(this.waveform);
     } else if (waveform === 'noise') {
       this.modulator = new WhiteNoise(this.audiolet, frequency * 2);
       this.modulatorMulAdd = new MulAdd(this.audiolet, 500, frequency);
+    } else if (waveform === 'triangle') {
+      this.modulator = new WhiteNoise(this.audiolet, frequency * 2.5);
+      this.modulatorMulAdd = new MulAdd(this.audiolet, 200, frequency / 3);
+    }
+
+    if(waveform === 'bass' || waveform === 'noise' || waveform === 'triangle') {
       this.modulator.connect(this.modulatorMulAdd);
       this.modulatorMulAdd.connect(this.waveform);
     }
@@ -72,7 +78,7 @@
     var that = this;
     setTimeout(function() {
       that.disconnect(that.audiolet.output);
-    }, 1000);
+    }, 2500);
   };
 
   module.exports = Synth;
