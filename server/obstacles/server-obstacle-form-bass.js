@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var BaseObstacle = require('./_server-obstacle-form-base.js')
+  var BaseObstacle = require('./server-obstacle-base-model.js')
     , utils    = require('../../shared/utils.js')
     , inherits = utils.inherits
     , config   = require('../../shared/config.js')
