@@ -12,7 +12,7 @@ http.listen(port, function() {
 });
 
 var Player = require('./server/server-player.js')
-  , Obstacle = require('./server/obstacles/_server-obstacle.js')
+  , Obstacle = require('./server/obstacles/__server-obstacle.js')
   , Game = require('./server/server-game.js')
   , CollisionHandler = require('./server/server-collision.js')
   , msgs = require('./shared/messages.js');
@@ -36,10 +36,12 @@ io.on('connection', function(socket) {
   }
 
   socket.emit(msgs.socket.connect, {
-    roundForms : game.roundForms.get(),
-    sharpForms : game.sharpForms.get(),
-    noiseForms : game.noiseForms.get(),
-    bassForms  : game.bassForms.get(),
+    obstacles: {
+      roundForms : game.roundForms.get(),
+      sharpForms : game.sharpForms.get(),
+      noiseForms : game.noiseForms.get(),
+      bassForms  : game.bassForms.get()
+    },
     player     : new Player.Model(socket.id)
   });
 

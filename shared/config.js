@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var sizeFactor = 3.21125; //2569 / 800
+
   module.exports = {
     area: {
       color: '#111',
@@ -11,7 +13,7 @@
       }
     },
 
-    sizeFactor: 2569 / 800,
+    sizeFactor: sizeFactor,
     
     angleArray: [-125, -45, 45, 125],
 
@@ -23,16 +25,16 @@
 
     sound: {
       decayRange: [
-        7 * (2569 / 800), 
-        8 * (2569 / 800), 
-        9 * (2569 / 800), 
-        10 * (2569 / 800), 
-        11 * (2569 / 800), 
-        12 * (2569 / 800), 
-        13 * (2569 / 800), 
-        14 * (2569 / 800), 
-        15 * (2569 / 800), 
-        16 * (2569 / 800)
+        7 * sizeFactor, 
+        8 * sizeFactor, 
+        9 * sizeFactor, 
+        10 * sizeFactor, 
+        11 * sizeFactor, 
+        12 * sizeFactor, 
+        13 * sizeFactor, 
+        14 * sizeFactor, 
+        15 * sizeFactor, 
+        16 * sizeFactor
       ]
     },
 

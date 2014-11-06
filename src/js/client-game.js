@@ -8,20 +8,14 @@
     socket, 
     stage, 
     players, 
-    sharpForms, 
-    roundForms, 
-    noiseForms, 
-    bassForms, 
+    obstacles,
     audioplayer) {
 
     this.socket      = socket;
     this.stage       = stage;
     this.players     = players;
     this.audioplayer = audioplayer;
-    this.sharpForms  = sharpForms;
-    this.roundForms  = roundForms;
-    this.noiseForms  = noiseForms;
-    this.bassForms   = bassForms;
+    this.obstacles   = obstacles;
 
     this.player = null;
   };
@@ -38,10 +32,7 @@
 
   ClientGame.prototype.update = function() {
     this.players.update();
-    this.sharpForms.update();
-    this.roundForms.update();
-    this.noiseForms.update();
-    this.bassForms.update();
+    this.obstacles.update();
   };
 
   ClientGame.prototype.handleDOMEvents = function() {
@@ -54,11 +45,6 @@
   };
 
   ClientGame.prototype.handleMouseMove = function(event) {
-    this.player.move(utils.position.getScreenToWorld(this.stage.canvas, event));
-    this.socket.emit(msgs.socket.updatePlayer, this.player.send());
-  };
-
-  ClientGame.prototype.handleMouseLeave = function(event) {
     this.player.move(utils.position.getScreenToWorld(this.stage.canvas, event));
     this.socket.emit(msgs.socket.updatePlayer, this.player.send());
   };
@@ -78,17 +64,10 @@
 
     this.players.add(data.player);
     this.player = this.players.get(data.player.id);
-
-    this.sharpForms.spawn(data.sharpForms);
-    this.roundForms.spawn(data.roundForms);
-    this.noiseForms.spawn(data.noiseForms);
-    this.bassForms.spawn(data.bassForms);
+    this.obstacles.spawn(data.obstacles);
 
     this.stage.setCollection('players', this.players);
-    this.stage.setCollection('sharpForms', this.sharpForms);
-    this.stage.setCollection('roundForms', this.roundForms);
-    this.stage.setCollection('noiseForms', this.noiseForms);
-    this.stage.setCollection('bassForms', this.bassForms);
+    this.stage.setCollection('obstacles', this.obstacles);
 
     this.socket.emit(msgs.socket.newPlayer, this.player.send());
 
@@ -119,11 +98,11 @@
   ClientGame.prototype.onCollision = function(data) {
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.audioplayer.play(data.obstacle.sound);
-    this[data.obstacle.type + 's'].setCollision(data.obstacle.id, this.socket);
+    this.obstacles.setCollision(data.obstacle);
   };
 
   ClientGame.prototype.onUpdateObstacles = function(data) {
-    this.stage.addToCollection(data.type + 's', this[data.type + 's'].resurrect(data));
+    this.stage.addToCollection('obstacles', this.obstacles.resurrect(data));
   };
 
   module.exports = ClientGame;

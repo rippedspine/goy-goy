@@ -2,7 +2,7 @@
   'use strict';
 
   var BaseCollection = require('../../shared/base/collection.js')
-    , Shape    = require('./shapes/_shapes.js')
+    , Shape    = require('./shapes/__shape.js')
     , Vector   = require('../../shared/vector.js')
     , config   = require('../../shared/config.js')
     , utils    = require('../../shared/utils.js')

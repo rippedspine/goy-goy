@@ -8,7 +8,10 @@
     this.canvas.style.background = config.area.color;
     
     this.context = this.canvas.getContext('2d');
-    this.objects = {}; 
+    this.objects = {
+      obstacles: {},
+      players: {}
+    }; 
     
     this.width   = this.canvas.width = config.area.size[0];
     this.height  = this.canvas.height = config.area.size[1];
@@ -48,7 +51,11 @@
   };
 
   Stage.prototype.addToCollection = function(type, object) {
-    this.objects[type][object.id] = object;
+    if (type === 'obstacles') {
+      this.objects[type][type][object.type + 's'][object.id] = object;
+    } else {
+      this.objects[type][object.id] = object;
+    }
   };
 
   Stage.prototype.removeFromCollection = function(type, id) {
