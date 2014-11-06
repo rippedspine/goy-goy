@@ -27,6 +27,8 @@
     context.scale(this.scale, this.scale);
     context.rotate(this.rotation);
     context.globalAlpha = this.alpha;
+    context.shadowColor = this.color;
+    context.shadowBlur  = 40;
     context.beginPath();
   };
 

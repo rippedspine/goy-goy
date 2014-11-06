@@ -1,12 +1,12 @@
 (function() {
   'use strict';
 
-  var sizeFactor = 3.21125; //2569 / 800
+  var sizeFactor = 2.5; //2000 / 800
 
   module.exports = {
     area: {
       color: '#111',
-      size: [2569, 1600],
+      size: [2000, 1250],
       ratioFactor: {
         h: 0.625,
         w: 1.6

@@ -1,12 +1,7 @@
 (function() {
   'use strict';
 
-  var BaseCollection = require('../../../shared/base/collection.js')
-    , Vector   = require('../../../shared/vector.js')
-    , utils    = require('../../../shared/utils.js')
-    , inherits = utils.inherits
-
-    , Client = { Obstacle: {} };
+  var Client = { Obstacle: {} };
 
   Client.Obstacle.Collection = function(obstacles) {
     this.obstacles = {};

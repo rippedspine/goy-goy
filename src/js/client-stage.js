@@ -1,22 +1,25 @@
 (function() {
   'use strict';
 
-  var config = require('../../shared/config.js');
+  var config = require('../../shared/config.js')
+    , StarField = require('./shapes/starfield.js');
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
-    this.canvas.style.background = config.area.color;
-    
     this.context = this.canvas.getContext('2d');
-    this.objects = {
-      obstacles: {},
-      players: {}
-    }; 
+
+    this.objects = {}; 
     
-    this.width   = this.canvas.width = config.area.size[0];
-    this.height  = this.canvas.height = config.area.size[1];
+    this.width  = this.canvas.width  = config.area.size[0];
+    this.height = this.canvas.height = config.area.size[1];
 
     this.zoom = 1;
+
+    this.starField = new StarField({
+      numStars: 200,
+      width: this.width,
+      height: this.height
+    });
 
     this.setSize();
 
@@ -26,13 +29,12 @@
 
   Stage.prototype.render = function() {
     this.context.clearRect(0, 0, this.width, this.height);
-    this.context.save();
     for (var type in this.objects) {
       if (this.objects[type] !== null) {
         this.objects[type].draw(this.context);
       }
     }
-    this.context.restore();
+    this.starField.draw(this.context);
   };
 
   Stage.prototype.setSize = function() {
@@ -43,7 +45,8 @@
     this.canvas.style.width  = ww + 'px';
     this.canvas.style.height = nh + 'px';
     this.canvas.style.top    = wh * 0.5 - nh * 0.5 + 'px';
-    this.context.zoom        = this.canvas.zoom = config.area.size[0] / ww;
+    
+    this.context.zoom = this.canvas.zoom = config.area.size[0] / ww;
   };
 
   Stage.prototype.setCollection = function(type, collection) {
@@ -53,9 +56,8 @@
   Stage.prototype.addToCollection = function(type, object) {
     if (type === 'obstacles') {
       this.objects[type][type][object.type + 's'][object.id] = object;
-    } else {
-      this.objects[type][object.id] = object;
     }
+    this.objects[type][object.id] = object;
   };
 
   Stage.prototype.removeFromCollection = function(type, id) {

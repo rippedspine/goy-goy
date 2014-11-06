@@ -6,6 +6,7 @@
     Circle  : require('./circle.js'),
     Star    : require('./star.js'),
     Wave    : require('./wave.js'),
+    Romb    : require('./romb.js'),
     Tail    : require('./tail.js')
   };
 

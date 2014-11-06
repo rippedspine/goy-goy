@@ -10,7 +10,7 @@
 
   Client.Obstacle.Bassform = function(data) {
     ObstacleBase.call(this, data);
-    this.shape = new Shape.Wave(data);
+    this.shape = new Shape.Romb(data);
     this.angle = 0;
     
     this.position.setSpeed(0);
@@ -21,8 +21,8 @@
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
     this.pulse();
+    this.rotate();
 
-    this.shape.isFilled = false;
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };

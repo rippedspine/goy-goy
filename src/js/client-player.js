@@ -20,7 +20,7 @@
       x         : data.x,
       y         : data.y,
       direction : 45,
-      friction  : 0.32
+      friction  : 0.4
     });
 
     this.head = new Shape.Circle({

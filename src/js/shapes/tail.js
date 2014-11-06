@@ -36,6 +36,7 @@
   };
 
   Tail.prototype.draw = function(context, color) {
+    context.save();
     context.beginPath();
     for (var i = 0; i < this.points.length; i++) {
       context.lineTo(this.points[i].x, this.points[i].y);
@@ -43,7 +44,10 @@
     context.lineWidth   = this.lineWidth;
     context.lineCap     = 'round';
     context.strokeStyle = color;
+    context.shadowColor = color;
+    context.shadowBlur  = 20;
     context.stroke();
+    context.restore();
   };
 
   Tail.prototype.update = function() {
