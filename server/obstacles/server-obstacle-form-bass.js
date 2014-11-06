@@ -13,10 +13,10 @@
     BaseObstacle.call(this, id);
 
     this.type   = 'bassForm';
-    this.spread = 5.05;
-    this.width  = 60;
-    this.height = 10;
-    this.radius = 16 * config.sizeFactor;
+    this.spread = 2;
+    this.width  = utils.random.getInt(7, 16) * config.sizeFactor;
+    this.height = this.width * 0.8;
+    this.radius = this.width;
     this.sound  = this.createSound(forms.bass.waveform);
   };
 

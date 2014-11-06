@@ -8,7 +8,10 @@
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
 
-    this.objects = {}; 
+    this.objects = {
+      obstacles: {},
+      players: {}
+    }; 
     
     this.width  = this.canvas.width  = config.area.size[0];
     this.height = this.canvas.height = config.area.size[1];
@@ -29,12 +32,9 @@
 
   Stage.prototype.render = function() {
     this.context.clearRect(0, 0, this.width, this.height);
-    for (var type in this.objects) {
-      if (this.objects[type] !== null) {
-        this.objects[type].draw(this.context);
-      }
-    }
     this.starField.draw(this.context);
+    this.objects.obstacles.draw(this.context);
+    this.objects.players.draw(this.context);
   };
 
   Stage.prototype.setSize = function() {
