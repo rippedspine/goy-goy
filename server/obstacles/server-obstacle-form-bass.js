@@ -16,6 +16,7 @@
     this.spread = 5.05;
     this.width  = 95;
     this.height = 10;
+    this.radius = 16 * config.sizeFactor;
     this.sound  = this.createSound(forms.bass.waveform);
   };
 

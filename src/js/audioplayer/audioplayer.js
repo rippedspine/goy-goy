@@ -17,26 +17,12 @@
       783.991, 
       880.000
     ];
-    this.filterFrequencies = [
-      3000,
-      2500,
-      2000,
-      1500,
-      1000,
-      500,
-      400,
-      300,
-      200,
-      100
-    ];
     this.synth = null;
   };
 
   AudioPlayer.prototype.play = function(sound) {
     this.synth = new Synth(this.audiolet);
-    if(sound.waveform === 'noise') {
-      this.synth.play(sound.waveform, sound.decay, 440, this.filterFrequencies[sound.id]);
-    } else if(sound.waveform === 'bass') {
+    if(sound.waveform === 'bass') {
       this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 200);
     } else {
       this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 400);

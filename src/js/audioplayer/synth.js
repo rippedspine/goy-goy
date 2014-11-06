@@ -30,7 +30,7 @@
       case 'square':
         return new Square(this.audiolet, this.frequency);
       case 'noise':
-        return new WhiteNoise(this.audiolet, this.frequency);
+        return new Pulse(this.audiolet, this.frequency);
       case 'bass':
         return new Sine(this.audiolet, this.frequency/3);
       default:
@@ -51,6 +51,18 @@
 
     this.envelope = this.getEnvelope(this.soundDecay);
     this.envelope.connect(this.gain, 0, 1);
+
+    if(waveform === 'bass') {
+      this.modulator = new WhiteNoise(this.audiolet, frequency * 2);
+      this.modulatorMulAdd = new MulAdd(this.audiolet, 200, frequency / 4);
+      this.modulator.connect(this.modulatorMulAdd);
+      this.modulatorMulAdd.connect(this.waveform);
+    } else if (waveform === 'noise') {
+      this.modulator = new WhiteNoise(this.audiolet, frequency * 2);
+      this.modulatorMulAdd = new MulAdd(this.audiolet, 500, frequency);
+      this.modulator.connect(this.modulatorMulAdd);
+      this.modulatorMulAdd.connect(this.waveform);
+    }
 
     this.waveform.connect(this.filter);
     this.filter.connect(this.gain);
