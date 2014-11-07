@@ -21,7 +21,10 @@
     this.isFilled  = options.isFilled || false;
   };
 
-  BaseShape.prototype.beginDraw = function(context) {
+  BaseShape.context = null;
+
+  BaseShape.prototype.beginDraw = function() {
+    var context = BaseShape.context;
     context.save();
     context.translate(this.x, this.y);
     context.scale(this.scale, this.scale);
@@ -32,7 +35,8 @@
     context.beginPath();
   };
 
-  BaseShape.prototype.endDraw = function(context) {
+  BaseShape.prototype.endDraw = function() {
+    var context = BaseShape.context;
     if (this.isFilled) {
       context.fillStyle = this.color;
       context.fill();

@@ -13,14 +13,16 @@
   Client.Obstacle.Collection.prototype.spawn = function(obstacles) {
     for (var type in obstacles) {
       for (var id in obstacles[type]) {
-        this.obstacles[type][id] = new this.obstacles[type].model(obstacles[type][id]);
+        var obstacleType = this.obstacles[type];
+        obstacleType[id] = new obstacleType.model(obstacles[type][id]);
       }
     }
   };
 
   Client.Obstacle.Collection.prototype.resurrect = function(data) {
-    this.obstacles[data.type + 's'][data.id] = new this.obstacles[data.type + 's'].model(data);
-    return this.obstacles[data.type + 's'][data.id];
+    var obstacleType = this.obstacles[data.type + 's'];
+    obstacleType[data.id] = new obstacleType.model(data);
+    return obstacleType[data.id];
   };
 
   Client.Obstacle.Collection.prototype.setCollision = function(data) {

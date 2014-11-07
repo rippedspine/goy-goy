@@ -11,7 +11,7 @@
     , Client = { Player: {} };
 
   // =============================================================
-  // CLIENT PLAYER MODEL :: extends Vector
+  // CLIENT PLAYER MODEL
   // =============================================================
   Client.Player.Model = function(data) {
     this.id = data.id;
@@ -53,10 +53,11 @@
 
   Client.Player.Model.prototype.send = function() {
     return {
-      id     : this.id,
-      radius : this.head.radius,
-      x      : this.position.x, 
-      y      : this.position.y
+      id          : this.id,
+      radius      : this.head.radius,
+      x           : this.position.x, 
+      y           : this.position.y,
+      springPoint : this.springPoint
     };
   };
 
@@ -98,6 +99,11 @@
     this.springPoint.y = position.y;
   };
 
+  Client.Player.Model.prototype.moveSpring = function(springPoint) {
+    this.springPoint = springPoint;
+    console.log(this.springPoint);
+  };
+
   // =============================================================
   // CLIENT PLAYER COLLECTION :: extends BASECOLLECTION
   // =============================================================
@@ -129,7 +135,7 @@
   };
 
   Client.Player.Collection.prototype.updatePlayer = function(data) {
-    console.log(data.x, data.y);
+    // this.collection[data.id].moveSpring(data.springPoint);
     this.collection[data.id].move({x: data.x, y: data.y});
   };
 
