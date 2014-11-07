@@ -7,16 +7,21 @@
   
   var Wave = function(options) {
     BaseShape.call(this, options);
+    this.angle = 0;
+    this.updateHz = 0.05;
   };
   inherits(Wave, BaseShape);
 
   Wave.prototype.draw = function(context) {
     this.beginDraw(context);
 
-    context.moveTo(this.width * -0.5, 0);
-    context.lineTo(0, (this.width * 1.5) * 0.5);
-    context.lineTo(this.width * 0.5, 0);
-    context.lineTo(0, (this.width * 1.5) * -0.5);
+    var grow = 2 + utils.myMath.sin(this.angle) * 4;
+    this.angle += this.updateHz;
+
+    context.moveTo((-this.radius * 0.8) + grow, 0);
+    context.lineTo(0, this.radius + (grow * 0.5));
+    context.lineTo((this.radius * 0.8) - grow, 0);
+    context.lineTo(0, -this.radius - (grow * 0.5));
 
     context.closePath();
 

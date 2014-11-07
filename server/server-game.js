@@ -39,7 +39,7 @@
     this.collisions.sharpForms = this.collisionHandler.detectCircle(this.player, this.sharpForms.get());
     this.collisions.roundForms = this.collisionHandler.detectCircle(this.player, this.roundForms.get());
     this.collisions.noiseForms = this.collisionHandler.detectCircle(this.player, this.noiseForms.get());
-    this.collisions.bassForms  = this.collisionHandler.detectRect(this.player, this.bassForms.get());
+    this.collisions.bassForms  = this.collisionHandler.detectCircle(this.player, this.bassForms.get());
   };
 
   ServerGame.prototype.getCollision = function() {
