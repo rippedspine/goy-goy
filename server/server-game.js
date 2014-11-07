@@ -44,11 +44,12 @@
 
   ServerGame.prototype.getCollision = function() {
     for (var type in this.collisions) {
-      if (typeof this.collisions[type] !== 'undefined') {
-        var id = this.collisions[type].obstacle.id;
+      var collisionType = this.collisions[type];
+      if (typeof collisionType !== 'undefined') {
+        var id = collisionType.obstacle.id;
         if (!this[type].get(id).shouldBeRemoved) {
           this[type].get(id).shouldBeRemoved = true;
-          return this.collisions[type];
+          return collisionType;
         }
       }
     }

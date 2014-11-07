@@ -14,10 +14,11 @@
     this.beginDraw(context);
 
     for (var i = 0; i < this.vertices.length; i++) {
+      var vertice = this.vertices[i];
       if (i === 0) {
-        context.moveTo(this.vertices[i].x, this.vertices[i].y);
+        context.moveTo(vertice.x, vertice.y);
       } else {
-        context.lineTo(this.vertices[i].x, this.vertices[i].y);
+        context.lineTo(vertice.x, vertice.y);
       }
     }
     context.closePath();
