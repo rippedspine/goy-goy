@@ -24,7 +24,7 @@
 
       angle += 360/this.points;
     }
-
+    this.isFilled = false;
     this.endDraw(context);
   };
 

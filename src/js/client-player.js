@@ -129,6 +129,7 @@
   };
 
   Client.Player.Collection.prototype.updatePlayer = function(data) {
+    console.log(data.x, data.y);
     this.collection[data.id].move({x: data.x, y: data.y});
   };
 
