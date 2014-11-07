@@ -18,6 +18,8 @@
     this.obstacles   = obstacles;
 
     this.player = null;
+
+    this.timer = 0;
   };
 
   ClientGame.prototype.start = function() {

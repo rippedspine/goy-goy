@@ -2,11 +2,13 @@
   'use strict';
 
   var config = require('../../shared/config.js')
+    , BaseShape = require('./shapes/_base-shape.js')
     , StarField = require('./shapes/starfield.js');
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
+    BaseShape.context = this.context;
 
     this.objects = {
       obstacles: {},
