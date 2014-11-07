@@ -31,21 +31,11 @@
   };
 
   AudioPlayer.prototype.sequence = function() {
-    // var melodyA = new PSequence(this.toneFrequencies);
-    // var frequencyPattern = new PChoose([melodyA],
-    //                                    Infinity);
-
-    // var durationPattern = new PChoose([new PSequence([5, 6, 6, 5]),
-    //                                    new PSequence([5, 5, 6, 6]),
-    //                                    new PSequence([6, 6, 5, 5])],
-    //                                   Infinity);
-    
-
     this.audiolet.scheduler.play(290, 5,
         function(frequency) {
           frequency = this.toneFrequencies[utils.random.getInt(0, 9)];
-            var synth = new Synth(this.audiolet, frequency);
-            synth.play('triangle', 2.5, frequency, 2000);
+          var synth = new Synth(this.audiolet, frequency);
+          synth.play('triangle', 2.5, frequency, 2000);
         }.bind(this)
     );
   };
