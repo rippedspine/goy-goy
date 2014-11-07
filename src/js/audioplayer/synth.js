@@ -45,11 +45,12 @@
     return new LowPassFilter(this.audiolet, this.filterHz);
   };
 
-  Synth.prototype.play = function(waveform, soundDecay, frequency, filterHz) {
+  Synth.prototype.play = function(waveform, soundDecay, frequency, filterHz, delay) {
     this.frequency  = frequency;
     this.soundDecay = soundDecay || 0.1;
     this.filter     = waveform === 'noise' ? this.createFilter(filterHz) : this.createFilter(400);
     this.waveform   = this.getWaveform(waveform);
+    this.delay      = delay;
 
     this.envelope = this.getEnvelope(this.soundDecay);
     this.envelope.connect(this.gain, 0, 1);
@@ -75,10 +76,18 @@
 
     this.connect(this.audiolet.output);
 
-    var that = this;
+    // var that = this;
+    // setTimeout(function() {
+    //   that.disconnect(that.audiolet.output);
+    // }, 2500);
+
+    this.disconnectSound();
+  };
+
+  Synth.prototype.disconnectSound = function() {
     setTimeout(function() {
-      that.disconnect(that.audiolet.output);
-    }, 2500);
+      this.disconnect(this.audiolet.output); 
+    }.bind(this), this.delay);
   };
 
   module.exports = Synth;

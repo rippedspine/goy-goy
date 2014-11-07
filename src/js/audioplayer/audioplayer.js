@@ -24,9 +24,9 @@
   AudioPlayer.prototype.play = function(sound) {
     this.synth = new Synth(this.audiolet);
     if(sound.waveform === 'bass') {
-      this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 200);
+      this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 200, 1000);
     } else {
-      this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 400);
+      this.synth.play(sound.waveform, sound.decay, this.toneFrequencies[sound.id], 400, 1000);
     }
   };
 
@@ -35,7 +35,7 @@
         function(frequency) {
           frequency = this.toneFrequencies[utils.random.getInt(0, 9)];
           var synth = new Synth(this.audiolet, frequency);
-          synth.play('triangle', 2.5, frequency, 2000);
+          synth.play('triangle', 2.5, frequency, 2000, 2500);
         }.bind(this)
     );
   };
