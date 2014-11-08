@@ -12,7 +12,7 @@
 
   Circle.prototype.draw = function() {
     this.beginDraw();
-    BaseShape.context.arc(0, 0, this.radius, 0, 2 * utils.myMath.PI, false);
+    this.context.arc(0, 0, this.radius, 0, 2 * utils.myMath.PI, false);
     this.endDraw();
   };
 

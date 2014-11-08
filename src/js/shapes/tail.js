@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  var Vector = require('../../../shared/vector.js');
+  var Vector = require('../../../shared/vector.js')
+    , Renderable = require('./renderable.js');
 
   var Tail = function(options) {
     this.numPoints = options.points;
@@ -9,18 +10,24 @@
     this.direction = options.direction;
     this.friction  = options.friction;
     this.k         = options.stiffness;
+    this.context   = Renderable.context;
     this.lineWidth = 1;
     this.points    = [];
     this.create();
   };
 
   Tail.prototype.create = function() {
+    var ox = this.origin.x
+      , oy = this.origin.y
+      , direction = this.direction
+      , friction = this.friction;
+
     for (var i = 0; i < this.numPoints; i++) {
       this.points.push(new Vector({
-        x         : this.origin.x,
-        y         : this.origin.y,
-        direction : this.direction,
-        friction  : this.friction
+        x         : ox,
+        y         : oy,
+        direction : direction,
+        friction  : friction
       }));
     }
   };
@@ -35,12 +42,19 @@
     }
   };
 
-  Tail.prototype.draw = function(context, color) {
+  Tail.prototype.draw = function(color) {
+    var context = this.context
+      , points = this.points
+      , p;
+
     context.save();
     context.beginPath();
-    for (var i = 0; i < this.points.length; i++) {
-      context.lineTo(this.points[i].x, this.points[i].y);
+
+    for (var i = 0; i < points.length; i++) {
+      p = points[i];
+      context.lineTo(p.x, p.y);
     }
+
     context.lineWidth   = this.lineWidth;
     context.lineCap     = 'round';
     context.strokeStyle = color;
@@ -51,8 +65,11 @@
   };
 
   Tail.prototype.update = function() {
-    for (var i = 0; i < this.points.length; i++) {
-      this.points[i].updatePhysics();
+    var points = this.points
+      , p;
+    for (var i = 0; i < points.length; i++) {
+      p = points[i];
+      p.updatePhysics();
     }
   };
 

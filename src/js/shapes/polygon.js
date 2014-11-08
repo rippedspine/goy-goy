@@ -10,20 +10,21 @@
   };
   inherits(Polygon, BaseShape);
 
-  Polygon.prototype.draw = function(context) {
-    this.beginDraw(context);
+  Polygon.prototype.draw = function() {
+    var context = this.context;
+    this.beginDraw();
 
     for (var i = 0; i < this.vertices.length; i++) {
-      var vertice = this.vertices[i];
+      var v = this.vertices[i];
       if (i === 0) {
-        context.moveTo(vertice.x, vertice.y);
+        context.moveTo(v.x, v.y);
       } else {
-        context.lineTo(vertice.x, vertice.y);
+        context.lineTo(v.x, v.y);
       }
     }
     context.closePath();
     
-    this.endDraw(context);
+    this.endDraw();
   };
 
   module.exports = Polygon;

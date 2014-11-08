@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var Renderable = require('./renderable.js');
+
   var BaseShape = function(options) {
     this.x         = options.x;
     this.y         = options.y;
@@ -19,12 +21,14 @@
     this.scale     = options.scale || 1;
     this.lineWidth = options.lineWidth || 1;
     this.isFilled  = options.isFilled || false;
+
+    this.context = Renderable.context;
   };
 
   BaseShape.context = null;
 
   BaseShape.prototype.beginDraw = function() {
-    var context = BaseShape.context;
+    var context = this.context;
     context.save();
     context.translate(this.x, this.y);
     context.scale(this.scale, this.scale);
@@ -36,7 +40,7 @@
   };
 
   BaseShape.prototype.endDraw = function() {
-    var context = BaseShape.context;
+    var context = this.context;
     if (this.isFilled) {
       context.fillStyle = this.color;
       context.fill();
