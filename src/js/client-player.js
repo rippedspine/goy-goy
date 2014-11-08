@@ -99,11 +99,6 @@
     this.springPoint.y = position.y;
   };
 
-  Client.Player.Model.prototype.moveSpring = function(springPoint) {
-    this.springPoint = springPoint;
-    console.log(this.springPoint);
-  };
-
   // =============================================================
   // CLIENT PLAYER COLLECTION :: extends BASECOLLECTION
   // =============================================================
@@ -135,8 +130,7 @@
   };
 
   Client.Player.Collection.prototype.updatePlayer = function(data) {
-    // this.collection[data.id].moveSpring(data.springPoint);
-    this.collection[data.id].move({x: data.x, y: data.y});
+    this.collection[data.id].move(data.springPoint);
   };
 
   Client.Player.Collection.prototype.set = function(players) {
