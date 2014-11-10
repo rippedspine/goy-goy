@@ -3,7 +3,8 @@
 
   var config = require('../../shared/config.js')
     , Renderable = require('./shapes/renderable.js')
-    , StarField = require('./shapes/starfield.js');
+    , StarField = require('./shapes/starfield.js')
+    , Circle = require('./shapes/circle.js');
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
@@ -20,6 +21,15 @@
       context: Renderable.context
     });
 
+    this.bgForm = new Circle({
+      x:        this.width * 0.5,
+      y:        this.height * 0.5,
+      color:    'hsl(10,60%,60%)',
+      radius:   400,
+      alpha:    1,
+      isFilled: true,
+    });
+
     this.setSize();
     window.addEventListener('resize', this.setSize.bind(this));
     document.body.appendChild(this.canvas);
@@ -27,6 +37,7 @@
 
   Stage.prototype.render = function() {
     this.context.clearRect(0, 0, this.width, this.height);
+    this.bgForm.draw();
     this.starField.draw();
   };
 
