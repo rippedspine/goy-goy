@@ -162,6 +162,8 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('heroku', ['build']);
+
   grunt.registerTask('validate', ['jshint']);
 
   grunt.registerTask('build', [
@@ -180,6 +182,5 @@ module.exports = function(grunt) {
     'copy:dev'
   ]);
 
-  grunt.registerTask('default', ['build']);
-
+  grunt.registerTask('default', ['dev', 'watch']);
 };

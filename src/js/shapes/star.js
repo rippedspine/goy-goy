@@ -3,29 +3,37 @@
 
   var BaseShape = require('./_base-shape.js')
     , utils    = require('../../../shared/utils.js')
-    , inherits = utils.inherits;
+    , inherits = utils.inherits
+
+    , cos = utils.myMath.cos
+    , sin = utils.myMath.sin
+    , PI = utils.myMath.PI;
 
   var Star = function(options) {
     BaseShape.call(this, options);
   };
   inherits(Star, BaseShape);
 
-  Star.prototype.draw = function(context) {
-    this.beginDraw(context);
+  Star.prototype.draw = function() {
+    var context = this.context;
+    this.beginDraw();
     
-    var angle = 0, radians, x, y;
-    for (var i = 0; i < this.points; i++) {
-      radians = angle / 180 * utils.myMath.PI;
-      x = this.radius * utils.myMath.cos(radians);
-      y = this.radius * utils.myMath.sin(radians);
+    var r = this.radius
+      , points = this.points
+      , angle = 0, radians, x, y;
+
+    for (var i = 0; i < points; i++) {
+      radians = angle / 180 * PI;
+      x = r * cos(radians);
+      y = r * sin(radians);
 
       context.moveTo(0, 0);
       context.lineTo(x, y);
 
-      angle += 360/this.points;
+      angle += 360/points;
     }
     this.isFilled = false;
-    this.endDraw(context);
+    this.endDraw();
   };
 
   module.exports = Star;

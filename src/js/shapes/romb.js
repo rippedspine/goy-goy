@@ -12,8 +12,9 @@
   };
   inherits(Wave, BaseShape);
 
-  Wave.prototype.draw = function(context) {
-    this.beginDraw(context);
+  Wave.prototype.draw = function() {
+    var context = this.context;
+    this.beginDraw();
 
     var grow = 2 + utils.myMath.sin(this.angle) * 4;
     this.angle += this.updateHz;
@@ -25,7 +26,7 @@
 
     context.closePath();
 
-    this.endDraw(context);
+    this.endDraw();
   };
 
   module.exports = Wave;
