@@ -134,9 +134,8 @@
   };
 
   Client.Player.Collection.prototype.set = function(players) {
-    var add = this.add;
     for (var id in players) {
-      add(players[id]);
+      this.collection[id] = new this.model(players[id]);
     }
   };
 

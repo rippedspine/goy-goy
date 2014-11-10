@@ -5,22 +5,22 @@
     , utils = require('../../shared/utils.js');
 
   var ClientGame = function(
-    socket, 
     stage, 
     players, 
     obstacles,
     audioplayer) {
 
-    this.socket      = socket;
     this.stage       = stage;
     this.players     = players;
     this.audioplayer = audioplayer;
     this.obstacles   = obstacles;
 
+    this.socket = null;
     this.player = null;
   };
 
-  ClientGame.prototype.start = function() {
+  ClientGame.prototype.start = function(socket) {
+    this.socket = socket;
     this.handleSocketEvents();
     this.audioplayer.sequence();
   };
@@ -59,12 +59,12 @@
 
   ClientGame.prototype.handleSocketEvents = function() {
     this.socket.on(msgs.socket.connect, this.onConnect.bind(this));
-    this.socket.on(msgs.socket.disconnect, this.players.remove.bind(this.players));
-    this.socket.on(msgs.socket.newPlayer, this.players.add.bind(this.players));
-    this.socket.on(msgs.socket.getPlayers, this.players.set.bind(this.players));
-    this.socket.on(msgs.socket.updatePlayer, this.players.updatePlayer.bind(this.players));
+    this.socket.on(msgs.socket.disconnect, this.onRemovePlayer.bind(this));
+    this.socket.on(msgs.socket.newPlayer, this.onNewPlayer.bind(this));
+    this.socket.on(msgs.socket.getPlayers, this.onGetPlayers.bind(this));
+    this.socket.on(msgs.socket.updatePlayer, this.onUpdatePlayer.bind(this));
     this.socket.on(msgs.socket.collision, this.onCollision.bind(this));
-    this.socket.on(msgs.socket.updateObstacles, this.obstacles.resurrect.bind(this.obstacles));
+    this.socket.on(msgs.socket.updateObstacles, this.onUpdateObstacles.bind(this));
   };
 
   ClientGame.prototype.onConnect = function(data) {
@@ -81,6 +81,26 @@
     this.loop();
   };
 
+  ClientGame.prototype.onRemovePlayer = function(id) {
+    this.players.remove(id);
+  };
+
+  ClientGame.prototype.onNewPlayer = function(player) {
+    this.players.add(player);
+  };
+
+  ClientGame.prototype.onGetPlayers = function(players) {
+    this.players.set(players);
+  };
+
+  ClientGame.prototype.onUpdatePlayer = function(player) {
+    this.players.updatePlayer(player);
+  };
+
+  ClientGame.prototype.onUpdateObstacles = function(data) {
+    this.obstacles.resurrect(data);
+  };
+
   ClientGame.prototype.onCollision = function(data) {
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.obstacles.setCollision(data.obstacle);
@@ -90,3 +110,4 @@
   module.exports = ClientGame;
 
 })(this);
+// 

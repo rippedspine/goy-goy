@@ -42,7 +42,7 @@ io.on('connection', function(socket) {
       noiseForms : game.noiseForms.get(),
       bassForms  : game.bassForms.get()
     },
-    player     : new Player.Model(socket.id)
+    player: new Player.Model(socket.id)
   });
 
   socket.on(msgs.socket.newPlayer, function(data) {

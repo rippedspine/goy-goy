@@ -15,9 +15,9 @@ module.exports = function(grunt) {
     browserify: {
       entry: src + '/js/app.js',
       output: {
-        tmp: tmp + '/gaia.js',
-        dist: dist + '/gaia.js',
-        min: dist + '/gaia.min.js'
+        tmp: tmp + '/goygoy.js',
+        dist: dist + '/goygoy.js',
+        min: dist + '/goygoy.js'
       }
     }
   };
@@ -77,6 +77,7 @@ module.exports = function(grunt) {
           cwd: '<%= config.src %>',
           dest: '<%= config.tmp %>',
           src: [
+            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -91,6 +92,7 @@ module.exports = function(grunt) {
           cwd: '<%= config.src %>',
           dest: '<%= config.dist %>',
           src: [
+            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -113,6 +115,25 @@ module.exports = function(grunt) {
       ]
     },
 
+    replace: {
+      dist: {
+        src: ['server.js'],
+        dest: 'server.js',
+        replacements: [{
+          from: '/.tmp',
+          to: '/build'
+        }]
+      },
+      dev: {
+        src: ['server.js'],
+        dest: 'server.js',
+        replacements: [{
+          from: '/build',
+          to: '/.tmp'
+        }]
+      },
+    },
+
     nodeunit: {
       all: ['<%= config.tests %>**/*_test.js'],
       options: {
@@ -126,8 +147,8 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          '<%= config.browserify.output.min %>': 
-            ['<%= config.browserify.output.dist %>']
+          '<%= config.browserify.output.min %>': '<%= config.browserify.output.dist %>',
+          'build/Audiolet.js': 'build/Audiolet.js'
         }
       }
     },
@@ -170,8 +191,10 @@ module.exports = function(grunt) {
     'jshint',
     'nodeunit',
     'browserify:dist',
+    'cssmin:dist',
+    'copy:dist',
     'uglify',
-    'copy:dist'
+    'replace:dist'
   ]);
 
   grunt.registerTask('dev', [
@@ -179,7 +202,8 @@ module.exports = function(grunt) {
     'nodeunit',
     'browserify:dev',
     'cssmin:dev',
-    'copy:dev'
+    'copy:dev',
+    'replace:dev'
   ]);
 
   grunt.registerTask('default', ['dev', 'watch']);
