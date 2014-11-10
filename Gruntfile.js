@@ -180,6 +180,6 @@ module.exports = function(grunt) {
     'copy:dev'
   ]);
 
-  grunt.registerTask('default', ['dev', 'watch']);
+  grunt.registerTask('default', ['build']);
 
 };
