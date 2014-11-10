@@ -16,11 +16,14 @@
     this.height    = options.height || 0;
     this.spread    = options.spread || 0;
     
-    this.rotation  = options.rotation || 0;
-    this.alpha     = options.alpha || 1;
-    this.scale     = options.scale || 1;
-    this.lineWidth = options.lineWidth || 1;
-    this.isFilled  = options.isFilled || false;
+    this.rotation   = options.rotation || 0;
+    this.alpha      = options.alpha || 1;
+    this.scale      = options.scale || 1;
+    this.lineWidth  = options.lineWidth || 1;
+    this.isFilled   = options.isFilled || false;
+    this.shadowBlur = options.shadowBlur || 40;
+    this.shadowOffsetX = options.shadowOffsetX || 0;
+    this.shadowOffsetY = options.shadowOffsetY || 0;
 
     this.context = Renderable.context;
   };
@@ -33,7 +36,9 @@
     context.rotate(this.rotation);
     context.globalAlpha = this.alpha;
     context.shadowColor = this.color;
-    context.shadowBlur  = 40;
+    context.shadowBlur  = this.shadowBlur;
+    context.shadowOffsetX = this.shadowOffsetX;
+    context.shadowOffsetY = this.shadowOffsetY;
     context.beginPath();
   };
 
