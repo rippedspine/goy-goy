@@ -2,9 +2,11 @@
   'use strict';
 
   var config = require('../../shared/config.js')
+    , utils = require('../../shared/utils.js')
     , Renderable = require('./shapes/renderable.js')
     , StarField = require('./shapes/starfield.js')
-    , Circle = require('./shapes/circle.js');
+    , Circle = require('./shapes/circle.js')
+    , Polygon = require('./shapes/polygon.js');
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
@@ -21,13 +23,17 @@
       context: Renderable.context
     });
 
-    this.bgForm = new Circle({
-      x:        this.width * 0.5,
-      y:        this.height * 0.5,
+    this.bgForm = new Polygon({
+      x:        -this.width,
+      y:        -this.height,
       color:    'hsl(10,60%,60%)',
       radius:   400,
+      vertices: utils.vertices.getIrregularPolygon(12, 400),
       alpha:    1,
       isFilled: true,
+      shadowBlur: 70,
+      shadowOffsetX: this.width * 1.5,
+      shadowOffsetY: this.height * 1.5,
     });
 
     this.setSize();
