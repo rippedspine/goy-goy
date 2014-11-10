@@ -19,6 +19,8 @@
     this.scale     = options.scale || 1;
     this.lineWidth = options.lineWidth || 1;
     this.isFilled  = options.isFilled || false;
+
+    this.context = null;
   };
 
   BaseShape.context = null;
