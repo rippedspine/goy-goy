@@ -1,7 +1,7 @@
 {
-  "name": "Gaian_Debug",
+  "name": "Goy-Goy",
   "version": "0.0.1",
-  "description": "Canvas Experiment",
+  "description": "WebAudio Canvas Experiment",
   "main": "server.js",
   "contributors": [
     "Lars H Simonsen",
@@ -11,14 +11,16 @@
   "engines": {
     "node": "0.10.31"
   },
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "bower install && grunt build"
+  },
   "dependencies": {
     "express": "3.3.5",
     "lodash": "~2.4.1",
     "node-uuid": "^1.4.1",
     "socket.io": "^1.1.0",
-    "socket.io-client": "^1.1.0"
-  },
-  "devDependencies": {
+    "socket.io-client": "^1.1.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.1.0",
     "grunt-contrib-copy": "^0.5.0",
