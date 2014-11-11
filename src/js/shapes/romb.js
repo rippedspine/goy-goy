@@ -23,9 +23,18 @@
     context.lineTo(0, this.radius + (grow * 0.5));
     context.lineTo((this.radius * 0.8) - grow, 0);
     context.lineTo(0, -this.radius - (grow * 0.5));
-
     context.closePath();
 
+    context.moveTo(-this.radius + grow + 6, 0);
+    context.lineTo(-this.radius * 1.5 + grow + 6, 0);
+    context.moveTo(0, this.radius);
+    context.lineTo(0, this.radius * 1.5);
+    context.moveTo(this.radius - grow - 6, 0);
+    context.lineTo(this.radius * 1.5 - grow - 6, 0);
+    context.moveTo(0, -this.radius);
+    context.lineTo(0, -this.radius * 1.5);    
+
+    this.isFilled = false;
     this.endDraw();
   };
 
