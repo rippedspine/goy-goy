@@ -34,7 +34,7 @@
   };
 
   ClientGame.prototype.update = function() {
-    this.cycleColor();
+    this.stage.bgForm.cycleColor();
     this.players.update();
     this.obstacles.update();
   };
@@ -85,19 +85,21 @@
   };
 
   ClientGame.prototype.onCollision = function(data) {
-    this.currentHue = utils.color.getValues(this.stage.bgForm.color)[0];
-    this.collisionColor = data.obstacle.color;
+    this.stage.bgForm.currentHue = utils.color.getValues(this.stage.bgForm.color)[0];
+    this.stage.bgForm.collisionColor = data.obstacle.color;
+
+    console.log('bgForm.color', this.stage.bgForm.color);
 
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.obstacles.setCollision(data.obstacle);
     this.audioplayer.play(data.obstacle.sound);
   };
 
-  ClientGame.prototype.cycleColor = function() {
-    var newColor = utils.color.getValues(this.collisionColor);
-    if (this.currentHue > newColor[0]) {this.currentHue--;} else {this.currentHue++;}
-    this.stage.bgForm.color = utils.color.get(this.currentHue, newColor[1] * 0.25, newColor[2] * 0.25);
-  };
+  // ClientGame.prototype.cycleColor = function() {
+  //   var newColor = utils.color.getValues(this.collisionColor);
+  //   if (this.currentHue > newColor[0]) {this.currentHue--;} else {this.currentHue++;}
+  //   this.stage.bgForm.color = utils.color.get(this.currentHue, newColor[1] * 0.25, newColor[2] * 0.25);
+  // };
 
   module.exports = ClientGame;
 

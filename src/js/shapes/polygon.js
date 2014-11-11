@@ -7,6 +7,8 @@
 
   var Polygon = function(options) {
     BaseShape.call(this, options);
+    this.blendMode = options.blendMode;
+    this.rotation = options.rotation;
   };
   inherits(Polygon, BaseShape);
 
@@ -23,6 +25,10 @@
       }
     }
     context.closePath();
+
+    if(this.blendMode) {
+      context.globalCompositeOperation = this.blendMode;
+    }
     
     this.endDraw();
   };

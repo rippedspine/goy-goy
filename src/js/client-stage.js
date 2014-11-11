@@ -6,7 +6,7 @@
     , Renderable = require('./shapes/renderable.js')
     , StarField = require('./shapes/starfield.js')
     , Circle = require('./shapes/circle.js')
-    , Polygon = require('./shapes/polygon.js');
+    , BgForms = require('./shapes/bgforms.js');
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
@@ -23,17 +23,19 @@
       context: Renderable.context
     });
 
-    this.bgForm = new Polygon({
+    this.bgForm = new BgForms({
       x:        -this.width,
       y:        -this.height,
       color:    'hsl(10,60%,60%)',
       radius:   400,
       vertices: utils.vertices.getIrregularPolygon(12, 400),
-      alpha:    1,
+      alpha:    0.5,
       isFilled: true,
       shadowBlur: 70,
       shadowOffsetX: this.width * 1.5,
       shadowOffsetY: this.height * 1.5,
+      numForms: 5,
+      blendMode: 'screen'
     });
 
     this.setSize();
