@@ -28,7 +28,7 @@
   };
 
   CollisionHandler.prototype.circleCollision = function(c0, c1) {
-    return utils.vector.distance(c0, c1) <= c0.radius + c1.radius;
+    return utils.vector.distance(c0, c1) <= (c0.radius * 1.5) + c1.radius;
   };
 
   CollisionHandler.prototype.circleRectCollision = function(c, r) {

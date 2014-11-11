@@ -1,18 +1,29 @@
 (function() {
   'use strict';
 
-  var utils = {};
+  var utils = {}
+
+    , math       = Math
+    , mathFloor  = math.floor
+    , mathRandom = math.random
+    , mathSqrt   = math.sqrt
+    , mathCos    = math.cos
+    , mathSin    = math.sin
+    , mathAtan2  = math.atan2
+    , mathMax    = math.max
+    , mathMin    = math.min
+    , mathPI     = math.PI;
 
   utils.myMath = {
-    floor  : Math.floor,
-    random : Math.random,
-    sqrt   : Math.sqrt,
-    cos    : Math.cos,
-    sin    : Math.sin,
-    atan2  : Math.atan2,
-    max    : Math.max,
-    min    : Math.min,
-    PI     : Math.PI
+    floor  : mathFloor,
+    random : mathRandom,
+    sqrt   : mathSqrt,
+    cos    : mathCos,
+    sin    : mathSin,
+    atan2  : mathAtan2,
+    max    : mathMax,
+    min    : mathMin,
+    PI     : mathPI
   };
 
   utils.inherits = function(child, parent) {
@@ -67,8 +78,8 @@
       var vertices = [];
       for (var i = 0; i < points; i++) {
         var angle = i * 2 * utils.myMath.PI / points
-          , xv = radius * utils.myMath.cos(angle) + utils.random.get() * radius * 0.4
-          , yv = radius * utils.myMath.sin(angle) + utils.random.get() * radius * 0.4;
+          , xv = radius * mathCos(angle) + utils.random.get() * radius * 0.4
+          , yv = radius * mathSin(angle) + utils.random.get() * radius * 0.4;
         vertices.push({x: xv, y: yv});
       }
       return vertices;
@@ -89,12 +100,12 @@
     distance: function(v1, v2) {
       var dx = v2.x - v1.x
         , dy = v2.y - v1.y;
-      return utils.myMath.sqrt(dx * dx + dy * dy); 
+      return mathSqrt(dx * dx + dy * dy); 
     },
 
     rangeIntersect: function(min0, max0, min1, max1) {
-      return utils.myMath.max(min0, max0) >= utils.myMath.min(min1, max1) && 
-        utils.myMath.min(min0, max0) <= utils.myMath.max(min1, max1);
+      return mathMax(min0, max0) >= mathMin(min1, max1) && 
+        mathMin(min0, max0) <= mathMax(min1, max1);
     },
 
     wrapBounce: function(p, rect) {
@@ -124,11 +135,11 @@
         min = minOrRange[0];
         max = minOrRange[1];
       }
-      return utils.myMath.floor(utils.myMath.random() * (max - min + 1) + min);  
+      return mathFloor(mathRandom() * (max - min + 1) + min);  
     },
 
     get: function() {
-      return utils.myMath.random() - 0.5;  
+      return mathRandom() - 0.5;  
     }
   };
 
