@@ -28,8 +28,6 @@
     
     this.currentHue = 0;
     this.collisionColor = 'hsl(0,0,0)';
-
-    console.log(this.shape);
   };
 
   BgForms.prototype.draw = function() {

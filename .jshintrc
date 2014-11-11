@@ -37,6 +37,7 @@
 		"MulAdd": true,
 		"PSequence": true,
 		"PChoose": true,
-		"crypto": true
+		"crypto": true,
+		"LinearCrossFade": true
 	}
 }
