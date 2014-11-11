@@ -28,8 +28,6 @@
     this.context = Renderable.context;
   };
 
-  BaseShape.context = null;
-
   BaseShape.prototype.beginDraw = function() {
     var context = this.context;
     context.save();
