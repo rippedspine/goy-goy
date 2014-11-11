@@ -35,7 +35,7 @@
       shadowOffsetX: this.width * 1.5,
       shadowOffsetY: this.height * 1.5,
       numForms: 5,
-      blendMode: 'screen'
+      blendMode: null
     });
 
     this.setSize();
@@ -45,8 +45,8 @@
 
   Stage.prototype.render = function() {
     this.context.clearRect(0, 0, this.width, this.height);
-    this.bgForm.draw();
     this.starField.draw();
+    this.bgForm.draw();
   };
 
   Stage.prototype.setSize = function() {

@@ -63,7 +63,7 @@
   BgForms.prototype.cycleColor = function() {
     var newColor = utils.color.getValues(this.collisionColor);
     if (this.currentHue > newColor[0]) {this.currentHue-=5;} else {this.currentHue+=5;}
-    this.color = utils.color.get(this.currentHue, 20, 20);
+    this.color = utils.color.get(this.currentHue, 15, 15);
   };
 
   module.exports = BgForms;
