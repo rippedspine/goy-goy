@@ -105,9 +105,9 @@
   };
 
   Client.Player.Model.prototype.setFadeOut = function() {
+    this.tail.alpha = 0;
     this.head.willFadeOut = true;
     this.head.startFadeOutTime = new Date();
-    this.tail.alpha = 0;
   };
 
   Client.Player.Model.prototype.pulse = function() {
