@@ -8,6 +8,8 @@
     , utils    = require('../../shared/utils.js')
     , inherits = utils.inherits
 
+    , sin = Math.sin
+
     , Client = { Player: {} };
 
   // =============================================================
@@ -39,6 +41,8 @@
       stiffness : 0.6
     });
 
+    this.head.setUpFade();
+
     this.springPoint = {x: data.x, y: data.y};
     this.position.addSpring(this.springPoint, 0.1);
 
@@ -49,6 +53,12 @@
 
     this.angle = 0;
     this.updateHz = 0.05;
+
+    this.willBeRemoved = false;
+
+    this.sendRemoveEvent = new CustomEvent('removePlayer', {
+      'detail': {id: this.id}
+    });
   };
 
   Client.Player.Model.prototype.send = function() {
@@ -85,12 +95,23 @@
 
   Client.Player.Model.prototype.draw = function() {
     this.head.draw();
-    this.tail.lineWidth = this.head.radius * 0.8 + utils.myMath.sin(this.angle) * 2;
+    this.tail.lineWidth = this.head.radius * 0.8 + sin(this.angle) * 2;
     this.tail.draw(this.head.color);
+
+    if (this.willBeRemoved && this.head.alpha < 0.1) {
+      this.head.alpha = 0;
+      document.dispatchEvent(this.sendRemoveEvent);
+    }
+  };
+
+  Client.Player.Model.prototype.setFadeOut = function() {
+    this.head.willFadeOut = true;
+    this.head.startFadeOutTime = new Date();
+    this.tail.alpha = 0;
   };
 
   Client.Player.Model.prototype.pulse = function() {
-    this.head.scale = 2 + utils.myMath.sin(this.angle) * 0.5;
+    this.head.scale = 2 + sin(this.angle) * 0.5;
     this.angle += this.updateHz;
   };
 
@@ -107,6 +128,15 @@
   };
 
   inherits(Client.Player.Collection, BaseCollection);
+
+  Client.Player.Collection.prototype.fadeOutPlayer = function(id) {
+    this.collection[id].willBeRemoved = true;
+    this.collection[id].setFadeOut();
+  };
+
+  Client.Player.Collection.prototype.remove = function(id) {
+    delete this.collection[id];
+  };
 
   Client.Player.Collection.prototype.draw = function() {
     for (var id in this.collection) {

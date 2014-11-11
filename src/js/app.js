@@ -21,7 +21,7 @@
   );
 
   window.addEventListener('load', function(event) {
-    game.start(io());
+    game.start(io(), new AudioPlayer(new Audiolet()));
   });
 
 })(this);

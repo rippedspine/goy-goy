@@ -27,6 +27,7 @@
 
   Client.Obstacle.Collection.prototype.setCollision = function(data) {
     this.obstacles[data.type + 's'][data.id].didCollide = true;
+    this.obstacles[data.type + 's'][data.id].shape.startFadeOutTime = new Date();
   };
 
   Client.Obstacle.Collection.prototype.update = function() {
@@ -39,11 +40,11 @@
     }
   };
 
-  Client.Obstacle.Collection.prototype.draw = function(context) {
+  Client.Obstacle.Collection.prototype.draw = function() {
     for (var type in this.obstacles) {
       for (var id in this.obstacles[type]) {
         if (id !== 'model') {
-          this.obstacles[type][id].shape.draw(context);
+          this.obstacles[type][id].shape.draw();
         }
       }
     }

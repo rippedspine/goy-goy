@@ -1,7 +1,12 @@
 (function() {
   'use strict';
 
-  var Renderable = require('./renderable.js');
+  var Renderable = require('./renderable.js')
+    , easing = require('../easing.js')
+    , easeIn = easing.inQuad
+    , easeOut = easing.outQuad
+
+    , min = Math.min;
 
   var BaseShape = function(options) {
     this.x         = options.x;
@@ -15,10 +20,12 @@
     this.width     = options.width || 0;
     this.height    = options.height || 0;
     this.spread    = options.spread || 0;
-    
-    this.rotation   = options.rotation || 0;
+
+    this.updateHz   = options.updateHz || 0.05;
     this.alpha      = options.alpha || 1;
     this.scale      = options.scale || 1;
+    
+    this.rotation   = options.rotation || 0;
     this.lineWidth  = options.lineWidth || 1;
     this.isFilled   = options.isFilled || false;
     this.shadowBlur = options.shadowBlur || 40;
@@ -26,6 +33,19 @@
     this.shadowOffsetY = options.shadowOffsetY || 0;
 
     this.context = Renderable.context;
+  };
+
+  BaseShape.prototype.setUpFade = function(options) {
+    if (arguments.length === 0) {options = {};}
+    this.startTime   = new Date();
+    this.willFadeIn  = options.willFadeIn || true;
+
+    this.startAlpha = options.startAlpha || 0.5;
+    this.startScale = options.startScale || 0.5;
+    this.endScale   = options.endScale || 1;
+
+    this.alpha = this.startAlpha;
+    this.scale = this.startScale;
   };
 
   BaseShape.prototype.beginDraw = function() {
@@ -52,7 +72,38 @@
       context.lineWidth = this.lineWidth * context.zoom;
       context.stroke();
     }
+
+    if (this.willFadeIn) {this.fadeIn();}
+    if (this.willFadeOut) {this.fadeOut();}
+
     context.restore();
+  };
+
+  BaseShape.prototype.fadeIn = function() {
+    var time = new Date() - this.startTime
+      , duration = 400;
+    if (time < duration) {
+      this.alpha = easeIn(time, 0.5, 1, duration);
+      this.scale = min(easeIn(time, 0.5, 1, duration), 1);
+    } else {
+      time = duration;
+      this.alpha = easeIn(time, 0.5, 1, duration);
+      this.scale = min(easeIn(time, 0.5, 1, duration), 1);
+      this.willFadeIn = false;
+    }
+  };
+
+  BaseShape.prototype.fadeOut = function() {
+    var time = new Date() - this.startFadeOutTime
+      , duration = 1000;
+    if (time < duration) {
+      this.alpha = easeOut(time, 1, 1, duration);
+      this.scale = easeOut(time, 1, 1.5, duration);
+    } else {
+      time = duration;
+      this.alpha = easeOut(time, 1, 1, duration);
+      this.scale = easeOut(time, 1, 1.5, duration);
+    }
   };
 
   module.exports = BaseShape;

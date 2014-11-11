@@ -11,6 +11,7 @@
   Client.Obstacle.Sharp = function(data) {
     ObstacleBase.call(this, data);
     this.shape = new Shape.Polygon(data);
+    this.shape.setUpFade();
   };
 
   inherits(Client.Obstacle.Sharp, ObstacleBase);

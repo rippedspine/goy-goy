@@ -10,9 +10,10 @@
     this.type       = data.type;
     this.id         = data.id;
     this.didCollide = false;
+    this.willFadeIn = true;
     
-    this.fillTimer  = 1;
-    this.updateHz   = 0.02;
+    this.fillTimer   = 1;
+    this.updateHz    = 0.02;
 
     this.position = new Vector({
       x         : data.x,
@@ -35,15 +36,14 @@
   };
 
   Client.Obstacle.BaseModel.prototype.onCollision = function() {
+    this.shape.willFadeOut = this.didCollide;
+
     if (this.didCollide) {
       this.shape.isFilled = true;
 
       this.fillTimer -= 0.05;
-      this.shape.scale += this.updateHz;
-      this.shape.alpha -= this.updateHz;
-
       if (this.fillTimer < 0) {this.shape.isFilled = false;}
-      if (this.shape.alpha < 0) {        
+      if (this.shape.alpha < 0.05) {        
         this.sendDeadEvent.detail.id   = this.id;
         this.sendDeadEvent.detail.type = this.type;
         document.dispatchEvent(this.sendDeadEvent);

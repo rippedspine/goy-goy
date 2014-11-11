@@ -11,6 +11,7 @@
   Client.Obstacle.Noiseform = function(data) {
     ObstacleBase.call(this, data);
     this.shape = new Shape.Star(data);
+    this.shape.setUpFade();
   };
 
   inherits(Client.Obstacle.Noiseform, ObstacleBase);

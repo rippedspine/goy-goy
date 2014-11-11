@@ -11,6 +11,7 @@
   Client.Obstacle.Bassform = function(data) {
     ObstacleBase.call(this, data);
     this.shape = new Shape.Romb(data);
+    this.shape.setUpFade();
     this.angle = 0;
   };
 

@@ -11,6 +11,7 @@
   Client.Obstacle.Round = function(data) {
     ObstacleBase.call(this, data);
     this.shape = new Shape.Circle(data);
+    this.shape.setUpFade();
   };
 
   inherits(Client.Obstacle.Round, ObstacleBase);

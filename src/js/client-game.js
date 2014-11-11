@@ -15,16 +15,17 @@
     this.audioplayer = audioplayer;
     this.obstacles   = obstacles;
 
-    this.socket = null;
-    this.player = null;
-    this.currentHue = 0;
+    this.socket         = null;
+    this.player         = null;
+
+    this.currentHue     = 0;
     this.collisionColor = 'hsl(0, 0%, 0%)';
   };
 
-  ClientGame.prototype.start = function(socket) {
+  ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-    this.audioplayer.sequence();
+    audioplayer.sequence();
   };
 
   ClientGame.prototype.loop = function() {
@@ -48,10 +49,15 @@
   ClientGame.prototype.handleDOMEvents = function() {
     this.stage.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     document.addEventListener('dead', this.handleDeadObstacle.bind(this));
+    document.addEventListener('removePlayer', this.handleRemovePlayer.bind(this));
   };
 
   ClientGame.prototype.handleDeadObstacle = function(event) {
     this.socket.emit(msgs.socket.deadObstacle, event.detail);
+  };
+
+  ClientGame.prototype.handleRemovePlayer = function(event) {
+    this.players.remove(event.detail.id);
   };
 
   ClientGame.prototype.handleMouseMove = function(event) {
@@ -85,7 +91,7 @@
   };
 
   ClientGame.prototype.onRemovePlayer = function(id) {
-    this.players.remove(id);
+    this.players.fadeOutPlayer(id);
   };
 
   ClientGame.prototype.onNewPlayer = function(player) {
@@ -122,4 +128,3 @@
   module.exports = ClientGame;
 
 })(this);
-// 
