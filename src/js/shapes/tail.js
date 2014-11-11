@@ -10,9 +10,11 @@
     this.direction = options.direction;
     this.friction  = options.friction;
     this.k         = options.stiffness;
+    this.alpha     = options.alpha || 1;
     this.context   = Renderable.context;
     this.lineWidth = 1;
     this.points    = [];
+
     this.create();
   };
 
@@ -48,13 +50,13 @@
       , p;
 
     context.save();
+    context.globalAlpha = this.alpha;
     context.beginPath();
 
     for (var i = 0; i < points.length; i++) {
       p = points[i];
       context.lineTo(p.x, p.y);
     }
-
     context.lineWidth   = this.lineWidth;
     context.lineCap     = 'round';
     context.strokeStyle = color;

@@ -3,8 +3,8 @@
 
   var Renderable = require('./renderable.js')
     , easing = require('../easing.js')
-    , easeIn = easing.inQuad
-    , easeOut = easing.outQuad
+    , easeIn = easing.easeIn
+    , easeOut = easing.easeOut
 
     , min = Math.min;
 
@@ -85,11 +85,6 @@
     if (time < duration) {
       this.alpha = easeIn(time, 0.5, 1, duration);
       this.scale = min(easeIn(time, 0.5, 1, duration), 1);
-    } else {
-      time = duration;
-      this.alpha = easeIn(time, 0.5, 1, duration);
-      this.scale = min(easeIn(time, 0.5, 1, duration), 1);
-      this.willFadeIn = false;
     }
   };
 
@@ -97,10 +92,6 @@
     var time = new Date() - this.startFadeOutTime
       , duration = 1000;
     if (time < duration) {
-      this.alpha = easeOut(time, 1, 1, duration);
-      this.scale = easeOut(time, 1, 1.5, duration);
-    } else {
-      time = duration;
       this.alpha = easeOut(time, 1, 1, duration);
       this.scale = easeOut(time, 1, 1.5, duration);
     }
