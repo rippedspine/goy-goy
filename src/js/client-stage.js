@@ -5,8 +5,8 @@
     , utils = require('../../shared/utils.js')
     , Renderable = require('./shapes/renderable.js')
     , StarField = require('./shapes/starfield.js')
-    , Circle = require('./shapes/circle.js')
-    , BgForms = require('./shapes/bgforms.js');
+    , BlobGroup = require('./shapes/blobgroup.js')
+    , getColorValues = utils.color.getValues;
 
   var Stage = function() {
     this.canvas = document.createElement('canvas');
@@ -23,19 +23,9 @@
       context: Renderable.context
     });
 
-    this.bgForm = new BgForms({
-      x:        -this.width,
-      y:        -this.height,
-      color:    'hsl(10,60%,60%)',
-      radius:   400,
-      vertices: utils.vertices.getIrregularPolygon(12, 400),
-      alpha:    0.5,
-      isFilled: true,
-      shadowBlur: 70,
-      shadowOffsetX: this.width * 1.5,
-      shadowOffsetY: this.height * 1.5,
-      numForms: 5,
-      blendMode: null
+    this.blobGroup = new BlobGroup({
+      area: [this.width, this.height],
+      numBlobs: 5
     });
 
     this.setSize();
@@ -46,7 +36,13 @@
   Stage.prototype.render = function() {
     this.context.clearRect(0, 0, this.width, this.height);
     this.starField.draw();
-    this.bgForm.draw();
+    this.blobGroup.draw();
+  };
+
+  Stage.prototype.setCollision = function(color) {
+    this.blobGroup.startColorCycleTime = new Date();
+    this.blobGroup.currentHue = getColorValues(this.blobGroup.color)[0];
+    this.blobGroup.collisionHue = getColorValues(color)[0];
   };
 
   Stage.prototype.setSize = function() {
