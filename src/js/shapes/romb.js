@@ -13,26 +13,29 @@
   inherits(Wave, BaseShape);
 
   Wave.prototype.draw = function() {
-    var context = this.context;
+    var sides = this.points //this.id + 3
+    ,   a = (Math.PI * 2) / sides
+    ,   context = this.context;
+    
     this.beginDraw();
 
-    var grow = 2 + utils.myMath.sin(this.angle) * 4;
-    this.angle += this.updateHz;
-
-    context.moveTo((-this.radius * 0.8) + grow, 0);
-    context.lineTo(0, this.radius + (grow * 0.5));
-    context.lineTo((this.radius * 0.8) - grow, 0);
-    context.lineTo(0, -this.radius - (grow * 0.5));
+    context.moveTo(this.radius, 0);
+    for (var i = 1; i < sides; i++) {
+      context.lineTo(this.radius * Math.cos(a * i), this.radius * Math.sin(a * i));
+    }
     context.closePath();
 
-    context.moveTo(-this.radius + grow + 6, 0);
-    context.lineTo(-this.radius * 1.5 + grow + 6, 0);
-    context.moveTo(0, this.radius);
-    context.lineTo(0, this.radius * 1.5);
-    context.moveTo(this.radius - grow - 6, 0);
-    context.lineTo(this.radius * 1.5 - grow - 6, 0);
-    context.moveTo(0, -this.radius);
-    context.lineTo(0, -this.radius * 1.5);    
+    var angle = 0, radians, x, y;
+    for (var j = 0; j < sides; j++) {
+      radians = angle / 180 * Math.PI;
+      x = this.radius * Math.cos(radians);
+      y = this.radius * Math.sin(radians);
+
+      context.moveTo(x, y);
+      context.lineTo(x * 1.25, y * 1.25);
+
+      angle += 360/sides;
+    }
 
     this.isFilled = false;
     this.endDraw();
