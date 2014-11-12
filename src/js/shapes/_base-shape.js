@@ -25,12 +25,14 @@
     this.alpha      = options.alpha || 1;
     this.scale      = options.scale || 1;
     
-    this.rotation   = options.rotation || 0;
-    this.lineWidth  = options.lineWidth || 1;
-    this.isFilled   = options.isFilled || false;
-    this.shadowBlur = options.shadowBlur || 40;
+    this.rotation      = options.rotation || 0;
+    this.lineWidth     = options.lineWidth || 1;
+    this.isFilled      = options.isFilled || false;
+    this.shadowBlur    = options.shadowBlur || 40;
     this.shadowOffsetX = options.shadowOffsetX || 0;
     this.shadowOffsetY = options.shadowOffsetY || 0;
+
+    this.blendMode = options.blendMode || false;
 
     this.context = Renderable.context;
   };
@@ -54,11 +56,14 @@
     context.translate(this.x, this.y);
     context.scale(this.scale, this.scale);
     context.rotate(this.rotation);
-    context.globalAlpha = this.alpha;
-    context.shadowColor = this.color;
-    context.shadowBlur  = this.shadowBlur;
+    context.globalAlpha   = this.alpha;
+    context.shadowColor   = this.color;
+    context.shadowBlur    = this.shadowBlur;
     context.shadowOffsetX = this.shadowOffsetX;
     context.shadowOffsetY = this.shadowOffsetY;
+    if (this.blendMode) {
+      context.globalCompositeOperation = this.blendMode;
+    }
     context.beginPath();
   };
 

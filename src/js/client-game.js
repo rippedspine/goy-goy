@@ -35,7 +35,6 @@
   };
 
   ClientGame.prototype.update = function() {
-    this.stage.bgForm.cycleColor();
     this.players.update();
     this.obstacles.update();
   };
@@ -111,9 +110,7 @@
   };
 
   ClientGame.prototype.onCollision = function(data) {
-    this.stage.bgForm.currentHue = utils.color.getValues(this.stage.bgForm.color)[0];
-    this.stage.bgForm.collisionColor = data.obstacle.color;
-
+    this.stage.setCollision(data.obstacle.color);
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.obstacles.setCollision(data.obstacle);
     this.audioplayer.play(data.obstacle.sound);
