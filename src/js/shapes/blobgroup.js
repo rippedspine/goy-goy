@@ -8,6 +8,7 @@
 
     , floor = Math.floor
     , easeOut = easing.easeOut
+    , easeIn = easing.easeIn
     , getColorValues = utils.color.getValues
     , getColor = utils.color.get
     , rand = utils.random.get
@@ -16,8 +17,8 @@
 
   var BlobGroup = function(options) {
     this.area = options.area;
-    this.blendMode = options.blendMode || null;
-    this.color = 'hsl(50,60%,20%)';
+    this.startColor = 'hsl(50,0%,20%)';
+    this.color = this.startColor;
     this.numBlobs = options.numBlobs;
     this.blobs = [];
 
@@ -27,7 +28,7 @@
 
   BlobGroup.prototype.draw = function() {
     if (this.blobs.length < this.numBlobs) {
-      var r = getRandomInt(300, 400);
+      var r = getRandomInt(this.area[1] * 0.2, this.area[1] * 0.25);
       this.blobs.push(new Polygon({
         x: this.area[0] * 0.5,
         y: this.area[1] * 0.5,
@@ -37,7 +38,7 @@
         isFilled: true,
         updateHz: rand() * 0.01,
         vertices: getIrregularPolygon(getRandomInt(4, 8), r),
-        shadowBlur: 70
+        shadow: false
       }));
     }
 
@@ -52,14 +53,14 @@
   };
 
   BlobGroup.prototype.cycleColor = function() {
-    var t = new Date() - this.startColorCycleTime
+    var t = Date.now() - this.startColorCycleTime
       , d = 400
       , currHue = this.currentHue
       , hueChange = currHue - this.collisionHue;
 
     if (t < d) {
       var newHue = easeOut(t, currHue, hueChange, d);
-      this.color = getColor(floor(newHue), 60, 20);
+      this.color = getColor(newHue >> 0, 60, 20);
     }
   };
 

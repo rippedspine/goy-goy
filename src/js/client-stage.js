@@ -25,7 +25,7 @@
 
     this.blobGroup = new BlobGroup({
       area: [this.width, this.height],
-      numBlobs: 5
+      numBlobs: 4
     });
 
     this.setSize();
@@ -40,7 +40,7 @@
   };
 
   Stage.prototype.setCollision = function(color) {
-    this.blobGroup.startColorCycleTime = new Date();
+    this.blobGroup.startColorCycleTime = Date.now();
     this.blobGroup.currentHue = getColorValues(this.blobGroup.color)[0];
     this.blobGroup.collisionHue = getColorValues(color)[0];
   };
