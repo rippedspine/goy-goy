@@ -25,9 +25,9 @@
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-    // var audio = document.getElementById('sound');
-    // audioplayer.fadeIn(audio, 10, 1, 1);
-    audioplayer.sequence(true);
+    setTimeout(function() {
+      audioplayer.sequence(true);  
+    }, 1500);
   };
 
   ClientGame.prototype.loop = function() {
