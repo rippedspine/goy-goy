@@ -25,9 +25,16 @@
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
+
+    var splash = document.getElementById('splash');
+    splash.className = 'off';
+    setTimeout(function() {
+      splash.style.display = 'none';
+    }, 3000);
+
     setTimeout(function() {
       audioplayer.sequence(true);  
-    }, 1500);
+    }, 1000);
   };
 
   ClientGame.prototype.loop = function() {
