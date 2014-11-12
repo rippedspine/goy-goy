@@ -25,16 +25,8 @@
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-
-    var splash = document.getElementById('splash');
-    splash.className = 'off';
-    setTimeout(function() {
-      splash.style.display = 'none';
-    }, 3000);
-
-    setTimeout(function() {
-      audioplayer.sequence(true);  
-    }, 1000);
+    this.showSplash();
+    this.playSoundSequence();
   };
 
   ClientGame.prototype.loop = function() {
@@ -123,6 +115,21 @@
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.obstacles.setCollision(data.obstacle);
     this.audioplayer.play(data.obstacle.sound);
+  };
+
+  ClientGame.prototype.showSplash = function() {
+    var splash = document.getElementById('splash');
+    splash.className = 'off';
+    setTimeout(function() {
+      splash.style.display = 'none';
+    }, 3000);
+  };
+
+  ClientGame.prototype.playSoundSequence = function() {
+    var that = this;
+    setTimeout(function() {
+      that.audioplayer.sequence(true);  
+    }, 1000);
   };
 
   module.exports = ClientGame;
