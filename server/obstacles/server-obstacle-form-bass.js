@@ -13,6 +13,7 @@
     BaseObstacle.call(this, id);
 
     this.type   = 'bassForm';
+    this.points = utils.random.getInt(forms.radiusRange) - 4;
     this.spread = 2;
     this.width  = utils.random.getInt(7, 16) * config.sizeFactor;
     this.height = this.width * 0.8;
