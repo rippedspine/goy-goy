@@ -6,6 +6,8 @@
   module.exports = {
     area: {
       color: '#111',
+      w: 2000,
+      h: 1250,
       size: [2000, 1250],
       ratioFactor: {
         h: 0.625,
