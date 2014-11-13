@@ -17,9 +17,6 @@
 
     this.socket         = null;
     this.player         = null;
-
-    this.currentHue     = 0;
-    this.collisionColor = 'hsl(0, 0%, 0%)';
   };
 
   ClientGame.prototype.start = function(socket, audioplayer) {
@@ -130,7 +127,7 @@
       that.audioplayer.sequence(true);  
     }, delay);
   };
-
+  
   module.exports = ClientGame;
 
 })(this);

@@ -107,7 +107,7 @@
   Client.Player.Model.prototype.setFadeOut = function() {
     this.tail.alpha = 0;
     this.head.willFadeOut = true;
-    this.head.startFadeOutTime = new Date();
+    this.head.startFadeOutTime = Date.now();
   };
 
   Client.Player.Model.prototype.pulse = function() {
@@ -135,7 +135,7 @@
   };
 
   Client.Player.Collection.prototype.remove = function(id) {
-    delete this.collection[id];
+    this.collection[id] = null;
   };
 
   Client.Player.Collection.prototype.draw = function() {

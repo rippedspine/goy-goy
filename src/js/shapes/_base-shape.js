@@ -25,9 +25,16 @@
     this.alpha      = options.alpha || 1;
     this.scale      = options.scale || 1;
     
-    this.rotation      = options.rotation || 0;
-    this.lineWidth     = options.lineWidth || 1;
-    this.isFilled      = options.isFilled || false;
+    this.rotation  = options.rotation || 0;
+    this.lineWidth = options.lineWidth || 1;
+    this.isFilled  = options.isFilled || false;
+
+    if (typeof options.shadow === 'undefined') {
+      this.shadow = true;
+    } else {
+      this.shadow = options.shadow;
+    }
+
     this.shadowBlur    = options.shadowBlur || 40;
     this.shadowOffsetX = options.shadowOffsetX || 0;
     this.shadowOffsetY = options.shadowOffsetY || 0;
@@ -57,10 +64,12 @@
     context.scale(this.scale, this.scale);
     context.rotate(this.rotation);
     context.globalAlpha   = this.alpha;
-    context.shadowColor   = this.color;
-    context.shadowBlur    = this.shadowBlur;
-    context.shadowOffsetX = this.shadowOffsetX;
-    context.shadowOffsetY = this.shadowOffsetY;
+    if (this.shadow) {
+      context.shadowColor   = this.color;
+      context.shadowBlur    = this.shadowBlur;
+      context.shadowOffsetX = this.shadowOffsetX;
+      context.shadowOffsetY = this.shadowOffsetY;
+    } 
     if (this.blendMode) {
       context.globalCompositeOperation = this.blendMode;
     }
@@ -69,6 +78,9 @@
 
   BaseShape.prototype.endDraw = function() {
     var context = this.context;
+    context.strokeStyle = this.color;
+    context.lineWidth = this.lineWidth * context.zoom;
+    context.stroke();
     if (this.isFilled) {
       context.fillStyle = this.color;
       context.fill();
