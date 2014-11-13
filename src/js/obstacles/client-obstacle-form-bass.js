@@ -5,6 +5,7 @@
     , Shape    = require('../shapes/__shape.js')
     , utils    = require('../../../shared/utils.js')
     , inherits = utils.inherits
+    , sin = Math.sin
 
     , Client = { Obstacle: {} };
 
@@ -20,7 +21,8 @@
   Client.Obstacle.Bassform.prototype.update = function() {
     this.onCollision();
     this.rotate();
-
+    utils.vector.wrapBounce(this.position, this.boundary);
+    this.position.updatePhysics();
     this.shape.x = this.position.x;
     this.shape.y = this.position.y;
   };
