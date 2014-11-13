@@ -20,8 +20,17 @@
     new AudioPlayer(new Audiolet())
   );
 
+  var playButton = document.getElementById('play');
+  var loader = document.getElementById('loader');
+
   window.addEventListener('load', function(event) {
-    game.start(io(), new AudioPlayer(new Audiolet()));
+    loader.className = 'off';
+    playButton.className = 'on';
+    playButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      game.fadeSplash();
+      game.start(io(), new AudioPlayer(new Audiolet()));
+    }); 
   });
 
 })(this);

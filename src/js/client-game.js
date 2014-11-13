@@ -25,8 +25,7 @@
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-    this.showSplash();
-    this.playSoundSequence();
+    this.playSoundSequence(1000);
   };
 
   ClientGame.prototype.loop = function() {
@@ -117,7 +116,7 @@
     this.audioplayer.play(data.obstacle.sound);
   };
 
-  ClientGame.prototype.showSplash = function() {
+  ClientGame.prototype.fadeSplash = function() {
     var splash = document.getElementById('splash');
     splash.className = 'off';
     setTimeout(function() {
@@ -125,11 +124,11 @@
     }, 3000);
   };
 
-  ClientGame.prototype.playSoundSequence = function() {
+  ClientGame.prototype.playSoundSequence = function(delay) {
     var that = this;
     setTimeout(function() {
       that.audioplayer.sequence(true);  
-    }, 1000);
+    }, delay);
   };
 
   module.exports = ClientGame;

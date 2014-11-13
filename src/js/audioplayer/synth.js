@@ -6,18 +6,22 @@
 
     AudioletGroup.apply(this, [this.audiolet, 0, 1]);
 
-    this.gain   = new Gain(this.audiolet, 1);
+    this.gain   = new Gain(this.audiolet);
     this.reverb = new Reverb(this.audiolet, 0.5, 0.5, 0.5);
     this.gain.connect(this.reverb);
     this.reverb.connect(this.outputs[0]);
-    this.banan = false;
   }
 
   extend(Synth, AudioletGroup);
 
   Synth.prototype.getEnvelope = function(soundDecay) {
-    return new ADSREnvelope(this.audiolet, 1, 
-      0.01, soundDecay, 0, 0,
+    return new ADSREnvelope(
+      this.audiolet, 
+      1, 
+      0.01,       //attack
+      soundDecay, //decay
+      0,          //sustain
+      0,          //release
       function() {
         this.audiolet.scheduler.addRelative(0, this.remove.bind(this));
       }.bind(this)
@@ -46,8 +50,8 @@
     return new LowPassFilter(this.audiolet, this.filterHz);
   };
 
-  Synth.prototype.play = function(waveform, soundDecay, frequency, filterHz, delay) {
-    this.frequency  = frequency;
+  Synth.prototype.play = function(waveform, soundDecay, toneFrequency, filterHz, delay) {
+    this.toneFrequency  = toneFrequency;
     this.soundDecay = soundDecay || 0.1;
     this.filter     = waveform === 'noise' ? this.createFilter(filterHz) : this.createFilter(400);
     this.waveform   = this.getWaveform(waveform);
@@ -57,14 +61,14 @@
     this.envelope.connect(this.gain, 0, 1);
 
     if(waveform === 'bass') {
-      this.modulator = new Sine(this.audiolet, frequency * 0.25);
-      this.modulatorMulAdd = this.modulate(200, 0.25, frequency);
+      this.modulator = new Sine(this.audiolet, this.toneFrequency * 0.25);
+      this.modulatorMulAdd = this.modulate(200, 0.25, this.toneFrequency);
     } else if (waveform === 'noise') {
-      this.modulator = new WhiteNoise(this.audiolet, frequency * 2);
-      this.modulatorMulAdd = this.modulate(500, 1, frequency);
+      this.modulator = new WhiteNoise(this.audiolet, this.toneFrequency * 2);
+      this.modulatorMulAdd = this.modulate(500, 1, this.toneFrequency);
     } else if (waveform === 'triangle') {
-      this.modulator = new WhiteNoise(this.audiolet, frequency * 2.5);
-      this.modulatorMulAdd = this.modulate(200, 0.333, frequency);
+      this.modulator = new WhiteNoise(this.audiolet, this.toneFrequency * 2.5);
+      this.modulatorMulAdd = this.modulate(200, 0.333, this.toneFrequency);
     }
 
     if(waveform === 'bass' || waveform === 'noise' || waveform === 'triangle') {
@@ -85,8 +89,8 @@
     }.bind(this), this.delay);
   };
 
-  Synth.prototype.modulate = function(var1, var2, frequency) {
-    return new MulAdd(this.audiolet, var1, frequency * var2);
+  Synth.prototype.modulate = function(var1, var2, toneFrequency) {
+    return new MulAdd(this.audiolet, var1, toneFrequency * var2);
   };
 
   module.exports = Synth;

@@ -19,7 +19,6 @@
       880.000
     ];
     this.synth = null;
-    this.durations = [0,0,1,2,1];
   };
 
   AudioPlayer.prototype.play = function(sound) {
@@ -44,5 +43,3 @@
   module.exports = AudioPlayer;
 
 })(this);
-
-
