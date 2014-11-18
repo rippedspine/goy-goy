@@ -135,7 +135,7 @@
   };
 
   Client.Player.Collection.prototype.remove = function(id) {
-    this.collection[id] = null;
+    delete this.collection[id];
   };
 
   Client.Player.Collection.prototype.draw = function() {
