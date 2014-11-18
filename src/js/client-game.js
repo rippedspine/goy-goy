@@ -22,7 +22,7 @@
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-    this.playSoundSequence(1000);
+    this.playSoundSequence(audioplayer, 1000);
   };
 
   ClientGame.prototype.loop = function() {
@@ -40,6 +40,12 @@
     this.stage.render();
     this.players.draw();
     this.obstacles.draw();
+  };
+
+  ClientGame.prototype.playSoundSequence = function(player, delay) {
+    setTimeout(function() {
+      player.sequence(true);  
+    }, delay);
   };
 
   ClientGame.prototype.handleDOMEvents = function() {
@@ -74,8 +80,9 @@
 
   ClientGame.prototype.onConnect = function(data) {
     msgs.logger.connect(data.player.id);
-
     this.obstacles.spawn(data.obstacles);
+
+    console.log(data.obstacles);
 
     this.players.add(data.player);
     this.player = this.players.get(data.player.id);
@@ -113,21 +120,6 @@
     this.audioplayer.play(data.obstacle.sound);
   };
 
-  ClientGame.prototype.fadeSplash = function() {
-    var splash = document.getElementById('splash');
-    splash.className = 'off';
-    setTimeout(function() {
-      splash.style.display = 'none';
-    }, 3000);
-  };
-
-  ClientGame.prototype.playSoundSequence = function(delay) {
-    var that = this;
-    setTimeout(function() {
-      that.audioplayer.sequence(true);  
-    }, delay);
-  };
-  
   module.exports = ClientGame;
 
 })(this);

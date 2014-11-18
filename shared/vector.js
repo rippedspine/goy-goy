@@ -32,8 +32,8 @@
     this.vx *= this.friction;
     this.vy *= this.friction;
     this.vy += this.gravity;
-    this.x  += this.vx;
-    this.y  += this.vy;
+    this.x += this.vx;
+    this.y += this.vy;
   };
 
   Vector.prototype.addGravitation = function(p) {

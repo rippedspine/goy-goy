@@ -6,7 +6,8 @@
     , Player = require('./client-player.js')
     , Obstacle = require('./obstacles/__client-obstacle.js')
     , Game = require('./client-game.js')
-    , AudioPlayer = require('./audioplayer/audioplayer.js');
+    , AudioPlayer = require('./audioplayer/audioplayer.js')
+    , Splash = require('./splash.js');
 
   var game = new Game(
     new Stage(), 
@@ -20,17 +21,20 @@
     new AudioPlayer(new Audiolet())
   );
 
-  var playButton = document.getElementById('play');
-  var loader = document.getElementById('loader');
+  // var splash = new Splash({
+  //   element: document.getElementById('splash'),
+  //   loader: document.getElementById('loader'),
+  //   playBtn: document.getElementById('play')
+  // });
 
   window.addEventListener('load', function(event) {
-    loader.className = 'off';
-    playButton.className = 'on';
-    playButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      game.fadeSplash();
-      game.start(io(), new AudioPlayer(new Audiolet()));
-    }); 
+    game.start(io(), new AudioPlayer(new Audiolet()));
+    // splash.onLoad();
+    // splash.playBtn.addEventListener('click', function(event) {
+    //   event.preventDefault();
+    //   splash.fade(3000);
+    //   game.start(io(), new AudioPlayer(new Audiolet()));
+    // });
   });
 
 })(this);

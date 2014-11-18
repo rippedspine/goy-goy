@@ -22,6 +22,8 @@
 
     this.collisions       = {};
     this.collisionHandler = collisionHandler;
+
+    this.start();
   };
 
   ServerGame.prototype.handleDeadObstacles = function(data) {
