@@ -19,7 +19,7 @@ var Player = require('./server/server-player.js')
   , CollisionHandler = require('./server/server-collision.js');
 
 var msgs = require('./shared/messages.js')
-  , MAXPARTNERS = 2;
+  , MAXPARTNERS = 5;
 
 var createGame = function() {
   return new Game(
@@ -41,8 +41,7 @@ io.on('connection', function(socket) {
 
   if (sr.count(rooms) > 1) {
     var room = sr.getRoomInRooms(rooms, MAXPARTNERS);
-    console.log(room);
-    if (typeof room !== 'undefined') {
+    if (games.hasOwnProperty(room)) {
       sr.joinRoom(socket, room);
       if (games[socket.room].players.count() > 0) {
         socket.emit(msgs.socket.sendPlayers, games[socket.room].players.send());
@@ -91,5 +90,10 @@ io.on('connection', function(socket) {
     msgs.logger.disconnect(socket.id);
     games[socket.room].players.remove(socket.id);
     io.to(socket.room).emit(msgs.socket.disconnect, socket.id);
+
+    if (games[socket.room].players.count() < 1) {
+      delete games[socket.room];
+      delete socket.adapter.rooms[socket.room];
+    }
   });
 }); 

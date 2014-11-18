@@ -81,9 +81,7 @@
   ClientGame.prototype.onConnect = function(data) {
     msgs.logger.connect(data.player.id);
     this.obstacles.spawn(data.obstacles);
-
-    console.log(data.obstacles);
-
+    
     this.players.add(data.player);
     this.player = this.players.get(data.player.id);
 

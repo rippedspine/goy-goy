@@ -5,10 +5,6 @@
     this.element = options.element;
     this.loader = options.loader;
     this.playBtn = options.playBtn;
-    
-    this.element.className = 'on';
-    this.loader.className = 'on';
-    this.playBtn.className = 'off';
   };
 
   Splash.prototype.onLoad = function() {

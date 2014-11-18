@@ -21,20 +21,19 @@
     new AudioPlayer(new Audiolet())
   );
 
-  // var splash = new Splash({
-  //   element: document.getElementById('splash'),
-  //   loader: document.getElementById('loader'),
-  //   playBtn: document.getElementById('play')
-  // });
+  var splash = new Splash({
+    element: document.getElementById('splash'),
+    loader: document.getElementById('loader'),
+    playBtn: document.getElementById('play')
+  });
 
   window.addEventListener('load', function(event) {
-    game.start(io(), new AudioPlayer(new Audiolet()));
-    // splash.onLoad();
-    // splash.playBtn.addEventListener('click', function(event) {
-    //   event.preventDefault();
-    //   splash.fade(3000);
-    //   game.start(io(), new AudioPlayer(new Audiolet()));
-    // });
+    splash.onLoad();
+    splash.playBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      splash.fade(3000);
+      game.start(io(), new AudioPlayer(new Audiolet()));
+    });
   });
 
 })(this);
