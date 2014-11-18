@@ -6,7 +6,7 @@ var express = require('express')
 
   , sr = require('./socketrooms.js');
 
-app.use(express.static(__dirname + '/.tmp'));
+app.use(express.static(__dirname + '/build'));
 app.use('/bower',  express.static(__dirname + '/bower'));
 
 http.listen(port, function() {
