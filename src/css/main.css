@@ -39,11 +39,10 @@ a, span {
 
 #play {
   position: absolute;
-  padding: 10px 0 10px 0;
+  padding: 10px 0;
   left: 50%;
   width: 100px;
   margin-left: -50px;
-  text-decoration: none;
   text-align: center;
   border: 1px solid #999;
   border-radius: 3px;
@@ -103,9 +102,6 @@ p:nth-child(2n + 1) {
   width: 200px;
   margin-left: -105px;
   margin-top: 10px;
-  text-align: center;
-  letter-spacing: 3px;
-  font-weight: 700;
 }
 
 .spinner {
