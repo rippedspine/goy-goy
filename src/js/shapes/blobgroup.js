@@ -8,8 +8,6 @@
 
     , floor = Math.floor
     , easeOut = easing.easeOut
-    , easeIn = easing.easeIn
-    , getColorValues = utils.color.getValues
     , getColor = utils.color.get
     , rand = utils.random.get
     , getRandomInt = utils.random.getInt
@@ -49,12 +47,12 @@
       b.color = this.color;
       b.rotation += b.updateHz;
       b.draw();
-    }  
+    }
   };
 
   BlobGroup.prototype.cycleColor = function() {
     var t = Date.now() - this.startColorCycleTime
-      , d = 400
+      , d = 1000
       , currHue = this.currentHue
       , hueChange = currHue - this.collisionHue;
 

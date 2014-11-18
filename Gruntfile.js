@@ -1,23 +1,24 @@
 'use strict';
 
 module.exports = function(grunt) {
-  var src = 'src'
-    , dist = 'build'
-    , tmp = '.tmp';
+  var src     = 'src'
+    , dist    = 'build'
+    , tmp     = '.tmp'
+    , appFile = 'goygoy.js';
 
   var config = {
-    main: 'server.js',
-    src: src,
-    dist: dist,
-    tmp: tmp,
-    shared: 'shared',
-    tests: 'test',
+    main   : 'server.js',
+    src    : src,
+    dist   : dist,
+    tmp    : tmp,
+    shared : 'shared',
+    tests  : 'test',
     browserify: {
-      entry: src + '/js/app.js',
-      output: {
-        tmp: tmp + '/goygoy.js',
-        dist: dist + '/goygoy.js',
-        min: dist + '/goygoy.js'
+      entry  : src + '/js/app.js',
+      output : {
+        tmp  : tmp + '/' + appFile,
+        dist : dist + '/' + appFile,
+        min  : dist + '/' + appFile
       }
     }
   };
@@ -72,12 +73,11 @@ module.exports = function(grunt) {
     copy: {
       dev: {
         files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.src %>',
-          dest: '<%= config.tmp %>',
+          expand : true,
+          dot    : true,
+          cwd    : '<%= config.src %>',
+          dest   : '<%= config.tmp %>',
           src: [
-            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -87,12 +87,11 @@ module.exports = function(grunt) {
       },
       dist: {
         files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.src %>',
-          dest: '<%= config.dist %>',
+          expand : true,
+          dot    : true,
+          cwd    : '<%= config.src %>',
+          dest   : '<%= config.dist %>',
           src: [
-            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -117,39 +116,42 @@ module.exports = function(grunt) {
 
     replace: {
       dist: {
-        src: ['server.js'],
-        dest: 'server.js',
+        src  : ['server.js'],
+        dest : 'server.js',
         replacements: [{
-          from: '/.tmp',
-          to: '/build'
+          from : '/.tmp',
+          to   : '/build'
         }]
       },
       dev: {
-        src: ['server.js'],
-        dest: 'server.js',
+        src  : ['server.js'],
+        dest : 'server.js',
         replacements: [{
-          from: '/build',
-          to: '/.tmp'
+          from : '/build',
+          to   : '/.tmp'
         }]
       },
-    },
-
-    nodeunit: {
-      all: ['<%= config.tests %>**/*_test.js'],
-      options: {
-        reporter: 'junit',
-        reporterOptions: {
-          output: '<%= config.tests %>/log'
-        }
-      }
     },
 
     uglify: {
       dist: {
         files: {
-          '<%= config.browserify.output.min %>': '<%= config.browserify.output.dist %>',
-          'build/Audiolet.js': 'build/Audiolet.js'
+          '<%= config.browserify.output.min %>': '<%= config.browserify.output.dist %>'
         }
+      }
+    },
+
+    concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['src/Audiolet.js', '<%= config.browserify.output.dist %>'],
+        dest: '<%= config.browserify.output.dist %>',
+      },
+      dev: {
+        src: ['src/Audiolet.js', '<%= config.browserify.output.tmp %>'],
+        dest: '<%= config.browserify.output.tmp %>',
       }
     },
 
@@ -160,10 +162,10 @@ module.exports = function(grunt) {
         },
         options: {
           browserifyOptions: {
-            debug: true,
-            fullPaths: true,
-            cache: {},
-            packageCache: {}
+            debug        : true,
+            fullPaths    : true,
+            cache        : {},
+            packageCache : {}
           }
         }
       },
@@ -173,10 +175,10 @@ module.exports = function(grunt) {
         },
         options: {
           browserifyOptions: {
-            debug: false,
-            fullPaths: true,
-            cache: {},
-            packageCache: {}
+            debug        : false,
+            fullPaths    : true,
+            cache        : {},
+            packageCache : {}
           }
         }
       }
@@ -189,21 +191,21 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    'nodeunit',
     'browserify:dist',
     'cssmin:dist',
     'copy:dist',
+    'concat:dist',
     'uglify',
-    'replace:dist'
+    'replace:dist',
   ]);
 
   grunt.registerTask('dev', [
     'jshint',
-    'nodeunit',
     'browserify:dev',
     'cssmin:dev',
     'copy:dev',
-    'replace:dev'
+    'replace:dev',
+    'concat:dev'
   ]);
 
   grunt.registerTask('default', ['dev', 'watch']);

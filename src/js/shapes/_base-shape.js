@@ -78,6 +78,9 @@
 
   BaseShape.prototype.endDraw = function() {
     var context = this.context;
+    context.strokeStyle = this.color;
+    context.lineWidth = this.lineWidth * context.zoom;
+    context.stroke();
     if (this.isFilled) {
       context.fillStyle = this.color;
       context.fill();

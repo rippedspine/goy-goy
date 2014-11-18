@@ -16,7 +16,6 @@
     this.x      = (config.area.size[0] * 0.5) - (this.radius * 0.5);
     this.y      = (config.area.size[1] * 0.5) - (this.radius * 0.5);
     this.color  = config.player.color;
-    this.type   = 'player';
   };
 
   Server.Player.Model.prototype.send = function() {
@@ -45,6 +44,13 @@
   };
 
   inherits(Server.Player.Collection, BaseCollection);
+
+  Server.Player.Collection.prototype.make = function(players) {
+    this.collection = {};
+    for (var i = 0; i < players.length; i++) {
+      this.collection[players[i].id] = players[i];
+    }
+  };
 
   Server.Player.Collection.prototype.add = function(data) {
     this.collection[data.id] = new this.model(data.id);

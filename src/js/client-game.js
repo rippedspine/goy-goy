@@ -17,16 +17,12 @@
 
     this.socket         = null;
     this.player         = null;
-
-    this.currentHue     = 0;
-    this.collisionColor = 'hsl(0, 0%, 0%)';
   };
 
   ClientGame.prototype.start = function(socket, audioplayer) {
     this.socket = socket;
     this.handleSocketEvents();
-    this.showSplash();
-    this.playSoundSequence();
+    this.playSoundSequence(audioplayer, 1000);
   };
 
   ClientGame.prototype.loop = function() {
@@ -44,6 +40,12 @@
     this.stage.render();
     this.players.draw();
     this.obstacles.draw();
+  };
+
+  ClientGame.prototype.playSoundSequence = function(player, delay) {
+    setTimeout(function() {
+      player.sequence(true);  
+    }, delay);
   };
 
   ClientGame.prototype.handleDOMEvents = function() {
@@ -78,9 +80,8 @@
 
   ClientGame.prototype.onConnect = function(data) {
     msgs.logger.connect(data.player.id);
-
     this.obstacles.spawn(data.obstacles);
-
+    
     this.players.add(data.player);
     this.player = this.players.get(data.player.id);
 
@@ -115,21 +116,6 @@
     this.players.setCollision(data.playerID, data.obstacle.color);
     this.obstacles.setCollision(data.obstacle);
     this.audioplayer.play(data.obstacle.sound);
-  };
-
-  ClientGame.prototype.showSplash = function() {
-    var splash = document.getElementById('splash');
-    splash.className = 'off';
-    setTimeout(function() {
-      splash.style.display = 'none';
-    }, 3000);
-  };
-
-  ClientGame.prototype.playSoundSequence = function() {
-    var that = this;
-    setTimeout(function() {
-      that.audioplayer.sequence(true);  
-    }, 1000);
   };
 
   module.exports = ClientGame;

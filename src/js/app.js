@@ -6,7 +6,8 @@
     , Player = require('./client-player.js')
     , Obstacle = require('./obstacles/__client-obstacle.js')
     , Game = require('./client-game.js')
-    , AudioPlayer = require('./audioplayer/audioplayer.js');
+    , AudioPlayer = require('./audioplayer/audioplayer.js')
+    , Splash = require('./splash.js');
 
   var game = new Game(
     new Stage(), 
@@ -20,8 +21,19 @@
     new AudioPlayer(new Audiolet())
   );
 
+  var splash = new Splash({
+    element: document.getElementById('splash'),
+    loader: document.getElementById('loader'),
+    playBtn: document.getElementById('play')
+  });
+
   window.addEventListener('load', function(event) {
-    game.start(io(), new AudioPlayer(new Audiolet()));
+    splash.onLoad();
+    splash.playBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      splash.fade(3000);
+      game.start(io(), new AudioPlayer(new Audiolet()));
+    });
   });
 
 })(this);
