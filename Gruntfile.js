@@ -134,16 +134,6 @@ module.exports = function(grunt) {
       },
     },
 
-    nodeunit: {
-      all: ['<%= config.tests %>**/*_test.js'],
-      options: {
-        reporter: 'junit',
-        reporterOptions: {
-          output: '<%= config.tests %>/log'
-        }
-      }
-    },
-
     uglify: {
       dist: {
         files: {
@@ -189,7 +179,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'jshint',
-    'nodeunit',
     'browserify:dist',
     'cssmin:dist',
     'copy:dist',
@@ -199,7 +188,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('dev', [
     'jshint',
-    'nodeunit',
     'browserify:dev',
     'cssmin:dev',
     'copy:dev',
