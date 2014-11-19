@@ -16,6 +16,7 @@
     this.element.className = 'off';
     setTimeout(function() {
       this.element.style.display = 'none';
+      this.element.innerHTML = '';
     }.bind(this), delay);
   };
 
