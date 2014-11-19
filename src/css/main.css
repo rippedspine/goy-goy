@@ -34,7 +34,10 @@ canvas {
 }
 
 a, span {
-  color: hsl(320, 60%, 60%);
+  -webkit-animation: cycleColor 20s ease infinite; /* Safari 4+ */
+  -moz-animation:    cycleColor 20s ease infinite; /* Fx 5+ */
+  -o-animation:      cycleColor 20s ease infinite; /* Opera 12+ */
+  animation:         cycleColor 20s ease infinite; /* IE 10+, Fx 29+ */
 }
 
 #play {
@@ -44,7 +47,7 @@ a, span {
   width: 100px;
   margin-left: -50px;
   text-align: center;
-  border: 1px solid hsl(320, 60%, 60%);;
+  border: 1px solid #333;
   border-radius: 3px;
   letter-spacing: 3px;
   font-weight: 700;
@@ -52,11 +55,15 @@ a, span {
 }
 
 #play:hover {
-  color: #000;
-  background-color: hsl(320, 60%, 60%);;
+  background-color: #333;
   -webkit-transition: all .5s ease;
   -moz-transition: all .5s ease;
   transition: all .5s ease;
+
+  -webkit-animation: cycleColor 20s ease infinite; /* Safari 4+ */
+  -moz-animation:    cycleColor 20s ease infinite; /* Fx 5+ */
+  -o-animation:      cycleColor 20s ease infinite; /* Opera 12+ */
+  animation:         cycleColor 20s ease infinite; /* IE 10+, Fx 29+ */
 }
 
 .about {
@@ -80,17 +87,17 @@ a, span {
 }
 
 .logo .text {
-  -webkit-animation: cycleStroke 25s ease infinite; /* Safari 4+ */
-  -moz-animation:    cycleStroke 25s ease infinite; /* Fx 5+ */
-  -o-animation:      cycleStroke 25s ease infinite; /* Opera 12+ */
-  animation:         cycleStroke 25s ease infinite; /* IE 10+, Fx 29+ */
+  -webkit-animation: cycleStroke 20s ease infinite; /* Safari 4+ */
+  -moz-animation:    cycleStroke 20s ease infinite; /* Fx 5+ */
+  -o-animation:      cycleStroke 20s ease infinite; /* Opera 12+ */
+  animation:         cycleStroke 20s ease infinite; /* IE 10+, Fx 29+ */
 }
 
 .logo .line {
-  -webkit-animation: cycleFill 25s ease infinite; /* Safari 4+ */
-  -moz-animation:    cycleFill 25s ease infinite; /* Fx 5+ */
-  -o-animation:      cycleFill 25s ease infinite; /* Opera 12+ */
-  animation:         cycleFill 25s ease infinite; /* IE 10+, Fx 29+ */
+  -webkit-animation: cycleFill 20s ease infinite; /* Safari 4+ */
+  -moz-animation:    cycleFill 20s ease infinite; /* Fx 5+ */
+  -o-animation:      cycleFill 20s ease infinite; /* Opera 12+ */
+  animation:         cycleFill 20s ease infinite; /* IE 10+, Fx 29+ */
 }
 
 p:nth-child(2n + 1) {
@@ -205,4 +212,29 @@ p:nth-child(2n + 1) {
   33%   { fill: hsl(90, 60%, 60%); }
   66%  { fill: hsl(180, 60%, 60%); }
   100%  { fill: hsl(360, 60%, 60%); }
+}
+
+@-webkit-keyframes cycleColor {
+  0%    { color: hsl(0, 60%, 60%); }
+  33%   { color: hsl(90, 60%, 60%); }
+  66%  { color: hsl(180, 60%, 60%); }
+  100%  { color: hsl(360, 60%, 60%); }
+}
+@-moz-keyframes cycleColor {
+  0%    { color: hsl(0, 60%, 60%); }
+  33%   { color: hsl(90, 60%, 60%); }
+  66%  { color: hsl(180, 60%, 60%); }
+  100%  { color: hsl(360, 60%, 60%); }
+}
+@-o-keyframes cycleColor {
+  0%    { color: hsl(0, 60%, 60%); }
+  33%   { color: hsl(90, 60%, 60%); }
+  66%  { color: hsl(180, 60%, 60%); }
+  100%  { color: hsl(360, 60%, 60%); }
+}
+@keyframes cycleColor {
+  0%    { color: hsl(0, 60%, 60%); }
+  33%   { color: hsl(90, 60%, 60%); }
+  66%  { color: hsl(180, 60%, 60%); }
+  100%  { color: hsl(360, 60%, 60%); }
 }
