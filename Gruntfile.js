@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     watch: {
       styles: {
         files: ['<%= config.src %>/css/*.css'],
-        tasks: ['cssmin']
+        tasks: ['cssmin', 'autoprefixer:dev']
       },
       markup: {
         files: ['<%= config.src %>/index.html'],
@@ -70,14 +70,27 @@ module.exports = function(grunt) {
       }
     },
 
+    autoprefixer: {
+      options: {
+        browsers: ['last 2 version', 'ie 8', 'ie 9']
+      },
+      dev: {
+        src: '<%= config.tmp %>/css/main.min.css'
+      },
+      dist: {
+        src: '<%= config.dist %>/css/main.min.css'
+      }
+    },
+
     copy: {
       dev: {
         files: [{
-          expand : true,
-          dot    : true,
-          cwd    : '<%= config.src %>',
-          dest   : '<%= config.tmp %>',
+          expand: true,
+          dot: true,
+          cwd: '<%= config.src %>',
+          dest: '<%= config.tmp %>',
           src: [
+            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -87,11 +100,12 @@ module.exports = function(grunt) {
       },
       dist: {
         files: [{
-          expand : true,
-          dot    : true,
-          cwd    : '<%= config.src %>',
-          dest   : '<%= config.dist %>',
+          expand: true,
+          dot: true,
+          cwd: '<%= config.src %>',
+          dest: '<%= config.dist %>',
           src: [
+            'Audiolet.js',
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
@@ -136,22 +150,9 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          '<%= config.browserify.output.min %>': '<%= config.browserify.output.dist %>'
+          '<%= config.browserify.output.min %>': '<%= config.browserify.output.dist %>',
+          'build/Audiolet.js': 'build/Audiolet.js'
         }
-      }
-    },
-
-    concat: {
-      options: {
-        separator: ';',
-      },
-      dist: {
-        src: ['src/Audiolet.js', '<%= config.browserify.output.dist %>'],
-        dest: '<%= config.browserify.output.dist %>',
-      },
-      dev: {
-        src: ['src/Audiolet.js', '<%= config.browserify.output.tmp %>'],
-        dest: '<%= config.browserify.output.tmp %>',
       }
     },
 
@@ -193,8 +194,8 @@ module.exports = function(grunt) {
     'jshint',
     'browserify:dist',
     'cssmin:dist',
+    'autoprefixer:dist',
     'copy:dist',
-    'concat:dist',
     'uglify',
     'replace:dist',
   ]);
@@ -203,9 +204,9 @@ module.exports = function(grunt) {
     'jshint',
     'browserify:dev',
     'cssmin:dev',
+    'autoprefixer:dev',
     'copy:dev',
-    'replace:dev',
-    'concat:dev'
+    'replace:dev'
   ]);
 
   grunt.registerTask('default', ['dev', 'watch']);
